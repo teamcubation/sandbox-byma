@@ -76,18 +76,7 @@ public class MenuController {
         String atributo = scanner.nextLine();
         System.out.print("Ingrese el nuevo valor para " + atributo + ": ");
         String nuevoValorStr = scanner.nextLine();
-//        Object nuevoValor = null;
-//        switch (atributo.toLowerCase()) {
-//            case "nombre":
-//                nuevoValor = nuevoValorStr;
-//                break;
-//            case "precio", "tasa de interes":
-//                nuevoValor = Double.parseDouble(nuevoValorStr);
-//                break;
-//            default:
-//                System.out.println("Atributo no valido.");
-//                return;
-//        }
+
         try{
             instrumentoFinancieroService.editarInstrumento(nombre, atributo, nuevoValorStr);
             System.out.println("Instrumento editado correctamente.");

@@ -51,45 +51,4 @@ public class InstrumentoFinancieroRepository implements IInstrumentoFinancieroRe
         instrumentoFinancieroList.remove(instrumentoExistente);
     }
 
-//    public void agregarInstrumento(InstrumentoFinanciero instrumento) {
-//        if (buscarInstrumentoPorNombre(instrumento.getNombre()) != null){
-//            throw new InstrumentoDuplicadoException("EL instrumento ya existe.");
-//        }
-//        instrumentoFinancieroList.add(instrumento);
-//    }
-
-//    public List<InstrumentoFinanciero> listarTodosLosInstrumentos() {
-//        return instrumentoFinancieroList;
-//    }
-
-//    public InstrumentoFinanciero buscarInstrumentoPorNombre(String nombre) {
-////        for (InstrumentoFinanciero instrumento : instrumentoFinancieroList) {
-////            if (instrumento.getNombre().equalsIgnoreCase(nombre)) {
-////                return instrumento;
-////            }
-////        }
-////        return null;
-//
-//        return instrumentoFinancieroList.stream()
-//                .filter(instrumento -> instrumento.getNombre().equalsIgnoreCase(nombre))
-//                .findFirst()
-//                .orElse(null);
-//    }
-//
-////    public void editarInstrumento(String nombre, InstrumentoFinanciero instrumentoActualizado) {
-////        InstrumentoFinanciero instrumentoExistente = buscarInstrumentoPorNombre(nombre);
-////        if (instrumentoExistente == null) {
-////            throw new InstrumentoNoEncontradoException("Instrumento no encontrado.");
-////        }
-////        int index = instrumentoFinancieroList.indexOf(instrumentoExistente);
-////        instrumentoFinancieroList.set(index, instrumentoActualizado);
-////    }
-//
-//    public void eliminarInstrumento(String nombre) {
-//        InstrumentoFinanciero instrumentoExistente = buscarInstrumentoPorNombre(nombre);
-//        if (instrumentoExistente == null){
-//            throw new InstrumentoNoEncontradoException("Instrumento no econtrado.");
-//        }
-//        instrumentoFinancieroList.remove(instrumentoExistente);
-//    }
 }
