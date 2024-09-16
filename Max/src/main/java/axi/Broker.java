@@ -1,3 +1,5 @@
+package axi;
+
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -18,19 +20,13 @@ public class Broker {
     }
 
     public void registrarInstrumento(String nombre, double precio, Tipo tipo) {
-        if (nombre == null || nombre.isEmpty())
-            throw new NullPointerException("nombre invalido");
-        if (precio < 0)
-            throw new ArithmeticException("el precio no puede ser menor a cero");
         InstrumentoFinanciero i = buscarInstrumento(nombre);
         if (i != null) {
-            throw new IllegalArgumentException("accion existente");
-        } else if (tipo.equals(Tipo.BONO)) {
-            instrumentos.add(new Bono(nombre, precio, tipo));
-        } else if (tipo.equals(Tipo.ACCION))
-            instrumentos.add(new Accion(nombre, precio, tipo));
-        else
-            throw new IllegalArgumentException("Tipo inexistente");
+            throw new IllegalArgumentException("Accion existente");
+        } else {
+            this.instrumentos.add(
+                    InstrumentoFinancieroFactory.nuevoInstrumento(nombre, precio, tipo));
+        }
     }
 
     private InstrumentoFinanciero buscarInstrumento(String nombre) {
@@ -44,8 +40,10 @@ public class Broker {
 
 
     public void consultar() {
-        for (InstrumentoFinanciero instrumento : instrumentos) {
-            System.out.println(instrumento);
+        if (!this.instrumentos.isEmpty()) {
+            for (InstrumentoFinanciero instrumento : instrumentos) {
+                System.out.println(instrumento);
+            }
         }
     }
 
@@ -54,8 +52,6 @@ public class Broker {
         if (i != null) {
             switch (variable) {
                 case "1":
-                    if (modificacion == null || modificacion.isEmpty())
-                        throw new NullPointerException("Error. El nombre no puede ser nulo ni vacio");
                     i.setNombre(modificacion);
                     break;
                 case "2":

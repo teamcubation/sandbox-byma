@@ -1,3 +1,5 @@
+package axi;
+
 import java.security.spec.ECField;
 import java.util.Scanner;
 
@@ -138,14 +140,12 @@ public class Menu {
 
     private double ingresarPrecio() {
         System.out.println("ingrese el precio de la accion");
-        double precio = scanner.nextDouble();
-        return precio;
+        return scanner.nextDouble();
     }
 
     private String ingresarNombre() {
-        System.out.println("ingrese el nombre de la accion");
-        String nombre = scanner.next();
-        return nombre;
+        System.out.println("ingrese el nombre del instrumento");
+        return scanner.next();
     }
 
     private Tipo ingresarTipo() {
