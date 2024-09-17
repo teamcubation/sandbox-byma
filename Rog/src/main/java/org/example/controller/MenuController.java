@@ -3,6 +3,7 @@ package org.example.controller;
 import org.example.exception.InstrumentoNoEncontradoException;
 import org.example.factory.InstrumentoFinancieroFactory;
 import org.example.model.InstrumentoFinanciero;
+import org.example.model.Inversor;
 import org.example.service.InstrumentoFinancieroService;
 
 import java.util.InputMismatchException;
@@ -20,7 +21,8 @@ public class MenuController {
             System.out.println("2. Consultar Instrumentos");
             System.out.println("3. Editar Instrumento");
             System.out.println("4. Eliminar Instrumento");
-            System.out.println("5. Salir");
+            System.out.println("5. Suscribir Inversor");
+            System.out.println("6. Salir");
 
             try{
                 int opcion = scanner.nextInt();
@@ -40,6 +42,9 @@ public class MenuController {
                         eliminarInstrumento();
                         break;
                     case 5:
+                        suscribirInversor();
+                        break;
+                    case 6:
                         salir = true;
                         break;
                     default:
@@ -51,6 +56,23 @@ public class MenuController {
             } catch (RuntimeException e) {
                 System.out.println(e.getMessage());
             }
+        }
+    }
+
+    private void suscribirInversor() {
+        System.out.print("Ingrese el nombre del inversor: ");
+        String nombreInversor = scanner.nextLine();
+        System.out.print("Ingrese el nombre del instrumento al que se va a suscribir: ");
+        String nombreInstrumento = scanner.nextLine();
+
+        Inversor inversor = new Inversor(nombreInversor);
+        InstrumentoFinanciero instrumento = instrumentoFinancieroService.buscarInstrumentoPorNombre(nombreInstrumento);
+
+        if (instrumento != null) {
+            instrumento.agregarObservador(inversor);
+            System.out.println("Inversor suscrito correctamente.");
+        } else {
+            System.out.println("Instrumento no encontrado.");
         }
     }
 

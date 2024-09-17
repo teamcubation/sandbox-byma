@@ -1,6 +1,8 @@
 package org.example.model;
 
-public abstract class InstrumentoFinanciero {
+import org.example.observer.Observable;
+
+public abstract class InstrumentoFinanciero extends Observable {
     private String nombre;
     private Double precio;
     private String tipo;
@@ -25,6 +27,7 @@ public abstract class InstrumentoFinanciero {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+        notificarObservadores(this.nombre, this.precio);
     }
 
     public String getTipo() {
