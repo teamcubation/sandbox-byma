@@ -12,7 +12,7 @@ public class Inversor implements InstrumentoFinancieroObserver {
 
     @Override
     public void actualizar(InstrumentoFinanciero instrumentoFinanciero) {
-        System.out.println("se actualizo el instrumento: " + instrumentoFinanciero.mostrarInstrumento());
+        System.out.println(this.nombre + "!!!, se actualizo el precio del instrumento: " + instrumentoFinanciero.mostrarInstrumento());
 
     }
 }

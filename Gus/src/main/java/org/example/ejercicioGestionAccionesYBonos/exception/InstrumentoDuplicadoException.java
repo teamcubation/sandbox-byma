@@ -1,4 +1,4 @@
-package org.example.ejercicioGestionAccionesYBonos.util;
+package org.example.ejercicioGestionAccionesYBonos.exception;
 
 public class InstrumentoDuplicadoException extends Exception {
     public InstrumentoDuplicadoException() {

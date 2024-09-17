@@ -1,7 +1,12 @@
 package org.example;
 
-import org.example.ejercicioGestionAccionesYBonos.app.AplicacionAccionesYBonos;
+import org.example.ejercicioGestionAccionesYBonos.app.AppBonosYAcciones;
+import org.example.ejercicioGestionAccionesYBonos.controller.InstrumentoFinancieroController;
 import org.example.ejercicioGestionAccionesYBonos.modelo.Inversor;
+import org.example.ejercicioGestionAccionesYBonos.repo.InstrumentoFinancieroObservableImp;
+import org.example.ejercicioGestionAccionesYBonos.repo.InstrumentoFinancieroRepositoryImp;
+import org.example.ejercicioGestionAccionesYBonos.service.InstrumentoFinancieroObservableServicio;
+import org.example.ejercicioGestionAccionesYBonos.service.InstrumentoFinancieroServicio;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,10 +18,25 @@ public class Main {
         Inversor inversor1 = new Inversor("Pepito");
         Inversor inversor2 = new Inversor("Juan");
 
-        AplicacionAccionesYBonos app = AplicacionAccionesYBonos.obtenerInstancia();
-        app.registrarObservador(inversor1);
-        app.registrarObservador(inversor2);
+//        AplicacionAccionesYBonos app = AplicacionAccionesYBonos.obtenerInstancia();
+//        app.registrarObservador(inversor1);
+//        app.registrarObservador(inversor2);
+//
+//        app.iniciar();
 
-        app.iniciar();
+        InstrumentoFinancieroRepositoryImp repository = InstrumentoFinancieroRepositoryImp.getInstancia();
+        InstrumentoFinancieroObservableImp observableRepository = InstrumentoFinancieroObservableImp.getInstancia();
+
+        InstrumentoFinancieroServicio servicio = InstrumentoFinancieroServicio.getInstancia(repository);
+        InstrumentoFinancieroObservableServicio servicioObservable = InstrumentoFinancieroObservableServicio.getInstancia(observableRepository);
+
+        InstrumentoFinancieroController controller = InstrumentoFinancieroController.getInstancia(servicio, servicioObservable);
+
+        controller.registrarObservador(inversor1);
+        controller.registrarObservador(inversor2);
+
+        AppBonosYAcciones app = AppBonosYAcciones.getInstancia(controller);
+
+        app.iniciarAplicacion();
     }
 }

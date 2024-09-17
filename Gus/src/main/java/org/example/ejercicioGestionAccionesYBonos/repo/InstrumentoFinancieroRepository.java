@@ -1,8 +1,8 @@
 package org.example.ejercicioGestionAccionesYBonos.repo;
 
 import org.example.ejercicioGestionAccionesYBonos.modelo.InstrumentoFinanciero;
-import org.example.ejercicioGestionAccionesYBonos.util.InstrumentoDuplicadoException;
-import org.example.ejercicioGestionAccionesYBonos.util.InstrumentoNoEncontradoException;
+import org.example.ejercicioGestionAccionesYBonos.exception.InstrumentoDuplicadoException;
+import org.example.ejercicioGestionAccionesYBonos.exception.InstrumentoNoEncontradoException;
 
 import java.util.List;
 import java.util.Optional;
