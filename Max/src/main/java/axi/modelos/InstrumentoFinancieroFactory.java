@@ -1,7 +1,5 @@
 package axi.modelos;
 
-import axi.Tipo;
-
 public class InstrumentoFinancieroFactory {
 
     public static InstrumentoFinanciero nuevoInstrumento(String nombre, double precio, Tipo tipo) {

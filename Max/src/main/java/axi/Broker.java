@@ -4,6 +4,8 @@ import axi.excepciones.InstrumentoDuplicadoException;
 import axi.excepciones.InstrumentoNoEncontradoException;
 import axi.modelos.InstrumentoFinanciero;
 import axi.modelos.InstrumentoFinancieroFactory;
+import axi.modelos.Inversor;
+import axi.modelos.Tipo;
 
 import java.util.ArrayList;
 
@@ -12,10 +14,12 @@ public class Broker {
     private static Broker broker;
     private String name;
     private ArrayList<InstrumentoFinanciero> instrumentos;
+    private ArrayList<Inversor>inversores;
 
     private Broker() {
         this.name = NAME;
         this.instrumentos = new ArrayList<>();
+        this.inversores = new ArrayList<>();
     }
 
     public static Broker getBroker() {
@@ -23,10 +27,26 @@ public class Broker {
             broker = new Broker();
         return broker;
     }
+    public void registrarInversor(String nombre, String dni){
+        Inversor inversor = this.buscarInversor(dni);
+        if (inversor != null)
+            throw new RuntimeException("Error. Inversor existente");
+        inversor = new Inversor(nombre, dni);
+        this.inversores.add(inversor);
+    }
+
+    private Inversor buscarInversor(String dni) {
+        Inversor inversor = null;
+        for (int j = 0; j < inversores.size(); j++) {
+            if (inversores.get(j).getDni().equals(dni))
+                inversor = inversores.get(j);
+        }
+        return inversor;
+    }
 
     public void registrarInstrumento(String nombre, double precio, Tipo tipo) {
-        InstrumentoFinanciero i = buscarInstrumento(nombre);
-        if (i != null) {
+        InstrumentoFinanciero instrumento = buscarInstrumento(nombre);
+        if (instrumento != null) {
             throw new InstrumentoDuplicadoException("Error. Accion existente");
         } else {
             this.instrumentos.add(
@@ -35,12 +55,12 @@ public class Broker {
     }
 
     private InstrumentoFinanciero buscarInstrumento(String nombre) {
-        InstrumentoFinanciero i = null;
+        InstrumentoFinanciero instrumento = null;
         for (int j = 0; j < instrumentos.size(); j++) {
             if (instrumentos.get(j).getNombre().equals(nombre))
-                i = instrumentos.get(j);
+                instrumento = instrumentos.get(j);
         }
-        return i;
+        return instrumento;
     }
 
 
@@ -53,17 +73,17 @@ public class Broker {
     }
 
     public void modificar(String variable, String modificacion, String nombre) {
-        InstrumentoFinanciero i = this.buscarInstrumento(nombre);
-        if (i != null) {
+        InstrumentoFinanciero instrumento = this.buscarInstrumento(nombre);
+        if (instrumento != null) {
             switch (variable) {
                 case "1":
-                    i.setNombre(modificacion);
+                    instrumento.setNombre(modificacion);
                     break;
                 case "2":
                     if (modificacion.equals("1")) {
-                        i.setTipo(Tipo.ACCION);
+                        instrumento.setTipo(Tipo.ACCION);
                     } else if (modificacion.equals("2")) {
-                        i.setTipo(Tipo.BONO);
+                        instrumento.setTipo(Tipo.BONO);
                     } else {
                         throw new IllegalArgumentException("Error. Tipo incorrecto");
                     }
@@ -71,7 +91,7 @@ public class Broker {
                 case "3":
                     try {
                         double numero = Double.parseDouble(modificacion);
-                        i.setPrecio(numero);
+                        instrumento.setPrecio(numero);
                     } catch (NumberFormatException e) {
                         System.out.println("Error de formato: ingrese un número.");
                     }
@@ -83,12 +103,12 @@ public class Broker {
     }
 
     public void eliminar(String nombre) {
-        InstrumentoFinanciero i = instrumentos.stream()
+        InstrumentoFinanciero instrumento = instrumentos.stream()
                 .filter(e -> e.getNombre().equals(nombre))
                 .findFirst().orElse(null);
-        if (i == null) {
+        if (instrumento == null) {
             throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
         }
-        instrumentos.remove(i);
+        instrumentos.remove(instrumento);
     }
 }

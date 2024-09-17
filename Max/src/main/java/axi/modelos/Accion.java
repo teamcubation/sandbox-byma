@@ -1,7 +1,5 @@
 package axi.modelos;
 
-import axi.Tipo;
-
 public class Accion extends InstrumentoFinanciero {
 
 

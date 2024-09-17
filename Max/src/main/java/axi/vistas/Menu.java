@@ -1,7 +1,9 @@
 package axi.vistas;
 
 import axi.Broker;
-import axi.Tipo;
+import axi.excepciones.InstrumentoDuplicadoException;
+import axi.excepciones.InstrumentoNoEncontradoException;
+import axi.modelos.Tipo;
 
 import java.util.Scanner;
 
@@ -32,60 +34,32 @@ public class Menu {
         String operacion = scanner.nextLine();
         while (operacion.equals("1") || operacion.equals("2") || operacion.equals("3") ||
                 operacion.equals("4")) {
-            switch (operacion) {
-                case "1":
-                    try {
+            try {
+                switch (operacion) {
+                    case "1":
                         this.registrarInstrumento();
-                    } catch (ArithmeticException n) {
-                        System.out.println(n.getMessage());
-                    } catch (NullPointerException s) {
-                        System.out.println(s.getMessage());
-                    } catch (IllegalArgumentException l) {
-                        System.out.println(l.getMessage());
-                    } catch (Exception a) {
-                        System.out.println(a.getMessage());
-                    }
-
-                    break;
-                case "2":
-                    try {
+                        break;
+                    case "2":
                         this.eliminarInstrumento();
-                    } catch (ArithmeticException n) {
-                        System.out.println(n.getMessage());
-                    } catch (NullPointerException s) {
-                        System.out.println(s.getMessage());
-                    } catch (IllegalArgumentException l) {
-                        System.out.println(l.getMessage());
-                    } catch (Exception a) {
-                        System.out.println(a.getMessage());
-                    }
-                    break;
-                case "3":
-                    try {
+                        break;
+                    case "3":
                         this.consultarInstrumentos();
-                    } catch (ArithmeticException n) {
-                        System.out.println(n.getMessage());
-                    } catch (NullPointerException s) {
-                        System.out.println(s.getMessage());
-                    } catch (IllegalArgumentException l) {
-                        System.out.println(l.getMessage());
-                    } catch (Exception a) {
-                        System.out.println(a.getMessage());
-                    }
-                    break;
-                case "4":
-                    try {
+                        break;
+                    case "4":
                         this.modificarInstrumentos();
-                    } catch (ArithmeticException n) {
-                        System.out.println(n.getMessage());
-                    } catch (NullPointerException s) {
-                        System.out.println(s.getMessage());
-                    } catch (IllegalArgumentException l) {
-                        System.out.println(l.getMessage());
-                    } catch (Exception a) {
-                        System.out.println(a.getMessage());
-                    }
-                    break;
+                }
+            } catch (InstrumentoDuplicadoException e) {
+                System.out.println(e.getMessage());
+            } catch (InstrumentoNoEncontradoException i) {
+                System.out.println(i.getMessage());
+            } catch (NullPointerException e) {
+                System.out.println(e.getMessage());
+            } catch (ArithmeticException e) {
+                System.out.println(e.getMessage());
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
             System.out.println("Ingrese la operacion que desea hacer: " +
                     "1. Registrar instrumento " +
@@ -129,15 +103,14 @@ public class Menu {
 
     private void eliminarInstrumento() {
         System.out.println("ingrese el instrumento que desea eliminar");
-            broker.eliminar(scanner.next());
+        broker.eliminar(scanner.next());
     }
 
     private void registrarInstrumento() {
-        Tipo t = this.ingresarTipo();
+        Tipo tipo = this.ingresarTipo();
         String nombre = this.ingresarNombre();
         double precio = this.ingresarPrecio();
-        broker.registrarInstrumento(nombre, precio, t);
-
+        broker.registrarInstrumento(nombre, precio, tipo);
     }
 
     private double ingresarPrecio() {
@@ -152,18 +125,18 @@ public class Menu {
 
     private Tipo ingresarTipo() {
         System.out.println("ingrese que tipo de instrumento quiere ingresar: 1.Accion, 2.Bono");
-        String tipo = scanner.next();
-        Tipo t;
-        switch (tipo) {
+        String nombreTipo = scanner.next();
+        Tipo tipo;
+        switch (nombreTipo) {
             case "1":
-                t = Tipo.ACCION;
+                tipo = Tipo.ACCION;
                 break;
             case "2":
-                t = Tipo.BONO;
+                tipo = Tipo.BONO;
                 break;
             default:
-                t = null;
+                tipo = null;
         }
-        return t;
+        return tipo;
     }
 }

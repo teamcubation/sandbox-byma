@@ -1,7 +1,5 @@
 package axi.modelos;
 
-import axi.Tipo;
-
 import java.util.ArrayList;
 
 public abstract class InstrumentoFinanciero {
@@ -65,6 +63,16 @@ public abstract class InstrumentoFinanciero {
     public void notificar(double precio) {
         for (Inversor i : this.inversores) {
             i.actualizar(precio, this.getNombre());
+        }
+    }
+    public void suscribirse(Inversor inversor){
+        if (inversor != null){
+            this.inversores.add(inversor);
+        }
+    }
+    public void desuscribirse(Inversor inversor){
+        if (inversor != null){
+            this.inversores.remove(inversor);
         }
     }
 }
