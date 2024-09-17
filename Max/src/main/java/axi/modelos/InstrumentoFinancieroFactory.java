@@ -1,4 +1,6 @@
-package axi;
+package axi.modelos;
+
+import axi.Tipo;
 
 public class InstrumentoFinancieroFactory {
 

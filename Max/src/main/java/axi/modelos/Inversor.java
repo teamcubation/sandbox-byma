@@ -1,4 +1,6 @@
-package axi;
+package axi.modelos;
+
+import axi.Observer;
 
 import java.util.ArrayList;
 

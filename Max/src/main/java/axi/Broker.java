@@ -1,15 +1,20 @@
 package axi;
 
+import axi.excepciones.InstrumentoDuplicadoException;
+import axi.excepciones.InstrumentoNoEncontradoException;
+import axi.modelos.InstrumentoFinanciero;
+import axi.modelos.InstrumentoFinancieroFactory;
+
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class Broker {
+    final static String NAME = "AXI";
     private static Broker broker;
     private String name;
     private ArrayList<InstrumentoFinanciero> instrumentos;
 
     private Broker() {
-        this.name = "axi";
+        this.name = NAME;
         this.instrumentos = new ArrayList<>();
     }
 
@@ -22,7 +27,7 @@ public class Broker {
     public void registrarInstrumento(String nombre, double precio, Tipo tipo) {
         InstrumentoFinanciero i = buscarInstrumento(nombre);
         if (i != null) {
-            throw new IllegalArgumentException("Accion existente");
+            throw new InstrumentoDuplicadoException("Error. Accion existente");
         } else {
             this.instrumentos.add(
                     InstrumentoFinancieroFactory.nuevoInstrumento(nombre, precio, tipo));
@@ -82,7 +87,7 @@ public class Broker {
                 .filter(e -> e.getNombre().equals(nombre))
                 .findFirst().orElse(null);
         if (i == null) {
-            throw new NullPointerException("Error. Instrumento no encontrado");
+            throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
         }
         instrumentos.remove(i);
     }

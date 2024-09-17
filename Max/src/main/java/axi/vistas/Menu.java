@@ -1,6 +1,8 @@
-package axi;
+package axi.vistas;
 
-import java.security.spec.ECField;
+import axi.Broker;
+import axi.Tipo;
+
 import java.util.Scanner;
 
 public class Menu {
