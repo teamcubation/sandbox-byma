@@ -127,6 +127,10 @@ public class InstrumentoService {
         System.out.println("Tasa de interés actualizada exitosamente.");
     }
 
+    public void eliminarInstrumentoPorNombre(String nombreInstrumento) {
+        instrumentoRepository.eliminarInstrumentoPorNombre(nombreInstrumento);
+    }
+
     //////////////////////////
 
 }

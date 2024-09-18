@@ -68,9 +68,9 @@ public class GestorIntrumento {
                 case 3:
                     editarInstrumento();
                     break;
-                /*case 4:
-                    eliminarInstrumento();
-                    break;*/
+                case 4:
+                    eliminarInstrumentoPorNombre();
+                    break;
                 case 5:
                     continuar = false;
                     System.out.println("Gracias por usar el sistema. ¡Hasta luego!");
@@ -86,7 +86,7 @@ public class GestorIntrumento {
         try {
             instrumentoController.registrarInstrumento();
         } catch (Exception e) {
-            System.out.println("Ocurrio un error intente nuevamente " + e.getMessage());
+            System.out.println("Ocurrio un error intente nuevamente ");
         }
 
     }
@@ -150,25 +150,11 @@ public class GestorIntrumento {
     }
 
 
-
-    /*private void eliminar() {
+    private void eliminarInstrumentoPorNombre() {
         System.out.print("Ingrese el nombre del instrumento a eliminar: ");
-        String nombre = scanner.nextLine();
-        models.InstrumentoFinanciero instrumento = buscarInstrumento(nombre);
-        if (instrumento != null) {
-            instrumentos.remove(instrumento);
-            System.out.println("Instrumento eliminado exitosamente.");
-        } else {
-            System.out.println("Instrumento no encontrado.");
-        }
+        String nombreInstrumento = scanner.nextLine();
+
+        instrumentoController.eliminarInstrumentoPorNombre(nombreInstrumento);
     }
 
-    private models.InstrumentoFinanciero buscarInstrumento(String nombre) {
-        for (models.InstrumentoFinanciero instrumento : instrumentos) {
-            if (instrumento.getNombre().equalsIgnoreCase(nombre)) {
-                return instrumento;
-            }
-        }
-        return null;
-    }*/
 }

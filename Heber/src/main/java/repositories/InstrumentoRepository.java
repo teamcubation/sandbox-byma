@@ -1,5 +1,6 @@
 package repositories;
 
+import exceptions.InstrumentoNoEncontradoException;
 import models.InstrumentoFinanciero;
 
 import java.util.ArrayList;
@@ -29,6 +30,16 @@ public class InstrumentoRepository {
         } else {
             System.out.println("Instrumentos financieros registrados:");
             instrumentos.forEach(instrumento -> System.out.println(instrumento.getNombre()));
+        }
+    }
+
+    public void eliminarInstrumentoPorNombre(String nombreInstrumento) throws InstrumentoNoEncontradoException {
+        boolean eliminado = instrumentos.removeIf(instrumento -> instrumento.getNombre().equalsIgnoreCase(nombreInstrumento));
+
+        if (!eliminado) {
+            throw new InstrumentoNoEncontradoException("El instrumento con el nombre " + nombreInstrumento + " no se ha encontrado");
+        } else {
+            System.out.println("Instrumento con el nombre " + nombreInstrumento + " eliminado exitosamente.");
         }
     }
 }

@@ -19,7 +19,7 @@ public class InstrumentoController {
             instrumentoService.consultarInstrumentos();
         } catch (InstrumentoNoEncontradoException e) {
             System.out.println(e.getMessage());
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("ERROR: " + e.getMessage());
         }
 
@@ -46,4 +46,11 @@ public class InstrumentoController {
     }
 
 
+    public void eliminarInstrumentoPorNombre(String nombreInstrumento) {
+        try {
+            instrumentoService.eliminarInstrumentoPorNombre(nombreInstrumento);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

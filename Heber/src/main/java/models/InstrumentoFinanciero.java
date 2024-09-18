@@ -33,7 +33,7 @@ public abstract class InstrumentoFinanciero {
         this.precio = precio;
     }
 
-    public void modificarNombre(String nombre){
+    public void modificarNombre(String nombre) {
         setNombre(nombre);
     }
 
