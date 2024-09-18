@@ -29,16 +29,12 @@ public class GestorIntrumento {
     }
 
     // Método para iniciar la gestión
+    // Método para iniciar la gestión
     public void iniciarGestion() {
         boolean continuar = true;
 
         while (continuar) {
-            System.out.println("Seleccione una opción:");
-            System.out.println("1. Registrar Instrumento");
-            System.out.println("2. Consultar Acciones y Bonos");
-            System.out.println("3. Editar Acción o Bono");
-            System.out.println("4. Eliminar Acción o Bono");
-            System.out.println("5. Salir");
+            mostrarMenu();  // Utilizamos el método modularizado
 
             int opcion = -1; // Valor inicial fuera del rango válido
             boolean opcionValida = false;
@@ -82,6 +78,19 @@ public class GestorIntrumento {
         }
     }
 
+    // Modificar el menú usando StringBuilder para mejorar la legibilidad
+    private void mostrarMenu() {
+        StringBuilder menu = new StringBuilder();
+        menu.append("Seleccione una opción:\n")
+                .append("1. Registrar Instrumento\n")
+                .append("2. Consultar Acciones y Bonos\n")
+                .append("3. Editar Acción o Bono\n")
+                .append("4. Eliminar Acción o Bono\n")
+                .append("5. Salir\n");
+
+        System.out.println(menu);
+    }
+
     private void registrarInstrumento() {
         try {
             instrumentoController.registrarInstrumento();
@@ -117,6 +126,8 @@ public class GestorIntrumento {
                 System.out.println("3. Dividendo");
             } else if (instrumento instanceof Bono) {
                 System.out.println("3. Tasa de interés");
+            }else{
+               // throw new Exception("tiene que ser un bono o una accion");
             }
 
             int opcion = scanner.nextInt();

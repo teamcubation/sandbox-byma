@@ -32,4 +32,5 @@ public class Accion extends InstrumentoFinanciero {
     public void modificarDividendo(double nuevoDividendo) {
         setDividendo(nuevoDividendo);
     }
+
 }
