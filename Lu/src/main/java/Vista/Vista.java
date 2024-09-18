@@ -47,10 +47,6 @@ public class Vista {
         return Double.parseDouble(scanner.nextLine());
     }
 
-    public void mensaje(String mensaje) {
-        System.out.println(mensaje);
-    }
-
     public void consultarOpciones() {
         System.out.print("""
                 Selecciona la opción que queres realizar: \
@@ -83,8 +79,24 @@ public class Vista {
                 2. Precio"""+ "\n");
     }
 
+    public void mensajeRegistrarExito(InstrumentoFinanciero instrumentoFinanciero) {
+        System.out.println("\n-------- Se registro exitosamente el intrumento financiero: --------\n" + instrumentoFinanciero);
+    }
+
+    public void mensajeEditar(InstrumentoFinanciero instrumentoFinanciero) {
+        System.out.print("\n-------- El instrumento financiero a modificar es: --------\n" + instrumentoFinanciero);
+    }
+
+    public void mensajeEditarExito() {
+        System.out.print("\n-------- Instrumento modificado exitosamente --------\n");
+    }
+
+    public void mensajeEliminarExito(InstrumentoFinanciero instrumentoFinanciero) {
+        System.out.print("\n-------- Instrumento eliminado exitosamente: --------\n" + instrumentoFinanciero);
+    }
+
     public void salir() {
         scanner.close();
-        mensaje("¡Gracias por usar el gestor de instrumentos financieros!");
+        System.out.print("¡Gracias por usar el gestor de instrumentos financieros!");
     }
 }

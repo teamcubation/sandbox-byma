@@ -19,11 +19,11 @@ public class Controlador {
 
     private void registrar () throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
         InstrumentoFinanciero instrumentoFinanciero;
-        int instrumentoFinancieroTipo = vista.getTipo();
-        String nombre = vista.getNombre();
-        double precio = vista.getPrecio();
+        int instrumentoFinancieroTipo = getTipo();
+        String nombre = getNombre();
+        double precio = getPrecio();
         instrumentoFinanciero = modelo.registrar(nombre, precio, instrumentoFinancieroTipo);
-        vista.mensaje("\n-------- Se registro exitosamente el intrumento financiero: --------\n" + instrumentoFinanciero.toString());
+        vista.mensajeRegistrarExito(instrumentoFinanciero);
     }
 
     private void consultar() throws InstrumentoNoEncontradoException, OpcionInvalidaException {
@@ -31,11 +31,11 @@ public class Controlador {
         MenuConsultar opcionUsuario = MenuConsultar.opcionSeleccionada(vista.opcionUsuario());
         switch (opcionUsuario) {
             case CONSULTAR_POR_NOMBRE:
-                String nombre = vista.getNombre();
+                String nombre = getNombre();
                 InstrumentoFinanciero intrumentoFinanciero = modelo.consultar(nombre);
                 vista.consultar(intrumentoFinanciero);
                 break;
-            case CONSULTAR_TODOS:
+            case MenuConsultar.CONSULTAR_TODOS:
                 List<InstrumentoFinanciero> intrumentosFinancieros = modelo.consultar();
                 vista.consultar(intrumentosFinancieros);
                 break;
@@ -43,32 +43,41 @@ public class Controlador {
     }
 
     private void editar() throws InstrumentoNoEncontradoException, OpcionInvalidaException  {
-        String nombre = vista.getNombre();
+        String nombre = getNombre();
         InstrumentoFinanciero instrumentoFinanciero = modelo.consultar(nombre);
-        vista.mensaje("\n-------- El instrumento financiero a modificar es: --------\n");
-        vista.consultar(instrumentoFinanciero);
+        vista.mensajeEditar(instrumentoFinanciero);
         vista.editarOpciones();
         MenuEditar opcionUsuario = MenuEditar.opcionSeleccionada(vista.opcionUsuario());
 
         switch (opcionUsuario) {
             case EDITAR_NOMBRE:
-                vista.mensaje("-------- Modificar Nombre --------");
-                String nuevoNombre = vista.getNombre();
+                String nuevoNombre = getNombre();
                 instrumentoFinanciero.setNombre(nuevoNombre);
                 break;
             case EDITAR_PRECIO:
-                vista.mensaje("-------- Modificar Precio --------");
-                double nuevoPrecio = vista.getPrecio();
+                double nuevoPrecio = getPrecio();
                 instrumentoFinanciero.setPrecio(nuevoPrecio);
                 break;
         }
-        vista.mensaje("\n-------- Instrumento modificado exitosamente --------\n");
+        vista.mensajeEditarExito();
     }
 
     private void eliminar() throws InstrumentoNoEncontradoException {
-        String nombre = vista.getNombre();
+        String nombre = getNombre();
         InstrumentoFinanciero instrumentoFinanciero = modelo.eliminar(nombre);
-        vista.mensaje("\n-------- Instrumento eliminado exitosamente: --------\n" + instrumentoFinanciero.toString());
+        vista.mensajeEliminarExito(instrumentoFinanciero);
+    }
+
+    private double getPrecio() {
+        return vista.getPrecio();
+    }
+
+    private String getNombre() {
+        return vista.getNombre();
+    }
+
+    private int getTipo() {
+        return vista.getTipo();
     }
 
     public void gestionarInstrumentosFinancieros() {

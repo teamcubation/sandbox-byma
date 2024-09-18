@@ -1,6 +1,10 @@
 package Modelo;
 
-public abstract class InstrumentoFinanciero {
+import Observer.Notificador;
+
+import java.util.List;
+
+public abstract class InstrumentoFinanciero extends Notificador {
     private String nombre;
     private Double precio;
 
@@ -18,6 +22,7 @@ public abstract class InstrumentoFinanciero {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+        setEstado(this.precio, this);
     }
 
     @Override
