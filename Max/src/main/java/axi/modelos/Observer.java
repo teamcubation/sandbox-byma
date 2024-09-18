@@ -1,5 +1,5 @@
 package axi.modelos;
 
 public interface Observer {
-    void actualizar(double precio, String name);
+    void actualizar(InstrumentoFinanciero instrumento);
 }

@@ -1,5 +1,8 @@
 package axi.modelos;
 
+import axi.excepciones.InstrumentoDuplicadoException;
+import axi.excepciones.InstrumentoNoEncontradoException;
+
 import java.util.ArrayList;
 
 public class Inversor implements Observer {
@@ -27,21 +30,38 @@ public class Inversor implements Observer {
         this.dni = dni;
     }
 
-    public void suscribirse(InstrumentoFinanciero i) {
-        cartera.add(i);
+    public void suscribirse(InstrumentoFinanciero instrumento) {
+        if (tieneInstrumento(instrumento)){
+            throw new InstrumentoDuplicadoException("Error. Ya estas suscripto a este instrumento");
+        }
+        cartera.add(instrumento);
     }
 
-    public void desuscribirse(InstrumentoFinanciero i) {
-        cartera.remove(i);
+    public void desuscribirse(InstrumentoFinanciero instrumento) {
+        if (!tieneInstrumento(instrumento)){
+            throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
+        }
+        cartera.remove(instrumento);
+    }
+
+    private boolean tieneInstrumento(InstrumentoFinanciero instrumento){
+        return cartera.stream().anyMatch(i -> i.equals(instrumento));
     }
 
     @Override
-    public void actualizar(double precio, String name) {
+    public void actualizar(InstrumentoFinanciero instrumento) {
 
-        System.out.println("el precio del instrumento " + name + "cambio a " + precio);
+        System.out.println("el precio del instrumento " + instrumento.getNombre() + "cambio a "
+                + instrumento.getPrecio());
     }
 
     public String getDni() {
         return dni;
+    }
+
+    public void consultarInstrumentos() {
+        for (InstrumentoFinanciero instrumentoFinanciero: cartera){
+            System.out.println(instrumentoFinanciero);
+        }
     }
 }

@@ -1,5 +1,9 @@
 package axi.modelos;
 
+import axi.Broker;
+import axi.excepciones.InstrumentoNoEncontradoException;
+import axi.excepciones.InversorExistenteException;
+
 import java.util.ArrayList;
 
 public abstract class InstrumentoFinanciero {
@@ -56,23 +60,29 @@ public abstract class InstrumentoFinanciero {
             throw new IllegalArgumentException("El precio no puede ser menor a 0.");
         } else {
             this.precio = precio;
-            this.notificar(precio);
+            this.notificar();
         }
     }
 
-    public void notificar(double precio) {
-        for (Inversor i : this.inversores) {
-            i.actualizar(precio, this.getNombre());
-        }
+    public void notificar() {
+        Broker.notificarCambioDePrecio(inversores, this);
     }
     public void suscribirse(Inversor inversor){
-        if (inversor != null){
+        if (!tieneInversor(inversor)){
             this.inversores.add(inversor);
+            inversor.suscribirse(this);
+        } else {
+            throw new InversorExistenteException("Error. El inversor ya estaba suscripto");
         }
     }
     public void desuscribirse(Inversor inversor){
-        if (inversor != null){
+        if (tieneInversor(inversor)){
             this.inversores.remove(inversor);
-        }
+            inversor.desuscribirse(this);
+        } else
+            throw new InstrumentoNoEncontradoException("Error. inversor no encontrado");
+    }
+    private boolean tieneInversor(Inversor inversor){
+        return inversores.stream().anyMatch(i -> i.equals(inversor));
     }
 }
