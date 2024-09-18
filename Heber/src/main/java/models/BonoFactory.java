@@ -1,3 +1,5 @@
+package models;
+
 import java.util.Scanner;
 
 public class BonoFactory extends InstrumentoFactory {

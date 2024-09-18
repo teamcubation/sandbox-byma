@@ -1,10 +1,12 @@
+package models;
+
 public abstract class InstrumentoFinanciero {
     private static final String MSG_ERROR_NULO = "%s nulo o vacío";
     private static final String MSG_ERROR_PRECIO = "Precio debe ser mayor o igual a cero";
     private String nombre;
     private double precio;
 
-    public InstrumentoFinanciero(String nombre, double precio) throws  IllegalArgumentException {
+    public InstrumentoFinanciero(String nombre, double precio) throws IllegalArgumentException {
         setNombre(nombre);
         setPrecio(precio);
     }
@@ -13,7 +15,7 @@ public abstract class InstrumentoFinanciero {
         return nombre;
     }
 
-    private void setNombre(String nombre) throws  IllegalArgumentException{
+    private void setNombre(String nombre) throws IllegalArgumentException {
         if (nombre == null || nombre.isEmpty()) {
             throw new IllegalArgumentException(String.format(MSG_ERROR_NULO, "Nombre"));
         }
@@ -24,10 +26,18 @@ public abstract class InstrumentoFinanciero {
         return precio;
     }
 
-    private void setPrecio(double precio) throws  IllegalArgumentException{
+    private void setPrecio(double precio) throws IllegalArgumentException {
         if (precio < 0) {
             throw new IllegalArgumentException(MSG_ERROR_PRECIO);
         }
         this.precio = precio;
+    }
+
+    public void modificarNombre(String nombre){
+        setNombre(nombre);
+    }
+
+    public void modificarPrecio(double precio) {
+        setPrecio(precio);
     }
 }
