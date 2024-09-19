@@ -1,15 +1,16 @@
-package main.java.model.gestorInstrumentosFinancieros;
+package model.gestorInstrumentosFinancieros;
 
 import exceptions.InstrumentoDuplicadoException;
 import exceptions.InstrumentoNoEncontradoException;
-import main.java.model.exceptions.NoExisteEseTipoDeInstrumentoException;
-import main.java.model.instrumentoFinanciero.InstrumentoFinanciero;
-import main.java.model.instrumentoFinanciero.TipoInstrumentoFinanciero;
-import main.java.model.instrumentoFinanciero.factoryInstrumentos.AccionFactory;
-import main.java.model.instrumentoFinanciero.factoryInstrumentos.BonoFactory;
+import exceptions.NoExisteEseTipoDeInstrumentoException;
+import model.instrumentoFinanciero.InstrumentoFinanciero;
+import model.instrumentoFinanciero.TipoInstrumentoFinanciero;
+import model.instrumentoFinanciero.factoryInstrumentos.AccionFactory;
+import model.instrumentoFinanciero.factoryInstrumentos.BonoFactory;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 // SINGLETON
 public class GestorInstrumentosFinancieros {
@@ -31,6 +32,11 @@ public class GestorInstrumentosFinancieros {
         return this.instrumentosFinancieros;
     }
 
+    public String consultarInstrumentosFinancierosToString() {
+        String resultado = "";
+        return this.instrumentosFinancieros.stream().map(x -> x.toString()).collect(Collectors.joining(" \n"));
+    }
+
     public InstrumentoFinanciero consultarPorUnInstrumentoFinanciero(String nombre) throws InstrumentoNoEncontradoException {
         InstrumentoFinanciero instrumentoFinanciero = this.instrumentosFinancieros.stream().filter(x -> x.getNombre().equals(nombre)).findFirst().orElse(null);
         if (this.existeInstrumentoFinanciero(nombre)) {
@@ -38,6 +44,10 @@ public class GestorInstrumentosFinancieros {
         } else {
             throw new InstrumentoNoEncontradoException("El instrumento financiero no se encuentra en el sistema");
         }
+    }
+
+    public String consultarPorUnInstrumentoFinancieroToString(String nombre) throws InstrumentoNoEncontradoException {
+        return this.consultarPorUnInstrumentoFinanciero(nombre).toString();
     }
 
     public Boolean existeInstrumentoFinanciero(String nombre)  {
@@ -52,13 +62,14 @@ public class GestorInstrumentosFinancieros {
         }
     }
 
-    public void editarPrecioInstrumentoFinanciero(String nombre, double precioActual) {
+    public void editarPrecioInstrumentoFinanciero(String nombre, double precioActual) throws InstrumentoNoEncontradoException {
         if(this.existeInstrumentoFinanciero(nombre)) {
-            //InstrumentoFinanciero instrumentoFinanciero = this.consultarPorUnInstrumentoFinanciero(nombre);
-            //instrumentoFinanciero.setPrecio(precioActual);
-            // TODO: resolver catcheo de error
+            InstrumentoFinanciero instrumentoFinanciero = this.consultarPorUnInstrumentoFinanciero(nombre);
+            instrumentoFinanciero.setPrecio(precioActual);
         }
     }
+
+
 
     public void eliminarInstrumentoFinanciero(String nombre) throws InstrumentoNoEncontradoException {
         if(this.existeInstrumentoFinanciero(nombre)) {
@@ -86,9 +97,9 @@ public class GestorInstrumentosFinancieros {
                     throw new NoExisteEseTipoDeInstrumentoException("El tipo ingresado no corresponde a un tipo de instrumento conocido.");
             }
 
-            if (instrumentoFinanciero != null) {
-                this.instrumentosFinancieros.add(instrumentoFinanciero);
-            }
+//            if (instrumentoFinanciero != null) {
+//                this.instrumentosFinancieros.add(instrumentoFinanciero);
+//            }
         }
     }
 }
