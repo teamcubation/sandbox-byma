@@ -1,9 +1,9 @@
 package org.example.ejercicioGestionAccionesYBonos.repo;
 
-import org.example.ejercicioGestionAccionesYBonos.modelo.InstrumentoFinanciero;
 import org.example.ejercicioGestionAccionesYBonos.exception.InstrumentoDuplicadoException;
 import org.example.ejercicioGestionAccionesYBonos.exception.InstrumentoNoEncontradoException;
-import org.example.ejercicioGestionAccionesYBonos.util.TipoInstrumentoFinanciero;
+import org.example.ejercicioGestionAccionesYBonos.modelo.InstrumentoFinanciero;
+import org.example.ejercicioGestionAccionesYBonos.modelo.enumsModel.TipoInstrumentoFinanciero;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,20 +12,26 @@ import java.util.stream.Collectors;
 
 public class InstrumentoFinancieroRepositoryImp implements InstrumentoFinancieroRepository {
 
-    private ArrayList<InstrumentoFinanciero> listaDeInstrumentos;
-
     private static InstrumentoFinancieroRepositoryImp instancia;
+    private ArrayList<InstrumentoFinanciero> listaDeInstrumentos;
 
     private InstrumentoFinancieroRepositoryImp() {
         this.listaDeInstrumentos = new ArrayList<>();
     }
 
     public static InstrumentoFinancieroRepositoryImp getInstancia() {
-        if (instancia == null){
+        if (instancia == null) {
             return new InstrumentoFinancieroRepositoryImp();
         }
 
         return instancia;
+    }
+
+    private static InstrumentoFinanciero getInstrumentoFinanciero(double nuevoPrecio, String nombreInstrumento, InstrumentoFinanciero instrumentoFinanciero) {
+        if (instrumentoFinanciero.getNombre().equalsIgnoreCase(nombreInstrumento)) {
+            instrumentoFinanciero.setPrecio(nuevoPrecio);
+        }
+        return instrumentoFinanciero;
     }
 
     @Override
@@ -91,13 +97,6 @@ public class InstrumentoFinancieroRepositoryImp implements InstrumentoFinanciero
                     return getInstrumentoFinanciero(nuevoPrecio, nombreInstrumento, instrumentoFinanciero);
                 })
                 .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    private static InstrumentoFinanciero getInstrumentoFinanciero(double nuevoPrecio, String nombreInstrumento, InstrumentoFinanciero instrumentoFinanciero) {
-        if (instrumentoFinanciero.getNombre().equalsIgnoreCase(nombreInstrumento)) {
-            instrumentoFinanciero.setPrecio(nuevoPrecio);
-        }
-        return instrumentoFinanciero;
     }
 
     @Override

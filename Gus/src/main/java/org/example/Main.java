@@ -5,8 +5,8 @@ import org.example.ejercicioGestionAccionesYBonos.controller.InstrumentoFinancie
 import org.example.ejercicioGestionAccionesYBonos.modelo.Inversor;
 import org.example.ejercicioGestionAccionesYBonos.repo.InstrumentoFinancieroObservableImp;
 import org.example.ejercicioGestionAccionesYBonos.repo.InstrumentoFinancieroRepositoryImp;
-import org.example.ejercicioGestionAccionesYBonos.service.InstrumentoFinancieroObservableServicio;
 import org.example.ejercicioGestionAccionesYBonos.service.InstrumentoFinancieroServicio;
+import org.example.ejercicioGestionAccionesYBonos.service.NotificacionInstrumentoServicio;
 
 public class Main {
     public static void main(String[] args) {
@@ -28,7 +28,7 @@ public class Main {
         InstrumentoFinancieroObservableImp observableRepository = InstrumentoFinancieroObservableImp.getInstancia();
 
         InstrumentoFinancieroServicio servicio = InstrumentoFinancieroServicio.getInstancia(repository);
-        InstrumentoFinancieroObservableServicio servicioObservable = InstrumentoFinancieroObservableServicio.getInstancia(observableRepository);
+        NotificacionInstrumentoServicio servicioObservable = NotificacionInstrumentoServicio.getInstancia(observableRepository);
 
         InstrumentoFinancieroController controller = InstrumentoFinancieroController.getInstancia(servicio, servicioObservable);
 

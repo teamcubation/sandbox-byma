@@ -1,6 +1,6 @@
 package org.example.ejercicioGestionAccionesYBonos.modelo;
 
-import org.example.ejercicioGestionAccionesYBonos.util.TipoInstrumentoFinanciero;
+import org.example.ejercicioGestionAccionesYBonos.modelo.enumsModel.TipoInstrumentoFinanciero;
 
 public class Accion extends InstrumentoFinanciero {
 
@@ -10,6 +10,6 @@ public class Accion extends InstrumentoFinanciero {
 
     @Override
     public String mostrarInstrumento() {
-        return  "Nombre: " + this.getNombre() + " || Precio: $" + this.getPrecio() + " || Tipo: " + this.getTipo();
+        return "Nombre: " + this.getNombre() + " || Precio: $" + this.getPrecio() + " || Tipo: " + this.getTipo();
     }
 }

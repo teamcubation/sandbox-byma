@@ -1,6 +1,6 @@
 package org.example.ejercicioGestionAccionesYBonos.modelo;
 
-import org.example.ejercicioGestionAccionesYBonos.util.TipoInstrumentoFinanciero;
+import org.example.ejercicioGestionAccionesYBonos.modelo.enumsModel.TipoInstrumentoFinanciero;
 
 public abstract class InstrumentoFinanciero {
     //El nombre es unico para cada instrumento, ya sea bono o accion

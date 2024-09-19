@@ -4,19 +4,18 @@ import org.example.ejercicioGestionAccionesYBonos.modelo.InstrumentoFinanciero;
 import org.example.ejercicioGestionAccionesYBonos.repo.InstrumentoFinancieroObservableImp;
 import org.example.ejercicioGestionAccionesYBonos.repo.InstrumentoFinancieroObserver;
 
-public class InstrumentoFinancieroObservableServicio {
+public class NotificacionInstrumentoServicio {
 
+    private static NotificacionInstrumentoServicio instancia;
     private InstrumentoFinancieroObservableImp instrumentoFinancieroObservableImp;
 
-    private static InstrumentoFinancieroObservableServicio instancia;
-
-    public InstrumentoFinancieroObservableServicio(InstrumentoFinancieroObservableImp instrumentoFinancieroObservableImp) {
+    public NotificacionInstrumentoServicio(InstrumentoFinancieroObservableImp instrumentoFinancieroObservableImp) {
         this.instrumentoFinancieroObservableImp = instrumentoFinancieroObservableImp;
     }
 
-    public static InstrumentoFinancieroObservableServicio getInstancia(InstrumentoFinancieroObservableImp instrumentoFinancieroObservableImp) {
+    public static NotificacionInstrumentoServicio getInstancia(InstrumentoFinancieroObservableImp instrumentoFinancieroObservableImp) {
         if (instancia == null) {
-            return new InstrumentoFinancieroObservableServicio(instrumentoFinancieroObservableImp);
+            return new NotificacionInstrumentoServicio(instrumentoFinancieroObservableImp);
         }
 
         return instancia;
@@ -38,4 +37,4 @@ public class InstrumentoFinancieroObservableServicio {
     }
 
 
-    }
+}

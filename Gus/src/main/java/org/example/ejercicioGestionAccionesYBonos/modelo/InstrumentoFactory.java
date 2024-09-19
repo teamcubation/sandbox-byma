@@ -1,6 +1,6 @@
 package org.example.ejercicioGestionAccionesYBonos.modelo;
 
-import org.example.ejercicioGestionAccionesYBonos.util.TipoInstrumentoFinanciero;
+import org.example.ejercicioGestionAccionesYBonos.modelo.enumsModel.TipoInstrumentoFinanciero;
 
 public class InstrumentoFactory {
     public static InstrumentoFinanciero nuevoInstrumento(String nombre, double precio, TipoInstrumentoFinanciero tipo) {
