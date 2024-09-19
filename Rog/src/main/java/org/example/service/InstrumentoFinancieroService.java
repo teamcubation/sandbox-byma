@@ -38,7 +38,7 @@ public class InstrumentoFinancieroService implements IInstrumentoFinancieroServi
         }
         switch (atributo.toLowerCase()) {
             case "nombre":
-                instrumento.setNombre((String) nuevoValor);
+                instrumento.setNombre(nuevoValor);
                 break;
             case "precio":
                 instrumento.setPrecio(Double.parseDouble(nuevoValor.toString()));

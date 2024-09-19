@@ -1,6 +1,6 @@
 package org.example.model;
 
-import org.example.observer.IObserver;
+import org.example.service.IObserver;
 
 public class Inversor implements IObserver {
     private String nombre;

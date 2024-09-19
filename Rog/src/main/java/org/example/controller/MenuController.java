@@ -7,9 +7,14 @@ import org.example.model.Inversor;
 import org.example.service.InstrumentoFinancieroService;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuController {
+
+    public static final String ERROR_MSG_INPUT_MISMATCH = "Error: Ingrese un número válido.";
+    public static final String ERROR_MSG_INVALID_OPTION = "Opción no válida.";
+
     private final InstrumentoFinancieroService instrumentoFinancieroService = new InstrumentoFinancieroService();
     private final Scanner scanner = new Scanner(System.in);
 
@@ -48,10 +53,10 @@ public class MenuController {
                         salir = true;
                         break;
                     default:
-                        System.out.println("Opcion no valida.");
+                        System.out.println(ERROR_MSG_INVALID_OPTION);
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Error: Ingrese un numero valido.");
+                System.out.println(ERROR_MSG_INPUT_MISMATCH);
                 scanner.nextLine();
             } catch (RuntimeException e) {
                 System.out.println(e.getMessage());
@@ -97,13 +102,13 @@ public class MenuController {
         System.out.println("Tasa de interes (solo para Bonos)");
         String atributo = scanner.nextLine();
         System.out.print("Ingrese el nuevo valor para " + atributo + ": ");
-        String nuevoValorStr = scanner.nextLine();
+        String nuevoValor = scanner.nextLine();
 
         try{
-            instrumentoFinancieroService.editarInstrumento(nombre, atributo, nuevoValorStr);
+            instrumentoFinancieroService.editarInstrumento(nombre, atributo, nuevoValor);
             System.out.println("Instrumento editado correctamente.");
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("El valor ingresado no es un numero valido. Por favor, ingrese un valor numerico.");
+            throw new IllegalArgumentException(ERROR_MSG_INPUT_MISMATCH);
         } catch (InstrumentoNoEncontradoException | IllegalArgumentException e) {
             throw new RuntimeException("Error al editar el instrumento: " + e.getMessage());
         } catch (RuntimeException e) {
@@ -121,23 +126,31 @@ public class MenuController {
 
         try{
             if (opcion == 1) {
-                for (InstrumentoFinanciero instrumento : instrumentoFinancieroService.listarTodosLosInstrumentos()) {
-                    System.out.println(instrumento);
-                }
+                mostrarInstrumentoFinancieroList(instrumentoFinancieroService.listarTodosLosInstrumentos());
             } else if (opcion == 2) {
-                System.out.println("Ingrese el nombre del instrumento: ");
-                String nombre = scanner.nextLine();
-                InstrumentoFinanciero instrumento = instrumentoFinancieroService.buscarInstrumentoPorNombre(nombre);
-                if (instrumento != null) {
-                    System.out.println(instrumento);
-                } else {
-                    System.out.println("Instrumento no encontrado.");
-                }
+                mostrarInstrumentoFinanciero();
             } else {
-                System.out.println("Opción no válida.");
+                System.out.println(ERROR_MSG_INVALID_OPTION);
             }
         } catch (RuntimeException e) {
             System.out.println("Error al consultar los instrumentos: " + e.getMessage());
+        }
+    }
+
+    private void mostrarInstrumentoFinanciero() {
+        System.out.println("Ingrese el nombre del instrumento: ");
+        String nombre = scanner.nextLine();
+        InstrumentoFinanciero instrumento = instrumentoFinancieroService.buscarInstrumentoPorNombre(nombre);
+        if (instrumento != null) {
+            System.out.println(instrumento.toString());
+        } else {
+            System.out.println("Instrumento no encontrado.");
+        }
+    }
+
+    private void mostrarInstrumentoFinancieroList(List<InstrumentoFinanciero> instrumentoFinancieroList) {
+        for (InstrumentoFinanciero instrumento : instrumentoFinancieroList) {
+            System.out.println(instrumento.toString());
         }
     }
 

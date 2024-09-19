@@ -1,10 +1,10 @@
 package org.example.model;
 
-import org.example.observer.Observable;
+import org.example.service.NotificadorService;
 
-public abstract class InstrumentoFinanciero extends Observable {
+public abstract class InstrumentoFinanciero extends NotificadorService {
     private String nombre;
-    private Double precio;
+    private double precio;
     private String tipo;
 
     public InstrumentoFinanciero(String nombre, double precio, String tipo) {
