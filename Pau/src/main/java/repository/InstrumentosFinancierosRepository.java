@@ -25,12 +25,7 @@ public class InstrumentosFinancierosRepository {
     }
 
     public InstrumentoFinanciero consultarPorUnInstrumentoFinanciero(String nombre) throws InstrumentoNoEncontradoException {
-        InstrumentoFinanciero instrumentoFinanciero = this.instrumentosFinancieros.stream().filter(x -> x.getNombre().equals(nombre)).findFirst().orElse(null);
-        if (instrumentoFinanciero != null) {
-            return instrumentoFinanciero;
-        } else {
-            throw new InstrumentoNoEncontradoException("El instrumento financiero no se encuentra en el sistema");
-        }
+        return  this.instrumentosFinancieros.stream().filter(x -> x.getNombre().equals(nombre)).findFirst().orElse(null);
     }
 
     public boolean existeInstrumentoFinanciero(String nombre)  {
