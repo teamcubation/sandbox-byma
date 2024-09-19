@@ -8,19 +8,19 @@ import axi.modelos.InstrumentoFinancieroFactory;
 import axi.modelos.Inversor;
 import axi.modelos.Tipo;
 import axi.repositories.InstrumenroFinancieroRepository;
+import axi.repositories.InversorRepository;
 
 import java.util.ArrayList;
 
 public class Broker {
-    final static String NAME = "AXI";
     private static Broker broker;
     private String name;
-    private ArrayList<Inversor> inversores;
+    private InversorRepository inversores;
     private InstrumenroFinancieroRepository instrumentos;
 
     private Broker() {
-        this.name = NAME;
-        this.inversores = new ArrayList<>();
+        this.name = "AXI";
+        this.inversores = InversorRepository.getInversorRepository();
         this.instrumentos = InstrumenroFinancieroRepository.getInstrumentoFinancieroRepository();
     }
 
@@ -95,29 +95,18 @@ public class Broker {
 //    -----------------------------------------------------------------------------
 
     public void registrarInversor(String nombre, String dni) {
-        Inversor inversor = this.buscarInversor(dni);
+        Inversor inversor = inversores.buscarInversor(dni);
         if (inversor != null)
             throw new RuntimeException("Error. Inversor existente");
-        inversor = new Inversor(nombre, dni);
-        this.inversores.add(inversor);
+        inversores.registrarInversor(new Inversor(nombre, dni));
     }
-
-    private Inversor buscarInversor(String dni) {
-        Inversor inversorADevolver = null;
-        for (Inversor inversor : inversores) {
-            if (inversor.getDni().equals(dni))
-                inversorADevolver = inversor;
-        }
-        return inversorADevolver;
-    }
-
 
     public void metodoParaSuscribirse(String dni, String nombreInstrumento) {
         InstrumentoFinanciero instrumento = instrumentos.buscarInstrumento(nombreInstrumento);
         if (instrumento == null) {
             throw new InversorNoEncontradoException("Error. instrumento no existente");
         }
-        Inversor inversor = this.buscarInversor(dni);
+        Inversor inversor = inversores.buscarInversor(dni);
         if (inversor == null) {
             throw new InversorNoEncontradoException("Error. inversor no existente");
         }
@@ -129,7 +118,7 @@ public class Broker {
         if (instrumento == null) {
             throw new InversorNoEncontradoException("Error. instrumento no existente");
         }
-        Inversor inversor = this.buscarInversor(dni);
+        Inversor inversor = inversores.buscarInversor(dni);
         if (inversor == null) {
             throw new InversorNoEncontradoException("Error. inversor no existente");
         }
@@ -144,7 +133,7 @@ public class Broker {
     }
 
     public void consultarInstrumentosDeInversor(String dni) {
-        Inversor inversor = this.buscarInversor(dni);
+        Inversor inversor = inversores.buscarInversor(dni);
         if (inversor == null) {
             throw new InversorNoEncontradoException("Error. Inversor no encontrado");
         }
