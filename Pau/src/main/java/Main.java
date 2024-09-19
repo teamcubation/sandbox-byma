@@ -1,4 +1,5 @@
 import controller.Menu;
+import model.Inversor;
 
 public class Main {
     public static void main(String[] args) {
@@ -6,7 +7,7 @@ public class Main {
         System.out.println("Primer commit");
 
         Menu menu = new Menu();
-
         menu.desplegarMenu();
+
     }
 }

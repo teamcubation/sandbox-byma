@@ -1,5 +1,7 @@
 package model.instrumentoFinanciero;
 
+import service.observer.Notificador;
+
 import java.time.LocalDate;
 
 public abstract class InstrumentoFinanciero {
@@ -22,6 +24,7 @@ public abstract class InstrumentoFinanciero {
     // Aca imagino que se podría usar una expresion regular para validar el nombre del instrumento
     public void setNombre(String nombre) {
         this.nombre = nombre;
+        Notificador.getInstance().notificarInteresados(this,"nombre");
     }
 
     public void setPrecio(Double precio) throws IllegalArgumentException{
@@ -29,6 +32,7 @@ public abstract class InstrumentoFinanciero {
             throw new IllegalArgumentException("El precio no puede ser negativo");
         }
         this.precio = precio;
+        Notificador.getInstance().notificarInteresados(this,"precio");
     }
 
     public LocalDate getFechaDeEmision() {

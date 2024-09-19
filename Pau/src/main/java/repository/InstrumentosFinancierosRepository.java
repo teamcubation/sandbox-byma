@@ -28,10 +28,6 @@ public class InstrumentosFinancierosRepository {
         return  this.instrumentosFinancieros.stream().filter(x -> x.getNombre().equals(nombre)).findFirst().orElse(null);
     }
 
-    public boolean existeInstrumentoFinanciero(String nombre)  {
-        return this.instrumentosFinancieros.stream().anyMatch(x -> x.getNombre().equals(nombre));
-    }
-
     public InstrumentoFinanciero crearInstrumentoFinanciero(InstrumentoFinanciero instrumentoFinanciero) {
         this.instrumentosFinancieros.add(instrumentoFinanciero);
         return instrumentoFinanciero;
