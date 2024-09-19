@@ -50,8 +50,7 @@ public class Inversor implements Observer {
 
     @Override
     public void actualizar(InstrumentoFinanciero instrumento) {
-
-        System.out.println("el precio del instrumento " + instrumento.getNombre() + "cambio a "
+        System.out.println("el precio del instrumento " + instrumento.getNombre() + " cambio a "
                 + instrumento.getPrecio());
     }
 
@@ -63,5 +62,13 @@ public class Inversor implements Observer {
         for (InstrumentoFinanciero instrumentoFinanciero: cartera){
             System.out.println(instrumentoFinanciero);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Inversor{" +
+                "nombre='" + nombre + '\'' +
+                ", dni='" + dni + '\'' +
+                '}';
     }
 }

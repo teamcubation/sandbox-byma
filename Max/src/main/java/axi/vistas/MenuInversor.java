@@ -5,7 +5,6 @@ import axi.excepciones.InstrumentoDuplicadoException;
 import axi.excepciones.InstrumentoNoEncontradoException;
 import axi.excepciones.InversorExistenteException;
 import axi.excepciones.InversorNoEncontradoException;
-
 import java.util.Scanner;
 
 public class MenuInversor {

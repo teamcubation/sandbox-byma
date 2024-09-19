@@ -7,6 +7,7 @@ import axi.modelos.InstrumentoFinanciero;
 import axi.modelos.InstrumentoFinancieroFactory;
 import axi.modelos.Inversor;
 import axi.modelos.Tipo;
+import axi.repositories.InstrumenroFinancieroRepository;
 
 import java.util.ArrayList;
 
@@ -14,13 +15,13 @@ public class Broker {
     final static String NAME = "AXI";
     private static Broker broker;
     private String name;
-    private ArrayList<InstrumentoFinanciero> instrumentos;
     private ArrayList<Inversor> inversores;
+    private InstrumenroFinancieroRepository instrumentos;
 
     private Broker() {
         this.name = NAME;
-        this.instrumentos = new ArrayList<>();
         this.inversores = new ArrayList<>();
+        this.instrumentos = InstrumenroFinancieroRepository.getInstrumentoFinancieroRepository();
     }
 
     public static Broker getBroker() {
@@ -30,35 +31,23 @@ public class Broker {
     }
 
 
-
     public void registrarInstrumento(String nombre, double precio, Tipo tipo) {
-        InstrumentoFinanciero instrumento = buscarInstrumento(nombre);
+        InstrumentoFinanciero instrumento = instrumentos.buscarInstrumento(nombre);
         if (instrumento != null) {
             throw new InstrumentoDuplicadoException("Error. Accion existente");
         } else {
-            this.instrumentos.add(
+            this.instrumentos.registrarInstrumento(
                     InstrumentoFinancieroFactory.nuevoInstrumento(nombre, precio, tipo));
         }
     }
 
-    private InstrumentoFinanciero buscarInstrumento(String nombre) {
-        InstrumentoFinanciero instrumentoADevolver = null;
-        for (InstrumentoFinanciero instrumento : instrumentos) {
-            if (instrumento.getNombre().equals(nombre))
-                instrumentoADevolver = instrumento;
-        }
-        return instrumentoADevolver;
-    }
-
 
     public void consultarTodosLosInstrumentos() {
-        for (InstrumentoFinanciero instrumento : instrumentos) {
-            System.out.println(instrumento);
-        }
+        instrumentos.consultarTodosLosInstrumentos();
     }
 
-    public void modificar(String variable, String modificacion, String nombre) {
-        InstrumentoFinanciero instrumento = this.buscarInstrumento(nombre);
+    public void modificarInstrumento(String variable, String modificacion, String nombre) {
+        InstrumentoFinanciero instrumento = instrumentos.buscarInstrumento(nombre);
         if (instrumento != null) {
             switch (variable) {
                 case "1":
@@ -84,18 +73,26 @@ public class Broker {
                 default:
                     throw new IllegalArgumentException("Error. los campos no coinciden");
             }
+            instrumentos.modificarInstrumento(instrumento);
+        } else {
+            throw new InversorNoEncontradoException("Error. Instrumento no encontrado");
         }
     }
 
-    public void eliminar(String nombre) {
-        InstrumentoFinanciero instrumento = instrumentos.stream()
-                .filter(e -> e.getNombre().equals(nombre))
-                .findFirst().orElse(null);
+    public void eliminarInstrumento(String nombre) {
+        InstrumentoFinanciero instrumento = instrumentos.buscarInstrumento(nombre);
         if (instrumento == null) {
             throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
         }
-        instrumentos.remove(instrumento);
+
+        instrumentos.eliminarInstrumento(instrumento);
     }
+
+
+//    -----------------------------------------------------------------------------
+//    -----------------------------------------------------------------------------
+//    -----------------------------------------------------------------------------
+//    -----------------------------------------------------------------------------
 
     public void registrarInversor(String nombre, String dni) {
         Inversor inversor = this.buscarInversor(dni);
@@ -115,26 +112,25 @@ public class Broker {
     }
 
 
-
     public void metodoParaSuscribirse(String dni, String nombreInstrumento) {
-        InstrumentoFinanciero instrumento = this.buscarInstrumento(nombreInstrumento);
-        if (instrumento == null){
+        InstrumentoFinanciero instrumento = instrumentos.buscarInstrumento(nombreInstrumento);
+        if (instrumento == null) {
             throw new InversorNoEncontradoException("Error. instrumento no existente");
         }
         Inversor inversor = this.buscarInversor(dni);
-        if (inversor == null){
+        if (inversor == null) {
             throw new InversorNoEncontradoException("Error. inversor no existente");
         }
         instrumento.suscribirse(inversor);
     }
 
     public void metodoParaDesuscribirse(String dni, String nombreInstrumento) {
-        InstrumentoFinanciero instrumento = this.buscarInstrumento(nombreInstrumento);
-        if (instrumento == null){
+        InstrumentoFinanciero instrumento = instrumentos.buscarInstrumento(nombreInstrumento);
+        if (instrumento == null) {
             throw new InversorNoEncontradoException("Error. instrumento no existente");
         }
         Inversor inversor = this.buscarInversor(dni);
-        if (inversor == null){
+        if (inversor == null) {
             throw new InversorNoEncontradoException("Error. inversor no existente");
         }
         instrumento.desuscribirse(inversor);
@@ -149,7 +145,7 @@ public class Broker {
 
     public void consultarInstrumentosDeInversor(String dni) {
         Inversor inversor = this.buscarInversor(dni);
-        if (inversor == null){
+        if (inversor == null) {
             throw new InversorNoEncontradoException("Error. Inversor no encontrado");
         }
         inversor.consultarInstrumentos();

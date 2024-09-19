@@ -98,7 +98,7 @@ public class MenuInstrumento {
         }
         System.out.println("ingrese el nombre del instrumento que desea modificar");
         nombre = scanner.next();
-        broker.modificar(variable, modificacion, nombre);
+        broker.modificarInstrumento(variable, modificacion, nombre);
     }
 
     private void consultarInstrumentos() {
@@ -107,7 +107,7 @@ public class MenuInstrumento {
 
     private void eliminarInstrumento() {
         System.out.println("ingrese el instrumento que desea eliminar");
-        broker.eliminar(scanner.next());
+        broker.eliminarInstrumento(scanner.next());
     }
 
     private void registrarInstrumento() {
