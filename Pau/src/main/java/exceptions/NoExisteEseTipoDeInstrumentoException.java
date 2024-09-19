@@ -1,4 +1,4 @@
-package model.exceptions;
+package exceptions;
 
 public class NoExisteEseTipoDeInstrumentoException extends Exception {
     public NoExisteEseTipoDeInstrumentoException(String message) {

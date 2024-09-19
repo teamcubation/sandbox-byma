@@ -1,4 +1,4 @@
-package main.java.model.instrumentoFinanciero;
+package model.instrumentoFinanciero;
 
 public class Bono extends InstrumentoFinanciero {
 

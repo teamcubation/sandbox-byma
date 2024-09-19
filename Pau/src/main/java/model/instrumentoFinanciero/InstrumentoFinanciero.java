@@ -1,11 +1,12 @@
-package main.java.model.instrumentoFinanciero;
+package model.instrumentoFinanciero;
 
 import java.time.LocalDate;
 
 public abstract class InstrumentoFinanciero {
     private String nombre;
-    private Double precio;
+    private double precio;
     private LocalDate fechaDeEmision;
+    private TipoInstrumentoFinanciero tipoInstrumentoFinanciero;
 
     public InstrumentoFinanciero() {
     }
@@ -36,5 +37,18 @@ public abstract class InstrumentoFinanciero {
 
     public void setFechaDeEmision(LocalDate fechaDeEmision) {
         this.fechaDeEmision = fechaDeEmision;
+    }
+
+    public TipoInstrumentoFinanciero getTipoInstrumentoFinanciero() {
+        return tipoInstrumentoFinanciero;
+    }
+
+    public void setTipoInstrumentoFinanciero(TipoInstrumentoFinanciero tipoInstrumentoFinanciero) {
+        this.tipoInstrumentoFinanciero = tipoInstrumentoFinanciero;
+    }
+
+    @Override
+    public String toString() {
+        return "InstrumentoFinanciero{" + "nombre=" + this.getNombre() + ", precio=" + this.getPrecio() + ", fechaDeEmision=" + this.getFechaDeEmision().toString() + ", tipoInstrumentoFinanciero=" + this.getTipoInstrumentoFinanciero().toString() + '}';
     }
 }

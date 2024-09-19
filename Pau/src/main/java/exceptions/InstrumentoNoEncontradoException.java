@@ -1,4 +1,4 @@
-package model.exceptions;
+package exceptions;
 
 public class InstrumentoNoEncontradoException extends Exception {
     public InstrumentoNoEncontradoException() {

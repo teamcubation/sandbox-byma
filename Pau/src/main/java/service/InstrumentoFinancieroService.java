@@ -1,4 +1,4 @@
-package model.gestorInstrumentosFinancieros;
+package service;
 
 import exceptions.InstrumentoDuplicadoException;
 import exceptions.InstrumentoNoEncontradoException;
@@ -7,81 +7,60 @@ import model.instrumentoFinanciero.InstrumentoFinanciero;
 import model.instrumentoFinanciero.TipoInstrumentoFinanciero;
 import model.instrumentoFinanciero.factoryInstrumentos.AccionFactory;
 import model.instrumentoFinanciero.factoryInstrumentos.BonoFactory;
+import repository.InstrumentosFinancierosRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 // SINGLETON
-public class GestorInstrumentosFinancieros {
-    private static GestorInstrumentosFinancieros instance;
-    ArrayList<InstrumentoFinanciero> instrumentosFinancieros;
+public class InstrumentoFinancieroService {
+    private static InstrumentoFinancieroService instance;
+    private InstrumentosFinancierosRepository instrumentosFinancierosRepository;
 
-    private GestorInstrumentosFinancieros() {
-        instrumentosFinancieros = new ArrayList<InstrumentoFinanciero>();
+    private InstrumentoFinancieroService() {
+        instrumentosFinancierosRepository = InstrumentosFinancierosRepository.getInstance();
     }
 
-    public static GestorInstrumentosFinancieros getInstance() {
+    public static InstrumentoFinancieroService getInstance() {
         if (instance == null) {
-            instance = new GestorInstrumentosFinancieros();
+            instance = new InstrumentoFinancieroService();
         }
         return instance;
     }
 
     public ArrayList<InstrumentoFinanciero> consultarInstrumentosFinancieros() {
-        return this.instrumentosFinancieros;
+        return instrumentosFinancierosRepository.consultarInstrumentosFinancieros();
     }
 
     public String consultarInstrumentosFinancierosToString() {
         String resultado = "";
-        return this.instrumentosFinancieros.stream().map(x -> x.toString()).collect(Collectors.joining(" \n"));
+        return this.consultarInstrumentosFinancieros().stream().map(x -> x.toString()).collect(Collectors.joining(" \n"));
     }
 
     public InstrumentoFinanciero consultarPorUnInstrumentoFinanciero(String nombre) throws InstrumentoNoEncontradoException {
-        InstrumentoFinanciero instrumentoFinanciero = this.instrumentosFinancieros.stream().filter(x -> x.getNombre().equals(nombre)).findFirst().orElse(null);
-        if (this.existeInstrumentoFinanciero(nombre)) {
-            return instrumentoFinanciero;
-        } else {
-            throw new InstrumentoNoEncontradoException("El instrumento financiero no se encuentra en el sistema");
-        }
+        return this.instrumentosFinancierosRepository.consultarPorUnInstrumentoFinanciero(nombre);
     }
 
     public String consultarPorUnInstrumentoFinancieroToString(String nombre) throws InstrumentoNoEncontradoException {
         return this.consultarPorUnInstrumentoFinanciero(nombre).toString();
     }
 
-    public Boolean existeInstrumentoFinanciero(String nombre)  {
-        Boolean existeInstrumentoFinanciero = this.instrumentosFinancieros.stream().filter(x -> x.getNombre().equals(nombre)).findFirst().orElse(null) != null;
-        return existeInstrumentoFinanciero;
+    public InstrumentoFinanciero editarNombreInstrumentoFinanciero(String nombreActual,String nombreNuevo) throws InstrumentoNoEncontradoException {
+        return this.instrumentosFinancierosRepository.editarNombreInstrumento(nombreActual, nombreNuevo);
     }
 
-    public void editarNombreInstrumentoFinanciero(String nombreActual, String nombreNuevo) throws InstrumentoNoEncontradoException {
-        if(this.existeInstrumentoFinanciero(nombreActual)) {
-            InstrumentoFinanciero instrumentoFinanciero = this.consultarPorUnInstrumentoFinanciero(nombreActual);
-            instrumentoFinanciero.setNombre(nombreNuevo);
-        }
+    public InstrumentoFinanciero editarPrecioInstrumentoFinanciero(String nombreActual, double precioNuevo) throws InstrumentoNoEncontradoException {
+        return this.instrumentosFinancierosRepository.editarPrecioInstrumento(nombreActual, precioNuevo);
     }
-
-    public void editarPrecioInstrumentoFinanciero(String nombre, double precioActual) throws InstrumentoNoEncontradoException {
-        if(this.existeInstrumentoFinanciero(nombre)) {
-            InstrumentoFinanciero instrumentoFinanciero = this.consultarPorUnInstrumentoFinanciero(nombre);
-            instrumentoFinanciero.setPrecio(precioActual);
-        }
-    }
-
-
 
     public void eliminarInstrumentoFinanciero(String nombre) throws InstrumentoNoEncontradoException {
-        if(this.existeInstrumentoFinanciero(nombre)) {
-            this.instrumentosFinancieros.removeIf(x -> x.getNombre().equals(nombre));
-        } else {
-            throw new InstrumentoNoEncontradoException("No se puede eliminar el instrumento financiero porque no existe en el sistema");
-        }
+        this.instrumentosFinancierosRepository.eliminarInstrumentoFinanciero(nombre);
     }
 
-    public void registrarInstrumentoFinanciero(String nombre, Double precio, LocalDate fechaDeEmision, TipoInstrumentoFinanciero tipo) throws InstrumentoDuplicadoException, NoExisteEseTipoDeInstrumentoException {
-        InstrumentoFinanciero instrumentoFinanciero = null;
-        if(this.existeInstrumentoFinanciero(nombre)) {
+    public InstrumentoFinanciero registrarInstrumentoFinanciero(String nombre, Double precio, LocalDate fechaDeEmision, TipoInstrumentoFinanciero tipo) throws InstrumentoDuplicadoException, NoExisteEseTipoDeInstrumentoException, InstrumentoNoEncontradoException {
+        InstrumentoFinanciero instrumentoFinanciero = this.instrumentosFinancierosRepository.consultarPorUnInstrumentoFinanciero(nombre);
+        if(instrumentoFinanciero != null) {
             throw new InstrumentoDuplicadoException("No se puede registrar el instrumento debido a que este ya fue registrado en el sistema con anterioridad.");
         } else {
             switch (tipo) {
@@ -97,9 +76,7 @@ public class GestorInstrumentosFinancieros {
                     throw new NoExisteEseTipoDeInstrumentoException("El tipo ingresado no corresponde a un tipo de instrumento conocido.");
             }
 
-//            if (instrumentoFinanciero != null) {
-//                this.instrumentosFinancieros.add(instrumentoFinanciero);
-//            }
+            return this.instrumentosFinancierosRepository.crearInstrumentoFinanciero(instrumentoFinanciero);
         }
     }
 }
