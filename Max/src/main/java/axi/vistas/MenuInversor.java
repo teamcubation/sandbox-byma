@@ -1,10 +1,11 @@
 package axi.vistas;
 
-import axi.Broker;
 import axi.excepciones.InstrumentoDuplicadoException;
 import axi.excepciones.InstrumentoNoEncontradoException;
 import axi.excepciones.InversorExistenteException;
 import axi.excepciones.InversorNoEncontradoException;
+import axi.servicios.InversorService;
+
 import java.util.Scanner;
 
 public class MenuInversor {
@@ -16,12 +17,12 @@ public class MenuInversor {
             "5. Modificar inversor" +
             "6. Consultar instrumentos";
     private static MenuInversor menu;
-    private Broker broker;
     Scanner scanner;
+    private InversorService inversorService;
 
     private MenuInversor() {
-        this.broker = Broker.getBroker();
         this.scanner = new Scanner(System.in);
+        this.inversorService = InversorService.getInversorService();
     }
 
     public static MenuInversor getMenu() {
@@ -80,7 +81,7 @@ public class MenuInversor {
 
     private void ConsultarInstrumentos() {
         System.out.println("ingrese su dni");
-        broker.consultarInstrumentosDeInversor(scanner.next());
+        inversorService.consultarInstrumentosDeInversor(scanner.next());
     }
 
     public void registrarInversor() {
@@ -88,7 +89,7 @@ public class MenuInversor {
         String nombre = scanner.next();
         System.out.println("ingrese su dni");
         String dni = scanner.next();
-        broker.registrarInversor(nombre, dni);
+        inversorService.registrarInversor(nombre, dni);
     }
 
     public void eliminarInversor() {
@@ -104,7 +105,7 @@ public class MenuInversor {
         String dni = scanner.next();
         System.out.println("ingrese el nombre del instrumento que desea agregar");
         String nombre = scanner.next();
-        broker.metodoParaSuscribirse(dni, nombre);
+        inversorService.metodoParaSuscribirse(dni, nombre);
     }
 
     public void eliminarInstrumentoDeCartera() {
@@ -112,7 +113,7 @@ public class MenuInversor {
         String dni = scanner.next();
         System.out.println("ingrese el nombre del instrumento que desea eliminar");
         String nombre = scanner.next();
-        broker.metodoParaDesuscribirse(dni, nombre);
+        inversorService.metodoParaDesuscribirse(dni, nombre);
     }
 
 

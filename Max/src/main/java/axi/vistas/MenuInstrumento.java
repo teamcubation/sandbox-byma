@@ -1,6 +1,6 @@
 package axi.vistas;
 
-import axi.Broker;
+import axi.servicios.InstrumentoService;
 import axi.excepciones.InstrumentoDuplicadoException;
 import axi.excepciones.InstrumentoNoEncontradoException;
 import axi.modelos.Tipo;
@@ -9,12 +9,12 @@ import java.util.Scanner;
 
 public class MenuInstrumento {
     private static MenuInstrumento menuInstrumento;
-    private Broker broker;
+    private InstrumentoService instrumentoService;
     Scanner scanner;
 
 
     private MenuInstrumento() {
-        this.broker = Broker.getBroker();
+        this.instrumentoService = InstrumentoService.getBroker();
         this.scanner = new Scanner(System.in);
     }
 
@@ -98,23 +98,23 @@ public class MenuInstrumento {
         }
         System.out.println("ingrese el nombre del instrumento que desea modificar");
         nombre = scanner.next();
-        broker.modificarInstrumento(variable, modificacion, nombre);
+        instrumentoService.modificarInstrumento(variable, modificacion, nombre);
     }
 
     private void consultarInstrumentos() {
-        broker.consultarTodosLosInstrumentos();
+        instrumentoService.consultarTodosLosInstrumentos();
     }
 
     private void eliminarInstrumento() {
         System.out.println("ingrese el instrumento que desea eliminar");
-        broker.eliminarInstrumento(scanner.next());
+        instrumentoService.eliminarInstrumento(scanner.next());
     }
 
     private void registrarInstrumento() {
         Tipo tipo = this.ingresarTipo();
         String nombre = this.ingresarNombre();
         double precio = this.ingresarPrecio();
-        broker.registrarInstrumento(nombre, precio, tipo);
+        instrumentoService.registrarInstrumento(nombre, precio, tipo);
     }
 
     private double ingresarPrecio() {
