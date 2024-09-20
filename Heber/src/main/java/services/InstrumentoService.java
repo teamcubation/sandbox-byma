@@ -1,5 +1,7 @@
 package services;
 
+import contenedorBoot.ContenedorBoot;
+import controllers.InstrumentoController;
 import exceptions.InstrumentoDuplicadoException;
 import exceptions.InstrumentoNoEncontradoException;
 import models.*;
@@ -9,85 +11,48 @@ import java.util.Scanner;
 
 public class InstrumentoService {
 
-    Scanner scanner = new Scanner(System.in);
-    InstrumentoRepository instrumentoRepository = new InstrumentoRepository();
+    private static InstrumentoService instrumentoService;
+    private Scanner scanner = new Scanner(System.in);
+    private InstrumentoRepository instrumentoRepository = InstrumentoRepository.getInstance();
 
-    public void registrarInstrumento() throws IllegalArgumentException {
+    private InstrumentoService() {
+        this.scanner = new Scanner(System.in);
+    }
 
-        // Selección del tipo de instrumento
-        InstrumentoFactory factory = seleccionarFabricaInstrumento();
-
-        if (factory != null) {
-            try {
-                InstrumentoFinanciero instrumento = factory.crearInstrumento(instrumentoRepository);
-                instrumentoRepository.registrarInstrumento(instrumento);
-                System.out.println("Instrumento registrado con éxito.");
-            } catch (InstrumentoDuplicadoException e) {
-                System.out.println(e.getMessage());
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        } else {
-            System.out.println("No se pudo registrar el instrumento.");
+    // Método para obtener la única instancia
+    public static InstrumentoService getInstance() {
+        if (instrumentoService == null) {
+            instrumentoService = new InstrumentoService();
         }
+        return instrumentoService;
     }
 
-    private InstrumentoFactory seleccionarFabricaInstrumento() {
-        System.out.println("Seleccione el tipo de instrumento a registrar:");
-        System.out.println("1. Acción");
-        System.out.println("2. Bono");
-
-        int opcion = scanner.nextInt();
-        scanner.nextLine();  // Limpiar el buffer
-
-        switch (opcion) {
-            case 1:
-                return new AccionFactory();  // Devuelve la fábrica de Acciones
-            case 2:
-                return new BonoFactory();  // Devuelve la fábrica de Bonos
-            default:
-                System.out.println("Opción no válida. Inténtelo de nuevo.");
-                return null;
+    public InstrumentoFinanciero buscarInstrumentoPorNombre(String nombreInstrumento) throws InstrumentoNoEncontradoException {
+        InstrumentoFinanciero instrumento = instrumentoRepository.buscarInstrumentoPorNombre(nombreInstrumento);
+        if (instrumento == null) {
+            throw new InstrumentoNoEncontradoException("El instrumento con nombre " + nombreInstrumento + " no se encuentra registrado");
         }
+        return instrumento;
     }
 
-    public InstrumentoFinanciero buscarInstrumentoPorNombre(String nombreInstrumento) {
-        return instrumentoRepository.buscarInstrumentoPorNombre(nombreInstrumento);
-    }
-
-    public void consultarInstrumentos() throws InstrumentoNoEncontradoException {
-
+    public void consultarInstrumentos(){
         instrumentoRepository.consultarInstrumentos();
-
-        System.out.println("¿Desea consultar los detalles de un instrumento específico? (si/no)");
-
-
-        String respuesta = scanner.nextLine();
-        System.out.println("Respuesta leída: '" + respuesta + "'"); //ARREGLAR BUG
-
-        if (respuesta.equalsIgnoreCase("si")) {
-            System.out.print("Introduce el nombre del instrumento: ");
-            String nombreInstrumento = scanner.nextLine();
-            InstrumentoFinanciero instrumento = buscarInstrumentoPorNombre(nombreInstrumento);
-
-            if (instrumento != null) {
-                System.out.println("Detalles del instrumento:");
-                System.out.println(instrumento);
-            } else {
-                throw new InstrumentoNoEncontradoException("El instrumento con nombre " + nombreInstrumento + " no se encuentra registrado");
-            }
-        } else {
-            System.out.println("Consulta finalizada.");
-        }
-
-
     }
 
+    public void verificarDuplicado(String nombreInstrumento) {
+        if(instrumentoRepository.verificarInstrumentoDuplicado(nombreInstrumento)){
+            throw new InstrumentoDuplicadoException("El instrumento con nombre " + nombreInstrumento + " ya se encuentra registrado");
+        }
+    }
+
+    public void registrarInstrumento(InstrumentoFinanciero instrumento) {
+        instrumentoRepository.registrarInstrumento(instrumento);
+    }
 
 
     //EDICION DE INSTRUMENTOS
 
-    public void modificarNombre(InstrumentoFinanciero instrumento) {
+    /*public void modificarNombre(InstrumentoFinanciero instrumento) {
         System.out.print("Introduce el nuevo nombre: ");
         String nuevoNombre = scanner.nextLine();
         instrumento.modificarNombre(nuevoNombre);
@@ -130,7 +95,7 @@ public class InstrumentoService {
     public void eliminarInstrumentoPorNombre(String nombreInstrumento) {
         instrumentoRepository.eliminarInstrumentoPorNombre(nombreInstrumento);
     }
-
+    */
     //////////////////////////
 
 }

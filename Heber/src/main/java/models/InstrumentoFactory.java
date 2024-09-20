@@ -3,35 +3,36 @@ package models;
 import exceptions.InstrumentoDuplicadoException;
 import repositories.InstrumentoRepository;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public abstract class InstrumentoFactory {
     private static Scanner scanner = new Scanner(System.in);
 
     // Método para crear el instrumento sin preguntar por el tipo (ya se conoce) recibo el repository por parametro porque si creo otro aca se pierden los datos ya que seria otra instancia
-    public InstrumentoFinanciero crearInstrumento(InstrumentoRepository instrumentoRepository) throws InstrumentoDuplicadoException {
-        System.out.print("Ingrese el nombre del Instrumento: ");
-        String nombre = scanner.nextLine();
+    public InstrumentoFinanciero crearInstrumento(String nombreInstrumento) throws InstrumentoDuplicadoException {
 
-        InstrumentoFinanciero instrumentoEncontrado = buscarInstrumentoPorNombre(instrumentoRepository, nombre);
+        // no se si esta bien pedir el precio aca o deberia pedirlo en el metodo del controller en el que estoy enviando el nombre
+        double precio = 0;
+        boolean precioValido = false;
 
-        if (instrumentoEncontrado != null) {
-            throw new InstrumentoDuplicadoException("El instrumento con el nombre que ha intentado ingresar ya esta registrado");
+        //agrego validacion por si el usuario ingresa un string cuando se espera un numero
+        while (!precioValido) {
+            try {
+                System.out.print("Ingrese el precio del Instrumento: ");
+                precio = scanner.nextDouble();
+                scanner.nextLine();  // Limpiar el buffer
+                precioValido = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada no válida. Por favor, ingrese un número.");
+                scanner.nextLine();  // Limpiar el buffer después del error
+            }
         }
 
-        System.out.print("Ingrese el precio del Instrumento: ");
-        double precio = scanner.nextDouble();
-        scanner.nextLine();  // Limpiar el buffer
-
         // Llamar al método concreto de la subclase
-        return crearInstrumentoConcreto(nombre, precio);
-    }
-
-    //
-    private InstrumentoFinanciero buscarInstrumentoPorNombre(InstrumentoRepository instrumentoRepository, String nombre) {
-        return instrumentoRepository.buscarInstrumentoPorNombre(nombre);
+        return crearInstrumentoConcreto(nombreInstrumento, precio);
     }
 
     // Método abstracto para que las subclases implementen la creación del instrumento
-    public abstract InstrumentoFinanciero crearInstrumentoConcreto(String nombre, double precio);
+    public abstract InstrumentoFinanciero crearInstrumentoConcreto(String nombreInstrumento, double precio);
 }

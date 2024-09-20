@@ -1,4 +1,4 @@
-package app;
+/*package app;
 
 import controllers.InstrumentoController;
 import exceptions.InstrumentoNoEncontradoException;
@@ -14,7 +14,6 @@ import java.util.Scanner;
 public class GestorIntrumento {
     private static GestorIntrumento gestor;
     private Scanner scanner;
-    private InstrumentoController instrumentoController = new InstrumentoController();
 
     private GestorIntrumento() {
         this.scanner = new Scanner(System.in);
@@ -172,4 +171,4 @@ public class GestorIntrumento {
         instrumentoController.eliminarInstrumentoPorNombre(nombreInstrumento);
     }
 
-}
+}*/

@@ -1,13 +1,14 @@
-import app.GestorIntrumento;
-import models.Accion;
-import models.Inversor;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import contenedorBoot.ContenedorBoot;
+import controllers.InstrumentoController;
+import repositories.InstrumentoRepository;
+import services.InstrumentoService;
+
+
 public class Main {
     public static void main(String[] args) {
 
-        GestorIntrumento gestor = GestorIntrumento.getInstance();
-        gestor.iniciarGestion();
+        InstrumentoController instrumentoController = InstrumentoController.getInstance();
+        instrumentoController.iniciarGestion();
     }
 }

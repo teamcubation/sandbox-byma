@@ -1,15 +1,24 @@
 package repositories;
 
+import exceptions.InstrumentoDuplicadoException;
 import exceptions.InstrumentoNoEncontradoException;
 import models.InstrumentoFinanciero;
 
 import java.util.ArrayList;
 
 public class InstrumentoRepository {
+    private static InstrumentoRepository instrumentoRepository;
     private ArrayList<InstrumentoFinanciero> instrumentos;
 
-    public InstrumentoRepository() {
+    private InstrumentoRepository() {
         this.instrumentos = new ArrayList<>();
+    }
+
+    public static InstrumentoRepository getInstance() {
+        if (instrumentoRepository == null) {
+            instrumentoRepository = new InstrumentoRepository();
+        }
+        return instrumentoRepository;
     }
 
     public void registrarInstrumento(InstrumentoFinanciero instrumentoFinanciero) {
@@ -24,6 +33,12 @@ public class InstrumentoRepository {
                 .orElse(null);
     }
 
+    public boolean verificarInstrumentoDuplicado(String nombre) throws InstrumentoDuplicadoException {
+        boolean duplicado = instrumentos.stream()
+                .anyMatch(instrumento -> instrumento.getNombre().equalsIgnoreCase(nombre));
+        return duplicado;
+    }
+
     public void consultarInstrumentos() {
         if (instrumentos.isEmpty()) {
             System.out.println("No hay instrumentos financieros registrados.");
@@ -33,7 +48,7 @@ public class InstrumentoRepository {
         }
     }
 
-    public void eliminarInstrumentoPorNombre(String nombreInstrumento) throws InstrumentoNoEncontradoException {
+    /*public void eliminarInstrumentoPorNombre(String nombreInstrumento) throws InstrumentoNoEncontradoException {
         boolean eliminado = instrumentos.removeIf(instrumento -> instrumento.getNombre().equalsIgnoreCase(nombreInstrumento));
 
         if (!eliminado) {
@@ -41,6 +56,6 @@ public class InstrumentoRepository {
         } else {
             System.out.println("Instrumento con el nombre " + nombreInstrumento + " eliminado exitosamente.");
         }
-    }
+    }*/
 }
 
