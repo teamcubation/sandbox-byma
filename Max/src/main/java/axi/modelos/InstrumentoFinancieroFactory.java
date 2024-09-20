@@ -12,7 +12,7 @@ public class InstrumentoFinancieroFactory {
                 i = new Bono(nombre, precio);
                 break;
             default:
-                i = null;
+                throw new IllegalArgumentException("Error. Tipo invalido");
         }
         return i;
     }

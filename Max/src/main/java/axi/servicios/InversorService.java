@@ -39,4 +39,28 @@ public class InversorService {
         }
         inversor.consultarInstrumentos();
     }
+    public void eliminarInversor(String dni) {
+        Inversor inversor = inversoresRepository.buscarInversor(dni);
+        if (inversor == null) {
+            throw new InversorNoEncontradoException("Error. Inversor no encontrado");
+        }
+        inversoresRepository.borrarInversor(inversor);
+    }
+
+    public void modificarInversor(String variable, String modificacion, String dni) {
+        Inversor inversor = inversoresRepository.buscarInversor(dni);
+        if (inversor == null) {
+            throw new InversorNoEncontradoException("Error. Inversor no encontrado");
+        }
+        switch (variable) {
+            case "1":
+                inversor.setNombre(modificacion);
+                break;
+            case "2":
+                inversor.setDni(modificacion);
+                break;
+            default:
+                throw new IllegalArgumentException("Error. los campos no coinciden");
+        }
+    }
 }

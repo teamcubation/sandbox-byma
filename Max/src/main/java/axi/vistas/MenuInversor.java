@@ -85,11 +85,19 @@ public class MenuInversor {
     }
 
     public void eliminarInversor() {
-
+        System.out.println("ingrese su dni");
+        inversorService.eliminarInversor(scanner.next());
     }
 
     public void modificarInversor() {
-
+        System.out.println("ingrese su dni");
+        String dni = scanner.next();
+        System.out.println("ingrese que desea modificar: " +
+                " 1. Nombre" +
+                " 2. Dni");
+        String variable = scanner.next();
+        System.out.println("ingrese el nuevo valor");
+        String modificacion = scanner.next();
+        inversorService.modificarInversor(variable, modificacion, dni);
     }
-
 }
