@@ -1,9 +1,9 @@
-package axi.vistas;
+package consoleApp.vistas;
 
-import axi.servicios.InstrumentoService;
-import axi.excepciones.InstrumentoDuplicadoException;
-import axi.excepciones.InstrumentoNoEncontradoException;
-import axi.modelos.Tipo;
+import consoleApp.servicios.InstrumentoService;
+import consoleApp.excepciones.InstrumentoDuplicadoException;
+import consoleApp.excepciones.InstrumentoNoEncontradoException;
+import consoleApp.modelos.Tipo;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

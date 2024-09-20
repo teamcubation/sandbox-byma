@@ -1,4 +1,4 @@
-package axi.modelos;
+package consoleApp.modelos;
 
 public class InstrumentoFinancieroFactory {
 

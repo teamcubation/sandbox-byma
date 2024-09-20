@@ -1,7 +1,6 @@
-package axi;
+package consoleApp;
 
-import axi.vistas.Menu;
-import axi.vistas.MenuInstrumento;
+import consoleApp.vistas.Menu;
 
 public class Main {
     public static void main(String[] args) {

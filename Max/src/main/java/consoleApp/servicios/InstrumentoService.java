@@ -1,12 +1,12 @@
-package axi.servicios;
+package consoleApp.servicios;
 
-import axi.excepciones.InstrumentoDuplicadoException;
-import axi.excepciones.InstrumentoNoEncontradoException;
-import axi.excepciones.InversorNoEncontradoException;
-import axi.modelos.InstrumentoFinanciero;
-import axi.modelos.InstrumentoFinancieroFactory;
-import axi.modelos.Tipo;
-import axi.repositories.InstrumenroFinancieroRepository;
+import consoleApp.excepciones.InstrumentoDuplicadoException;
+import consoleApp.excepciones.InstrumentoNoEncontradoException;
+import consoleApp.excepciones.InversorNoEncontradoException;
+import consoleApp.modelos.InstrumentoFinanciero;
+import consoleApp.modelos.InstrumentoFinancieroFactory;
+import consoleApp.modelos.Tipo;
+import consoleApp.repositories.InstrumenroFinancieroRepository;
 
 public class InstrumentoService {
     private static InstrumentoService instrumentoService;

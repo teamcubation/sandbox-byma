@@ -1,8 +1,8 @@
-package axi.modelos;
+package consoleApp.modelos;
 
-import axi.excepciones.InstrumentoNoEncontradoException;
-import axi.excepciones.InversorExistenteException;
-import axi.servicios.ObserverService;
+import consoleApp.excepciones.InstrumentoNoEncontradoException;
+import consoleApp.excepciones.InversorExistenteException;
+import consoleApp.servicios.ObserverService;
 
 import java.util.ArrayList;
 

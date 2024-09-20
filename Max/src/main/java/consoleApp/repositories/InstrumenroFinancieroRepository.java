@@ -1,6 +1,6 @@
-package axi.repositories;
+package consoleApp.repositories;
 
-import axi.modelos.InstrumentoFinanciero;
+import consoleApp.modelos.InstrumentoFinanciero;
 
 import java.util.ArrayList;
 

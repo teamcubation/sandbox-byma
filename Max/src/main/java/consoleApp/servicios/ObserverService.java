@@ -1,10 +1,10 @@
-package axi.servicios;
+package consoleApp.servicios;
 
-import axi.excepciones.InversorNoEncontradoException;
-import axi.modelos.InstrumentoFinanciero;
-import axi.modelos.Inversor;
-import axi.repositories.InstrumenroFinancieroRepository;
-import axi.repositories.InversorRepository;
+import consoleApp.excepciones.InversorNoEncontradoException;
+import consoleApp.modelos.InstrumentoFinanciero;
+import consoleApp.modelos.Inversor;
+import consoleApp.repositories.InstrumenroFinancieroRepository;
+import consoleApp.repositories.InversorRepository;
 
 import java.util.ArrayList;
 

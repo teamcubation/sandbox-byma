@@ -1,7 +1,7 @@
-package axi.modelos;
+package consoleApp.modelos;
 
-import axi.excepciones.InstrumentoDuplicadoException;
-import axi.excepciones.InstrumentoNoEncontradoException;
+import consoleApp.excepciones.InstrumentoDuplicadoException;
+import consoleApp.excepciones.InstrumentoNoEncontradoException;
 
 import java.util.ArrayList;
 

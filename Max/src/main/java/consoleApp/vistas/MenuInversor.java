@@ -1,10 +1,10 @@
-package axi.vistas;
+package consoleApp.vistas;
 
-import axi.excepciones.InstrumentoDuplicadoException;
-import axi.excepciones.InstrumentoNoEncontradoException;
-import axi.excepciones.InversorExistenteException;
-import axi.excepciones.InversorNoEncontradoException;
-import axi.servicios.InversorService;
+import consoleApp.excepciones.InstrumentoDuplicadoException;
+import consoleApp.excepciones.InstrumentoNoEncontradoException;
+import consoleApp.excepciones.InversorExistenteException;
+import consoleApp.excepciones.InversorNoEncontradoException;
+import consoleApp.servicios.InversorService;
 
 import java.util.Scanner;
 

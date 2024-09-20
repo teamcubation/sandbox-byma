@@ -1,4 +1,4 @@
-package axi.excepciones;
+package consoleApp.excepciones;
 
 public class InversorExistenteException extends RuntimeException {
     public InversorExistenteException(String message) {

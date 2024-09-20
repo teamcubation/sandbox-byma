@@ -1,4 +1,4 @@
-package axi.vistas;
+package consoleApp.vistas;
 
 import java.util.Scanner;
 

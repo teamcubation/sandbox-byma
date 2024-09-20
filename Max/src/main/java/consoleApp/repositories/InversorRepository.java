@@ -1,6 +1,6 @@
-package axi.repositories;
+package consoleApp.repositories;
 
-import axi.modelos.Inversor;
+import consoleApp.modelos.Inversor;
 
 import java.util.ArrayList;
 
