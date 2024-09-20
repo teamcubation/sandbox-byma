@@ -1,13 +1,11 @@
-import Controlador.Controlador;
-import Vista.*;
-import Modelo.*;
+import controlador.Controlador;
+import vista.*;
 
 public class Main {
     public static void main(String[] args) {
         Vista vista = new Vista();
-        Modelo modelo = new Modelo();
 
-        Controlador controlador = new Controlador(modelo, vista);
+        Controlador controlador = new Controlador(vista);
         controlador.gestionarInstrumentosFinancieros();
     }
 }

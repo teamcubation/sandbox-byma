@@ -1,12 +1,10 @@
-package Modelo;
+package modelo;
 
-import Observer.Notificador;
-
-import java.util.List;
+import service.observer.Notificador;
 
 public abstract class InstrumentoFinanciero extends Notificador {
     private String nombre;
-    private Double precio;
+    private double precio;
 
     public String getNombre() {
         return nombre;

@@ -1,19 +1,28 @@
-package Modelo;
+package repository;
 
-import Excepciones.InstrumentoDuplicadoException;
-import Excepciones.InstrumentoNoEncontradoException;
-import Excepciones.OpcionInvalidaException;
-import Modelo.Factory.InstrumentoFinancieroFactory;
-import Modelo.Singleton.Singleton;
+import excepciones.InstrumentoDuplicadoException;
+import excepciones.InstrumentoNoEncontradoException;
+import excepciones.OpcionInvalidaException;
+import repository.factory.InstrumentoFinancieroFactory;
+import modelo.InstrumentoFinanciero;
+import repository.singleton.Singleton;
 
 import java.util.List;
 import java.util.Optional;
 
-public class Modelo {
-    private final List<InstrumentoFinanciero> instrumentosFinancieros;
+public class InstrumentoFinancieroRepository {
+    private static InstrumentoFinancieroRepository InstrumentoFinancieroRepository;
+    List<InstrumentoFinanciero> instrumentosFinancieros;
 
-    public Modelo() {
-        this.instrumentosFinancieros = Singleton.getInstancia();
+    private InstrumentoFinancieroRepository() {
+        instrumentosFinancieros = Singleton.getInstancia();
+    }
+
+    public static InstrumentoFinancieroRepository obtenerInstancia() {
+        if (InstrumentoFinancieroRepository == null) {
+            InstrumentoFinancieroRepository = new InstrumentoFinancieroRepository();
+        }
+        return InstrumentoFinancieroRepository;
     }
 
     public Optional<InstrumentoFinanciero> buscarInstrumentoFinanciero(String nombre) {

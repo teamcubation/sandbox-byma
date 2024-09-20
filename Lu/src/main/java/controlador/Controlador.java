@@ -1,20 +1,23 @@
-package Controlador;
-import Enums.*;
-import Excepciones.InstrumentoDuplicadoException;
-import Excepciones.InstrumentoNoEncontradoException;
-import Excepciones.OpcionInvalidaException;
-import Vista.*;
-import Modelo.*;
+package controlador;
+import controlador.enums.MenuConsultar;
+import controlador.enums.MenuEditar;
+import controlador.enums.MenuOpciones;
+import excepciones.InstrumentoDuplicadoException;
+import excepciones.InstrumentoNoEncontradoException;
+import excepciones.OpcionInvalidaException;
+import service.*;
+import modelo.*;
+import vista.Vista;
 
 import java.util.List;
 
 public class Controlador {
-    private final Modelo modelo;
     private final Vista vista;
+    private final InstrumentoFinancieroService instrumentoFinancieroService;
 
-    public Controlador(Modelo modelo, Vista vista) {
-        this.modelo = modelo;
+    public Controlador(Vista vista) {
         this.vista = vista;
+        this.instrumentoFinancieroService = InstrumentoFinancieroService.obtenerInstancia();
     }
 
     private void registrar () throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
@@ -22,7 +25,7 @@ public class Controlador {
         int instrumentoFinancieroTipo = getTipo();
         String nombre = getNombre();
         double precio = getPrecio();
-        instrumentoFinanciero = modelo.registrar(nombre, precio, instrumentoFinancieroTipo);
+        instrumentoFinanciero = instrumentoFinancieroService.registrar(nombre, precio, instrumentoFinancieroTipo);
         vista.mensajeRegistrarExito(instrumentoFinanciero);
     }
 
@@ -32,11 +35,11 @@ public class Controlador {
         switch (opcionUsuario) {
             case CONSULTAR_POR_NOMBRE:
                 String nombre = getNombre();
-                InstrumentoFinanciero intrumentoFinanciero = modelo.consultar(nombre);
+                InstrumentoFinanciero intrumentoFinanciero = instrumentoFinancieroService.consultar(nombre);
                 vista.consultar(intrumentoFinanciero);
                 break;
             case MenuConsultar.CONSULTAR_TODOS:
-                List<InstrumentoFinanciero> intrumentosFinancieros = modelo.consultar();
+                List<InstrumentoFinanciero> intrumentosFinancieros = instrumentoFinancieroService.consultar();
                 vista.consultar(intrumentosFinancieros);
                 break;
         }
@@ -44,7 +47,7 @@ public class Controlador {
 
     private void editar() throws InstrumentoNoEncontradoException, OpcionInvalidaException  {
         String nombre = getNombre();
-        InstrumentoFinanciero instrumentoFinanciero = modelo.consultar(nombre);
+        InstrumentoFinanciero instrumentoFinanciero = instrumentoFinancieroService.consultar(nombre);
         vista.mensajeEditar(instrumentoFinanciero);
         vista.editarOpciones();
         MenuEditar opcionUsuario = MenuEditar.opcionSeleccionada(vista.opcionUsuario());
@@ -64,7 +67,7 @@ public class Controlador {
 
     private void eliminar() throws InstrumentoNoEncontradoException {
         String nombre = getNombre();
-        InstrumentoFinanciero instrumentoFinanciero = modelo.eliminar(nombre);
+        InstrumentoFinanciero instrumentoFinanciero = instrumentoFinancieroService.eliminar(nombre);
         vista.mensajeEliminarExito(instrumentoFinanciero);
     }
 

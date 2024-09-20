@@ -1,6 +1,6 @@
-package Enums;
+package controlador.enums;
 
-import Excepciones.OpcionInvalidaException;
+import excepciones.OpcionInvalidaException;
 
 public enum MenuConsultar {
     CONSULTAR_POR_NOMBRE(1),

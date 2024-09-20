@@ -1,6 +1,6 @@
-package Modelo.Singleton;
+package repository.singleton;
 
-import Modelo.InstrumentoFinanciero;
+import modelo.InstrumentoFinanciero;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,9 +1,9 @@
-package Modelo.Factory;
+package repository.factory;
 
-import Enums.TiposInstrumentosFinancieros;
-import Modelo.Accion;
-import Modelo.Bono;
-import Modelo.InstrumentoFinanciero;
+import repository.factory.enums.TiposInstrumentosFinancieros;
+import modelo.Accion;
+import modelo.Bono;
+import modelo.InstrumentoFinanciero;
 
 public class InstrumentoFinancieroFactory  {
     public static InstrumentoFinanciero crearInstrumentoFinanciero(int tipo) {

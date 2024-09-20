@@ -1,6 +1,6 @@
-package Enums;
+package repository.factory.enums;
 
-import Excepciones.OpcionInvalidaException;
+import excepciones.OpcionInvalidaException;
 
 public enum TiposInstrumentosFinancieros {
     BONO(1),

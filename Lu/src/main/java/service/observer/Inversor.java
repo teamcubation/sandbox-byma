@@ -1,6 +1,6 @@
-package Observer;
+package service.observer;
 
-import Modelo.InstrumentoFinanciero;
+import modelo.InstrumentoFinanciero;
 
 public class Inversor implements Observer {
 

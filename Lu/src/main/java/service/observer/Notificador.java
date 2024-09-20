@@ -1,6 +1,6 @@
-package Observer;
+package service.observer;
 
-import Modelo.InstrumentoFinanciero;
+import modelo.InstrumentoFinanciero;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
-package Vista;
+package vista;
 
-import Modelo.InstrumentoFinanciero;
+import modelo.InstrumentoFinanciero;
 
 import java.util.List;
 import java.util.Scanner;

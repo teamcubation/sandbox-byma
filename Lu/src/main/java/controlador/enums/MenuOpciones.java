@@ -1,14 +1,17 @@
-package Enums;
+package controlador.enums;
 
-import Excepciones.OpcionInvalidaException;
+import excepciones.OpcionInvalidaException;
 
-public enum MenuEditar {
-    EDITAR_NOMBRE(1),
-    EDITAR_PRECIO(2);
+public enum MenuOpciones {
+    REGISTRAR(1),
+    CONSULTAR(2),
+    EDITAR(3),
+    ELIMINAR(4),
+    SALIR(5);
 
     private final int opcion;
 
-    MenuEditar(int opcion) {
+    MenuOpciones(int opcion) {
         this.opcion = opcion;
     }
 
@@ -16,8 +19,8 @@ public enum MenuEditar {
         return opcion;
     }
 
-    public static MenuEditar opcionSeleccionada(int opcionUsuario) {
-        for (MenuEditar opcion : MenuEditar.values()) {
+    public static MenuOpciones opcionSeleccionada(int opcionUsuario) {
+        for (MenuOpciones opcion : MenuOpciones.values()) {
             if (opcion.getOpcion() == opcionUsuario) {
                 return opcion;
             }
