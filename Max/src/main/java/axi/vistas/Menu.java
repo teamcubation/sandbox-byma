@@ -3,7 +3,8 @@ package axi.vistas;
 import java.util.Scanner;
 
 public class Menu {
-
+    final static String MSG_MENU = "ingrese en que menu desea operar:" +
+            "\n1. Menu instrumentos\n2. Menu inversor\n3. Menu observer";
     private static Menu menu;
     private MenuInversor menuInversor;
     private MenuInstrumento menuInstrumento;
@@ -26,7 +27,7 @@ public class Menu {
 
 
     public void abrirMenu() {
-        System.out.println("ingrese en que menu desea operar: 1. Menu instrumentos  2. Menu inversor  3.Menu observer");
+        System.out.println(MSG_MENU);
         String opcion = scanner.next();
         while (opcion.equals("1") || opcion.equals("2")|| opcion.equals("3")) {
             switch (opcion) {
@@ -40,7 +41,7 @@ public class Menu {
                     menuObserver.abrirMenu();
                     break;
             }
-            System.out.println("ingrese en que menu desea operar: 1. Menu instrumentos  2. Menu inversor  3.Menu observer");
+            System.out.println(MSG_MENU);
             opcion = scanner.next();
         }
     }

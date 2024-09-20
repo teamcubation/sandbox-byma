@@ -9,7 +9,9 @@ import axi.servicios.ObserverService;
 import java.util.Scanner;
 
 public class MenuObserver {
-
+    final static String MSG_MENU_OBSERVER = "Ingrese la operacion que desea hacer: " +
+            "\n1. Agregar instumento a mi cartera " +
+            "\n2. Eliminar instrumento de mi cartera ";
     private static MenuObserver menuObserver;
     private ObserverService observerService;
     Scanner scanner;
@@ -26,9 +28,7 @@ public class MenuObserver {
     }
 
     public void abrirMenu() {
-        System.out.println("Ingrese la operacion que desea hacer: " +
-                "1. Agregar instumento a mi cartera " +
-                "2. Eliminar instrumento de mi cartera ");
+        System.out.println(MSG_MENU_OBSERVER);
         String operacion = scanner.nextLine();
         while (operacion.equals("1") || operacion.equals("2")) {
             try {
@@ -57,9 +57,7 @@ public class MenuObserver {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-            System.out.println("Ingrese la operacion que desea hacer: " +
-                    "1. Agregar instumento a mi cartera " +
-                    "2. Eliminar instrumento de mi cartera ");
+            System.out.println(MSG_MENU_OBSERVER);
             operacion = scanner.next();
         }
     }

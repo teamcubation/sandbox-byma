@@ -10,10 +10,10 @@ import java.util.Scanner;
 
 public class MenuInversor {
     final static String MSG_MENU_INVERSOR = "Ingrese la operacion que desea hacer: " +
-            "1. Registrar inversor " +
-            "2. Eliminar inversor " +
-            "3. Modificar inversor" +
-            "4. Consultar instrumentos";
+            "\n1. Registrar inversor " +
+            "\n2. Eliminar inversor " +
+            "\n3. Modificar inversor" +
+            "\n4. Consultar instrumentos";
     private static MenuInversor menu;
     Scanner scanner;
     private InversorService inversorService;
@@ -93,8 +93,8 @@ public class MenuInversor {
         System.out.println("ingrese su dni");
         String dni = scanner.next();
         System.out.println("ingrese que desea modificar: " +
-                " 1. Nombre" +
-                " 2. Dni");
+                "\n1. Nombre" +
+                "\n2. Dni");
         String variable = scanner.next();
         System.out.println("ingrese el nuevo valor");
         String modificacion = scanner.next();

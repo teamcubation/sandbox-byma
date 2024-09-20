@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 public class InstrumenroFinancieroRepository {
     private static InstrumenroFinancieroRepository instrumenroFinancieroRepository;
-    private ArrayList<InstrumentoFinanciero>instrumentos;
+    private ArrayList<InstrumentoFinanciero> instrumentoFinancieroList;
 
     private InstrumenroFinancieroRepository(){
-        this.instrumentos = new ArrayList<>();
+        this.instrumentoFinancieroList = new ArrayList<>();
     }
 
     public static InstrumenroFinancieroRepository getInstrumentoFinancieroRepository() {
@@ -19,29 +19,24 @@ public class InstrumenroFinancieroRepository {
     }
 
     public void registrarInstrumento(InstrumentoFinanciero instrumento){
-        this.instrumentos.add(instrumento);
+        this.instrumentoFinancieroList.add(instrumento);
     }
     public void eliminarInstrumento(InstrumentoFinanciero instrumento){
-        this.instrumentos.remove(instrumento);
+        this.instrumentoFinancieroList.remove(instrumento);
     }
-    public void consultarTodosLosInstrumentos() {
-        for (InstrumentoFinanciero instrumento : instrumentos) {
-            System.out.println(instrumento);
-        }
+    public ArrayList<InstrumentoFinanciero> consultarTodosLosInstrumentos() {
+        return this.instrumentoFinancieroList;
     }
 
     public InstrumentoFinanciero buscarInstrumento(String nombre) {
         InstrumentoFinanciero instrumentoADevolver = null;
-        for (InstrumentoFinanciero instrumento : instrumentos) {
+        for (InstrumentoFinanciero instrumento : instrumentoFinancieroList) {
             if (instrumento.getNombre().equals(nombre))
                 instrumentoADevolver = instrumento;
         }
         return instrumentoADevolver;
     }
-    public void modificarInstrumento(InstrumentoFinanciero instrumento){
-        this.eliminarInstrumento(this.buscarInstrumento(instrumento.getNombre()));
-        this.registrarInstrumento(instrumento);
-    }
+
 
 
 }

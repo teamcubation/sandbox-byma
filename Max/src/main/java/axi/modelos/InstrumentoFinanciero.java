@@ -2,7 +2,6 @@ package axi.modelos;
 
 import axi.excepciones.InstrumentoNoEncontradoException;
 import axi.excepciones.InversorExistenteException;
-import axi.servicios.InversorService;
 import axi.servicios.ObserverService;
 
 import java.util.ArrayList;
@@ -11,13 +10,13 @@ public abstract class InstrumentoFinanciero {
     private String nombre;
     private double precio;
     private Tipo tipo;
-    private ArrayList<Inversor> inversores;
+    private ArrayList<Inversor> inversoresList;
 
     public InstrumentoFinanciero(String nombre, double precio, Tipo tipo) {
         this.setNombre(nombre);
         this.precio = precio;
         this.setTipo(tipo);
-        this.inversores = new ArrayList<>();
+        this.inversoresList = new ArrayList<>();
     }
 
     public String getNombre() {
@@ -38,12 +37,12 @@ public abstract class InstrumentoFinanciero {
                 "nombre='" + nombre + '\'' +
                 ", precio=" + precio +
                 ", tipo=" + tipo +
-                ", inversores=" + inversores +
+                ", inversores=" + inversoresList +
                 '}';
     }
 
     public void setNombre(String nombre) {
-        if (nombre == null || nombre.isEmpty()) {
+        if (nombre == null || nombre.isBlank()) {
             throw new IllegalArgumentException("El nombre no puede ser nulo o vacío.");
         }
         this.nombre = nombre;
@@ -57,33 +56,44 @@ public abstract class InstrumentoFinanciero {
     }
 
     public void setPrecio(double precio) {
-        if (precio < 0) {
-            throw new IllegalArgumentException("El precio no puede ser menor a 0.");
-        } else {
-            this.precio = precio;
-            this.notificar();
+        try {
+            if (precio > 0) {
+                this.precio = precio;
+                this.notificar();
+            } else {
+                throw new IllegalArgumentException("El precio no puede ser menor o igual a 0.");
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("El precio debe ser un valor numérico.");
         }
     }
 
+
     public void notificar() {
-        ObserverService.notificarCambioDePrecio(inversores, this);
+        ObserverService.notificarCambioDePrecio(inversoresList, this);
     }
-    public void suscribirse(Inversor inversor){
-        if (!tieneInversor(inversor)){
-            this.inversores.add(inversor);
-            inversor.suscribirse(this);
-        } else {
+
+    public void suscribirse(Inversor inversor) {
+        if (tieneInversor(inversor)) {
             throw new InversorExistenteException("Error. El inversor ya estaba suscripto");
+        } else {
+            this.inversoresList.add(inversor);
+            inversor.suscribirse(this);
         }
     }
-    public void desuscribirse(Inversor inversor){
-        if (tieneInversor(inversor)){
-            this.inversores.remove(inversor);
-            inversor.desuscribirse(this);
-        } else
+
+    public void desuscribirse(Inversor inversor) {
+        if (!tieneInversor(inversor)) {
             throw new InstrumentoNoEncontradoException("Error. inversor no encontrado");
+        }
+        this.inversoresList.remove(inversor);
+        inversor.desuscribirse(this);
     }
-    private boolean tieneInversor(Inversor inversor){
-        return inversores.stream().anyMatch(i -> i.equals(inversor));
+
+    private boolean tieneInversor(Inversor inversor) {
+        if (inversor == null)
+            return false;
+        else
+            return inversoresList.stream().anyMatch(i -> i.equals(inversor));
     }
 }

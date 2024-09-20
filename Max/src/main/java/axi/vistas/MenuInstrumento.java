@@ -5,9 +5,15 @@ import axi.excepciones.InstrumentoDuplicadoException;
 import axi.excepciones.InstrumentoNoEncontradoException;
 import axi.modelos.Tipo;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MenuInstrumento {
+    final static String MSG_MENU_INVERSOR = "Ingrese la operacion que desea hacer: " +
+            "\n1. Registrar instrumento " +
+            "\n2. Eliminar instrumento " +
+            "\n3. Consultar instrumentos " +
+            "\n4. Modificar instrumento ";
     private static MenuInstrumento menuInstrumento;
     private InstrumentoService instrumentoService;
     Scanner scanner;
@@ -25,11 +31,7 @@ public class MenuInstrumento {
 
 
     public void abrirMenu() {
-        System.out.println("Ingrese la operacion que desea hacer: " +
-                "1. Registrar instrumento " +
-                "2. Eliminar instrumento " +
-                "3. Consultar instrumentos " +
-                "4. Modificar instrumento ");
+        System.out.println(MSG_MENU_INVERSOR);
         String operacion = scanner.nextLine();
         while (seguirOperando(operacion)) {
             try {
@@ -59,11 +61,7 @@ public class MenuInstrumento {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-            System.out.println("Ingrese la operacion que desea hacer: " +
-                    "1. Registrar instrumento " +
-                    "2. Eliminar instrumento " +
-                    "3. Consultar instrumentos " +
-                    "4. Modificar instrumento ");
+            System.out.println(MSG_MENU_INVERSOR);
             operacion = scanner.next();
         }
     }
@@ -77,16 +75,16 @@ public class MenuInstrumento {
         String modificacion;
         String nombre;
         System.out.println("ingrese que desea modificar: " +
-                " 1. Nombre" +
-                " 2. Tipo" +
-                " 3. Precio");
+                "\n1. Nombre" +
+                "\n2. Tipo" +
+                "\n3. Precio");
         String variable = scanner.next();
         switch (variable) {
             case "1":
                 modificacion = this.ingresarNombre();
                 break;
             case "2":
-                System.out.println("ingrese el nuevo tipo de instrumento 1.Accion 2.Bono");
+                System.out.println("ingrese el nuevo tipo de instrumento \n1.Accion \n2.Bono");
                 modificacion = scanner.next();
                 break;
             case "3":
@@ -117,8 +115,18 @@ public class MenuInstrumento {
     }
 
     private double ingresarPrecio() {
+        double precio = 7137139;
         System.out.println("ingrese el precio de la accion");
-        return scanner.nextDouble();
+
+        while (precio == 7137139) {
+            try {
+                precio = scanner.nextDouble();
+            } catch (InputMismatchException e) {
+                System.out.println("Error. Ingrese un numero valido");
+                precio = scanner.nextDouble();
+            }
+        }
+        return precio;
     }
 
     private String ingresarNombre() {
@@ -127,7 +135,7 @@ public class MenuInstrumento {
     }
 
     private Tipo ingresarTipo() {
-        System.out.println("ingrese que tipo de instrumento quiere ingresar: 1.Accion, 2.Bono");
+        System.out.println("ingrese que tipo de instrumento quiere ingresar: \n1.Accion \n2.Bono");
         String nombreTipo = scanner.next();
         Tipo tipo;
         switch (nombreTipo) {

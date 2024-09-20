@@ -33,7 +33,9 @@ public class InstrumentoService {
     }
 
     public void consultarTodosLosInstrumentos() {
-        instrumentosRepository.consultarTodosLosInstrumentos();
+        for (InstrumentoFinanciero instrumento : instrumentosRepository.consultarTodosLosInstrumentos()) {
+            System.out.println(instrumento);
+        }
     }
 
     public void modificarInstrumento(String variable, String modificacion, String nombre) {
@@ -63,7 +65,6 @@ public class InstrumentoService {
                 default:
                     throw new IllegalArgumentException("Error. los campos no coinciden");
             }
-            instrumentosRepository.modificarInstrumento(instrumento);
         } else {
             throw new InversorNoEncontradoException("Error. Instrumento no encontrado");
         }

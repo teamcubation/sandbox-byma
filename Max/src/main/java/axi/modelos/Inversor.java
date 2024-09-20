@@ -31,21 +31,24 @@ public class Inversor implements Observer {
     }
 
     public void suscribirse(InstrumentoFinanciero instrumento) {
-        if (tieneInstrumento(instrumento)){
+        if (tieneInstrumento(instrumento)) {
             throw new InstrumentoDuplicadoException("Error. Ya estas suscripto a este instrumento");
         }
         cartera.add(instrumento);
     }
 
     public void desuscribirse(InstrumentoFinanciero instrumento) {
-        if (!tieneInstrumento(instrumento)){
+        if (!tieneInstrumento(instrumento)) {
             throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
         }
         cartera.remove(instrumento);
     }
 
-    private boolean tieneInstrumento(InstrumentoFinanciero instrumento){
-        return cartera.stream().anyMatch(i -> i.equals(instrumento));
+    private boolean tieneInstrumento(InstrumentoFinanciero instrumento) {
+        if (instrumento == null)
+            return false;
+        else
+            return cartera.stream().anyMatch(i -> i.equals(instrumento));
     }
 
     @Override
@@ -59,7 +62,7 @@ public class Inversor implements Observer {
     }
 
     public void consultarInstrumentos() {
-        for (InstrumentoFinanciero instrumentoFinanciero: cartera){
+        for (InstrumentoFinanciero instrumentoFinanciero : cartera) {
             System.out.println(instrumentoFinanciero);
         }
     }
