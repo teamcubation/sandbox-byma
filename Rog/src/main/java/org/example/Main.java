@@ -1,7 +1,10 @@
 package org.example;
 
+import org.example.controller.MenuController;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hola mund");
+        MenuController menuController = new MenuController();
+        menuController.iniciarMenu();
     }
 }
