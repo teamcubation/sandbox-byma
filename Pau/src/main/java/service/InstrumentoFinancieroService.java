@@ -34,7 +34,6 @@ public class InstrumentoFinancieroService {
     }
 
     public String consultarInstrumentosFinancierosToString() {
-        String resultado = "";
         return this.consultarInstrumentosFinancieros().stream().map(x -> x.toString()).collect(Collectors.joining(" \n"));
     }
 
@@ -75,7 +74,6 @@ public class InstrumentoFinancieroService {
                 default:
                     throw new NoExisteEseTipoDeInstrumentoException("El tipo ingresado no corresponde a un tipo de instrumento conocido.");
             }
-
             return this.instrumentosFinancierosRepository.crearInstrumentoFinanciero(instrumentoFinanciero);
         }
     }

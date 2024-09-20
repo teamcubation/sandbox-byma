@@ -1,18 +1,20 @@
 package service.observer;
 
 
+import exceptions.InversorNoEncontradoException;
 import model.Inversor;
 import model.instrumentoFinanciero.InstrumentoFinanciero;
+import repository.InversorRepository;
 
 import java.util.ArrayList;
 
 public class Notificador {
 
     private static Notificador instance;
-    ArrayList<Inversor> instrumentosFinancieros;
+    private InversorRepository inversorRepository;
 
     private Notificador() {
-        instrumentosFinancieros = new ArrayList<Inversor>();
+        this.inversorRepository = InversorRepository.getInstance();
     }
 
     public static Notificador getInstance() {
@@ -22,19 +24,16 @@ public class Notificador {
         return instance;
     }
 
-    public ArrayList<Inversor> getInstrumentosFinancieros() {
-        return instrumentosFinancieros;
+
+    public void suscribirInversor(String nombre) throws InversorNoEncontradoException {
+        this.inversorRepository.suscribirInversor(nombre);
     }
 
-    public void suscribirInversor(Inversor inversor) {
-        instrumentosFinancieros.add(inversor);
-    }
-
-    public void desuscribirInversor(Inversor inversor) {
-        instrumentosFinancieros.remove(inversor);
+    public void desuscribirInversor(String nombre) throws InversorNoEncontradoException {
+        this.inversorRepository.desuscribirInversor(nombre);
     }
 
     public void notificarInteresados(InstrumentoFinanciero instrumentoFinanciero, String atributo) {
-       this.getInstrumentosFinancieros().stream().forEach(inversor -> inversor.update(instrumentoFinanciero, atributo));
+       this.inversorRepository.obtenerInversoresSuscriptos().forEach(inversor -> inversor.update(instrumentoFinanciero, atributo));
     }
 }

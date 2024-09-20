@@ -2,10 +2,14 @@ package controller;
 
 import exceptions.InstrumentoDuplicadoException;
 import exceptions.InstrumentoNoEncontradoException;
+import exceptions.InversorYaRegistradoException;
 import exceptions.NoExisteEseTipoDeInstrumentoException;
+import model.Inversor;
 import model.instrumentoFinanciero.InstrumentoFinanciero;
 import service.InstrumentoFinancieroService;
 import model.instrumentoFinanciero.TipoInstrumentoFinanciero;
+import service.InversorService;
+import service.observer.Notificador;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -14,10 +18,12 @@ public class Menu {
     private boolean continuar;
     private Scanner scanner;
     private InstrumentoFinancieroService instrumentoFinancieroService;
+    private InversorService inversorService;
     public Menu() {
         continuar = true;
         scanner = new Scanner(System.in);
         instrumentoFinancieroService = InstrumentoFinancieroService.getInstance();
+        inversorService = InversorService.getInstance();
     }
 
     public void desplegarMenu() {
@@ -28,7 +34,8 @@ public class Menu {
                     "2. Consultar bonos o acciones.\n" +
                     "3. Editar bono o acción existente.\n" +
                     "4. Eliminar bonos o acciones.\n" +
-                    "5. Salir.\n");
+                    "5. Operar inversores. \n" + //Esto esta mal aca pero quería probar el observer
+                    "6. Salir.\n");
             opcionElegida = scanner.nextInt();
 
             switch (opcionElegida) {
@@ -45,6 +52,9 @@ public class Menu {
                     this.eliminarBonoOAccionExistente();
                     break;
                 case 5:
+                    this.operarInversores();
+                    break;
+                case 6:
                     System.out.println("Gracias por utilizar nuestro servicio. Nos vemos! :)\n");
                     continuar = false;
                     break;
@@ -73,7 +83,7 @@ public class Menu {
                 try{
                     InstrumentoFinanciero instrumentoFinancieroEditado = instrumentoFinancieroService.editarNombreInstrumentoFinanciero(nombreActual, nombreNuevo);
                     System.out.println("El nuevo instrumento fue editado correctamente en el sistema.");
-                    System.out.println("Instrumento financiero creado: " + instrumentoFinancieroEditado.toString());
+                    System.out.println("Instrumento financiero editado: " + instrumentoFinancieroEditado.toString());
                 } catch (InstrumentoNoEncontradoException e) {
                     System.err.println(e.getMessage());
                 }
@@ -85,7 +95,7 @@ public class Menu {
                 try {
                     InstrumentoFinanciero instrumentoFinancieroEditado = instrumentoFinancieroService.editarPrecioInstrumentoFinanciero(nombreActual, precioNuevo);
                     System.out.println("El nuevo instrumento fue editado correctamente en el sistema.");
-                    System.out.println("Instrumento financiero creado: " + instrumentoFinancieroEditado.toString());
+                    System.out.println("Instrumento financiero editado: " + instrumentoFinancieroEditado.toString());
                 } catch (InstrumentoNoEncontradoException e) {
                     System.err.println(e.getMessage()); throw new RuntimeException(e);
                 } catch (IllegalArgumentException e) {
@@ -183,6 +193,35 @@ public class Menu {
             System.out.println("El instrumento ha sido eliminado satisfactoriamente del sistema.");
         } catch (InstrumentoNoEncontradoException e) {
             System.err.println(e.getMessage());
+        }
+    }
+
+    private void operarInversores() {
+        int opcion = 0;
+        System.out.println("Ingrese la opcion que desea realizar:\n" +
+                "1. Agregar inversor.\n" +
+                "2. Eliminar inversor. \n"+
+                "3. Listar inversores. \n");
+        opcion = scanner.nextInt();
+
+        switch (opcion) {
+            case 1:
+                String nombreInversor;
+                System.out.println("Ingrese el nombre del inversor: \n");
+                nombreInversor = scanner.next();
+                try {
+                    Inversor newInversor = inversorService.registrarInversor(nombreInversor);
+                    System.out.println("Se ha registrado correctamente en el sistema a " + newInversor.toString());
+                } catch (InversorYaRegistradoException e) {
+                    System.err.println(e.getMessage());
+                }
+                break;
+            case 2:
+                // TODO: Eliminar inversor
+                break;
+            case 3:
+                System.out.println(inversorService.listarInversores());
+                break;
         }
     }
 

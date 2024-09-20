@@ -1,14 +1,17 @@
 package model;
 
+import exceptions.InversorNoEncontradoException;
 import model.instrumentoFinanciero.InstrumentoFinanciero;
 import service.observer.Notificador;
 import service.observer.Observer;
 
 public class Inversor implements Observer {
     private String nombre;
+    private boolean esSuscriptor;
 
     public Inversor(String nombre) {
         this.nombre = nombre;
+        this.esSuscriptor = true;
     }
 
     public String getNombre() {
@@ -19,16 +22,29 @@ public class Inversor implements Observer {
         this.nombre = nombre;
     }
 
+    public boolean esSuscriptor() {
+        return esSuscriptor;
+    }
+
+    public void setEsSuscriptor(boolean esSuscriptor) {
+        this.esSuscriptor = esSuscriptor;
+    }
+
+    public void suscribirseANotificaciones() throws InversorNoEncontradoException {
+        Notificador.getInstance().suscribirInversor(this.getNombre());
+    }
+
+    public void desuscribirseANotificaciones() throws InversorNoEncontradoException {
+        Notificador.getInstance().desuscribirInversor(this.getNombre());
+    }
+
     @Override
     public void update(InstrumentoFinanciero instrumentoFinanciero, String atributo) {
-        System.out.println("Se actualizo el atributo " + atributo + " del instrumentoFinanciero " + instrumentoFinanciero.toString());
+        System.out.println("Se actualizo el atributo " + atributo + " del instrumentoFinanciero " + instrumentoFinanciero.toString() +
+                "\n Soy inversor " + this.getNombre() + " y fui notificado.");
     }
 
-    public void suscribirseANotificaciones() {
-        Notificador.getInstance().suscribirInversor(this);
-    }
-
-    public void desuscribirseNotificaciones() {
-        Notificador.getInstance().desuscribirInversor(this);
+    public String toString() {
+        return "Inversor{nombre= " + this.getNombre() + ", esSuscriptor= " + esSuscriptor + "}";
     }
 }
