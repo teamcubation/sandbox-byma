@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class InstrumentoFinancieroRepository {
     private static InstrumentoFinancieroRepository InstrumentoFinancieroRepository;
-    List<InstrumentoFinanciero> instrumentosFinancieros;
+    private List<InstrumentoFinanciero> instrumentosFinancieros;
 
     private InstrumentoFinancieroRepository() {
         instrumentosFinancieros = Singleton.getInstancia();
