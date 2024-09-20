@@ -61,7 +61,7 @@ public class InstrumentoController {
                     System.out.println("Gracias por usar el sistema. ¡Hasta luego!");
                     break;
                 default:
-                    // Este caso ya está cubierto por el bucle de validación
+                    System.out.println("Opción no válida. Inténtelo de nuevo.");
                     break;
             }
         }
@@ -69,23 +69,13 @@ public class InstrumentoController {
 
     private int obtenerOpcionValida() {
         int opcion = -1;
-        boolean opcionValida = false;
-
-        while (!opcionValida) {
-            try {
-                opcion = scanner.nextInt();
-                scanner.nextLine(); // Limpiar el buffer
-                if (opcion < 1 || opcion > 5) {
-                    System.out.println("Opción no válida. Por favor, ingrese un número entre 1 y 5.");
-                } else {
-                    opcionValida = true; // Salir del bucle si la opción es válida
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Entrada no válida. Por favor, ingrese un número.");
-                scanner.nextLine(); // Limpiar el buffer después del error
-            }
+        try {
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Limpiar el buffer
+        } catch (InputMismatchException e) {
+            System.out.println("Entrada no válida. Por favor, ingrese un número.");
+            scanner.nextLine(); // Limpiar el buffer después del error
         }
-
         return opcion;
     }
 
@@ -101,7 +91,7 @@ public class InstrumentoController {
         System.out.println(menu);
     }
 
-    public void registrarInstrumento(){
+    public void registrarInstrumento() {
 
         // Selección del tipo de instrumento
         InstrumentoFactory factory = seleccionarFabricaInstrumento();
@@ -129,8 +119,7 @@ public class InstrumentoController {
         System.out.println("1. Acción");
         System.out.println("2. Bono");
 
-        int opcion = scanner.nextInt();
-        scanner.nextLine();  // Limpiar el buffer
+        int opcion = obtenerOpcionValida();
 
         switch (opcion) {
             case 1:
