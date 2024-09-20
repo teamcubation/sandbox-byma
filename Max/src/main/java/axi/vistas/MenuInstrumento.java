@@ -12,7 +12,6 @@ public class MenuInstrumento {
     private InstrumentoService instrumentoService;
     Scanner scanner;
 
-
     private MenuInstrumento() {
         this.instrumentoService = InstrumentoService.getBroker();
         this.scanner = new Scanner(System.in);

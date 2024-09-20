@@ -7,11 +7,13 @@ public class Menu {
     private static Menu menu;
     private MenuInversor menuInversor;
     private MenuInstrumento menuInstrumento;
+    private MenuObserver menuObserver;
     Scanner scanner;
 
     private Menu() {
         this.menuInstrumento = MenuInstrumento.getMenu();
         this.menuInversor = MenuInversor.getMenu();
+        this.menuObserver = MenuObserver.getMenu();
         scanner = new Scanner(System.in);
     }
 
@@ -24,9 +26,9 @@ public class Menu {
 
 
     public void abrirMenu() {
-        System.out.println("ingrese en que menu desea operar: 1. Menu instrumentos  2. Menu inversor");
+        System.out.println("ingrese en que menu desea operar: 1. Menu instrumentos  2. Menu inversor  3.Menu observer");
         String opcion = scanner.next();
-        while (opcion.equals("1") || opcion.equals("2")) {
+        while (opcion.equals("1") || opcion.equals("2")|| opcion.equals("3")) {
             switch (opcion) {
                 case "1":
                     menuInstrumento.abrirMenu();
@@ -34,8 +36,11 @@ public class Menu {
                 case "2":
                     menuInversor.abrirMenu();
                     break;
+                case "3":
+                    menuObserver.abrirMenu();
+                    break;
             }
-            System.out.println("ingrese en que menu desea operar: 1. Menu instrumentos  2. Menu inversor");
+            System.out.println("ingrese en que menu desea operar: 1. Menu instrumentos  2. Menu inversor  3.Menu observer");
             opcion = scanner.next();
         }
     }

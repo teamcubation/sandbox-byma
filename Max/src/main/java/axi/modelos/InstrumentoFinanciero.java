@@ -3,6 +3,7 @@ package axi.modelos;
 import axi.excepciones.InstrumentoNoEncontradoException;
 import axi.excepciones.InversorExistenteException;
 import axi.servicios.InversorService;
+import axi.servicios.ObserverService;
 
 import java.util.ArrayList;
 
@@ -65,7 +66,7 @@ public abstract class InstrumentoFinanciero {
     }
 
     public void notificar() {
-        InversorService.notificarCambioDePrecio(inversores, this);
+        ObserverService.notificarCambioDePrecio(inversores, this);
     }
     public void suscribirse(Inversor inversor){
         if (!tieneInversor(inversor)){

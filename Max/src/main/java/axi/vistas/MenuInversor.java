@@ -12,10 +12,8 @@ public class MenuInversor {
     final static String MSG_MENU_INVERSOR = "Ingrese la operacion que desea hacer: " +
             "1. Registrar inversor " +
             "2. Eliminar inversor " +
-            "3. Agregar instumento a mi cartera " +
-            "4. Eliminar instrumento de mi cartera " +
-            "5. Modificar inversor" +
-            "6. Consultar instrumentos";
+            "3. Modificar inversor" +
+            "4. Consultar instrumentos";
     private static MenuInversor menu;
     Scanner scanner;
     private InversorService inversorService;
@@ -35,7 +33,7 @@ public class MenuInversor {
         System.out.println(MSG_MENU_INVERSOR);
         String operacion = scanner.nextLine();
         while (operacion.equals("1") || operacion.equals("2") || operacion.equals("3") ||
-                operacion.equals("4") || operacion.equals("5") || operacion.equals("6")) {
+                operacion.equals("4")) {
             try {
                 switch (operacion) {
                     case "1":
@@ -45,15 +43,9 @@ public class MenuInversor {
                         this.eliminarInversor();
                         break;
                     case "3":
-                        this.agregarInstrumentoACartera();
-                        break;
-                    case "4":
-                        this.eliminarInstrumentoDeCartera();
-                        break;
-                    case "5":
                         this.modificarInversor();
                         break;
-                    case "6":
+                    case "4":
                         this.ConsultarInstrumentos();
                         break;
                 }
@@ -99,22 +91,5 @@ public class MenuInversor {
     public void modificarInversor() {
 
     }
-
-    public void agregarInstrumentoACartera() {
-        System.out.println("ingrese su dni");
-        String dni = scanner.next();
-        System.out.println("ingrese el nombre del instrumento que desea agregar");
-        String nombre = scanner.next();
-        inversorService.metodoParaSuscribirse(dni, nombre);
-    }
-
-    public void eliminarInstrumentoDeCartera() {
-        System.out.println("ingrese su dni");
-        String dni = scanner.next();
-        System.out.println("ingrese el nombre del instrumento que desea eliminar");
-        String nombre = scanner.next();
-        inversorService.metodoParaDesuscribirse(dni, nombre);
-    }
-
 
 }
