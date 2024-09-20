@@ -10,15 +10,15 @@ import java.util.List;
 public class InstrumentoFinancieroRepository implements IInstrumentoFinancieroRepository {
 
     private final List<InstrumentoFinanciero> instrumentoFinancieroList = new ArrayList<>();
-    private static InstrumentoFinancieroRepository InstrumentoFinancieroRepository;
+    private static InstrumentoFinancieroRepository instrumentoFinancieroRepository;
 
     private InstrumentoFinancieroRepository() {}
 
     public static InstrumentoFinancieroRepository getInstance() {
-        if (InstrumentoFinancieroRepository == null) {
-            InstrumentoFinancieroRepository = new InstrumentoFinancieroRepository();
+        if (instrumentoFinancieroRepository == null) {
+            instrumentoFinancieroRepository = new InstrumentoFinancieroRepository();
         }
-        return InstrumentoFinancieroRepository;
+        return instrumentoFinancieroRepository;
     }
 
     @Override

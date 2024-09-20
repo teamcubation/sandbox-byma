@@ -5,6 +5,7 @@ import org.example.factory.InstrumentoFinancieroFactory;
 import org.example.model.InstrumentoFinanciero;
 import org.example.model.Inversor;
 import org.example.service.InstrumentoFinancieroService;
+import org.example.service.NotificadorService;
 
 import java.util.InputMismatchException;
 import java.util.List;
@@ -16,6 +17,7 @@ public class MenuController {
     public static final String ERROR_MSG_INVALID_OPTION = "Opción no válida.";
 
     private final InstrumentoFinancieroService instrumentoFinancieroService = new InstrumentoFinancieroService();
+    private final NotificadorService notificadorService = NotificadorService.getInstance();
     private final Scanner scanner = new Scanner(System.in);
 
     public void iniciarMenu() {
@@ -74,7 +76,7 @@ public class MenuController {
         InstrumentoFinanciero instrumento = instrumentoFinancieroService.buscarInstrumentoPorNombre(nombreInstrumento);
 
         if (instrumento != null) {
-            instrumento.agregarObservador(inversor);
+            notificadorService.agregarObservador(nombreInstrumento, inversor);
             System.out.println("Inversor suscrito correctamente.");
         } else {
             System.out.println("Instrumento no encontrado.");

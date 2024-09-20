@@ -9,6 +9,7 @@ import java.util.List;
 
 public class InstrumentoFinancieroService implements IInstrumentoFinancieroService {
     private final InstrumentoFinancieroRepository repository = InstrumentoFinancieroRepository.getInstance();
+    private final NotificadorService notificadorService = NotificadorService.getInstance();
 
     @Override
     public void registrarInstrumento(InstrumentoFinanciero instrumento) {
@@ -41,11 +42,12 @@ public class InstrumentoFinancieroService implements IInstrumentoFinancieroServi
                 instrumento.setNombre(nuevoValor);
                 break;
             case "precio":
-                instrumento.setPrecio(Double.parseDouble(nuevoValor.toString()));
+                instrumento.setPrecio(Double.parseDouble(nuevoValor));
+                this.notificadorService.notificarObservadores(nombre, Double.parseDouble(nuevoValor));
                 break;
             case "tasa de interes":
                 if (instrumento instanceof Bono) {
-                    ((Bono) instrumento).setTasaDeInteres(Double.parseDouble(nuevoValor.toString()));
+                    ((Bono) instrumento).setTasaDeInteres(Double.parseDouble(nuevoValor));
 
                 } else {
                     throw new IllegalArgumentException("El atributo 'tasa de interes' solo aplica a bonos.");

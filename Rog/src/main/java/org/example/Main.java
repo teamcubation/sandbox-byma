@@ -7,7 +7,4 @@ public class Main {
         MenuController menuController = new MenuController();
         menuController.iniciarMenu();
     }
-
-
-
 }

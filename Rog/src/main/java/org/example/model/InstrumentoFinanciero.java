@@ -1,8 +1,7 @@
 package org.example.model;
 
-import org.example.service.NotificadorService;
 
-public abstract class InstrumentoFinanciero extends NotificadorService {
+public abstract class InstrumentoFinanciero {
     private String nombre;
     private double precio;
     private String tipo;
@@ -27,7 +26,6 @@ public abstract class InstrumentoFinanciero extends NotificadorService {
 
     public void setPrecio(double precio) {
         this.precio = precio;
-        notificarObservadores(this.nombre, this.precio);
     }
 
     public String getTipo() {
