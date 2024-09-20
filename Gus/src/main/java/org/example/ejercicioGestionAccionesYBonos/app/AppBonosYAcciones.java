@@ -25,4 +25,6 @@ public class AppBonosYAcciones {
     public void iniciarAplicacion() {
         this.controller.iniciarApp();
     }
+
+
 }

@@ -11,9 +11,9 @@ import org.example.ejercicioGestionAccionesYBonos.service.NotificacionInstrument
 public class Main {
     public static void main(String[] args) {
 
-        System.out.println("Hello world!");
-
-        System.out.println("Hola soy gus estoy en mi rama!!!");
+//        System.out.println("Hello world!");
+//
+//        System.out.println("Hola soy gus estoy en mi rama!!!");
 
         Inversor inversor1 = new Inversor("Pepito");
         Inversor inversor2 = new Inversor("Juan");

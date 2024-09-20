@@ -1,7 +1,5 @@
 package org.example.ejercicioGestionAccionesYBonos.repo;
 
-import org.example.ejercicioGestionAccionesYBonos.exception.InstrumentoDuplicadoException;
-import org.example.ejercicioGestionAccionesYBonos.exception.InstrumentoNoEncontradoException;
 import org.example.ejercicioGestionAccionesYBonos.modelo.InstrumentoFinanciero;
 import org.example.ejercicioGestionAccionesYBonos.modelo.enumsModel.TipoInstrumentoFinanciero;
 
@@ -18,6 +16,7 @@ public class InstrumentoFinancieroRepositoryImp implements InstrumentoFinanciero
     private InstrumentoFinancieroRepositoryImp() {
         this.listaDeInstrumentos = new ArrayList<>();
     }
+
 
     public static InstrumentoFinancieroRepositoryImp getInstancia() {
         if (instancia == null) {
@@ -58,12 +57,12 @@ public class InstrumentoFinancieroRepositoryImp implements InstrumentoFinanciero
     }
 
     @Override
-    public void registrarNuevoInstrumento(InstrumentoFinanciero nuevoInstrumento) throws InstrumentoDuplicadoException {
+    public void registrarNuevoInstrumento(InstrumentoFinanciero nuevoInstrumento) {
         this.listaDeInstrumentos.add(nuevoInstrumento);
     }
 
     @Override
-    public void editarInstrumento(String nuevoNombre, double nuevoPrecio, String nombreInstrumento) throws InstrumentoNoEncontradoException {
+    public void editarInstrumento(String nuevoNombre, double nuevoPrecio, String nombreInstrumento) {
         this.listaDeInstrumentos = listaDeInstrumentos
                 .stream()
                 .map(instrumentoFinanciero -> {
@@ -77,7 +76,7 @@ public class InstrumentoFinancieroRepositoryImp implements InstrumentoFinanciero
     }
 
     @Override
-    public void editarNombreInstrumento(String nuevoNombre, String nombreInstrumento) throws InstrumentoNoEncontradoException {
+    public void editarNombreInstrumento(String nuevoNombre, String nombreInstrumento) {
         this.listaDeInstrumentos = this.listaDeInstrumentos
                 .stream()
                 .map(instrumentoFinanciero -> {
@@ -90,7 +89,7 @@ public class InstrumentoFinancieroRepositoryImp implements InstrumentoFinanciero
     }
 
     @Override
-    public void editarPrecioInstrumento(double nuevoPrecio, String nombreInstrumento) throws InstrumentoNoEncontradoException {
+    public void editarPrecioInstrumento(double nuevoPrecio, String nombreInstrumento) {
         this.listaDeInstrumentos = this.listaDeInstrumentos
                 .stream()
                 .map(instrumentoFinanciero -> {
@@ -100,7 +99,7 @@ public class InstrumentoFinancieroRepositoryImp implements InstrumentoFinanciero
     }
 
     @Override
-    public void eliminarInstrumento(String nombreInstrumento) throws InstrumentoNoEncontradoException {
+    public void eliminarInstrumento(String nombreInstrumento) {
         this.listaDeInstrumentos = this.listaDeInstrumentos
                 .stream()
                 .filter(instrumentoFinanciero -> !instrumentoFinanciero.getNombre().equalsIgnoreCase(nombreInstrumento))

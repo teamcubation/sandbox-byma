@@ -192,7 +192,7 @@ public class InstrumentoFinancieroController {
         try {
             scanner.nextLine();
             String nombreInstrumento = scanner.nextLine();
-            this.instrumentoFinancieroServicio.eliminarInstrumento(nombreInstrumento);
+            this.instrumentoFinancieroServicio.eliminarInstrumento(nombreInstrumento, instrumentoFinancieroSeleccionado);
         } catch (InstrumentoNoEncontradoException e) {
             System.err.println(DIVISOR_DOBLE);
             System.err.println(ERROR_TITULO);
@@ -234,7 +234,7 @@ public class InstrumentoFinancieroController {
                     String nuevoNombre = scanner.nextLine();
 
                     try {
-                        this.instrumentoFinancieroServicio.editarNombreInstrumento(nuevoNombre, nombreInstrumento);
+                        this.instrumentoFinancieroServicio.editarNombreInstrumento(nuevoNombre, nombreInstrumento, instrumentoFinancieroSeleccionado);
                     } catch (InstrumentoNoEncontradoException e) {
                         System.err.println(DIVISOR_DOBLE);
                         System.err.println(ERROR_TITULO);
@@ -252,9 +252,9 @@ public class InstrumentoFinancieroController {
                     double nuevoPrecio = scanner.nextDouble();
 
                     try {
-                        this.instrumentoFinancieroServicio.editarPrecioInstrumento(nuevoPrecio, nombreInstrumento);
+                        this.instrumentoFinancieroServicio.editarPrecioInstrumento(nuevoPrecio, nombreInstrumento, instrumentoFinancieroSeleccionado);
 
-                        Optional<InstrumentoFinanciero> instrumentoFinancieroEditado = this.instrumentoFinancieroServicio.listarInstrumentoPorNombre(nombreInstrumento);
+                        Optional<InstrumentoFinanciero> instrumentoFinancieroEditado = this.instrumentoFinancieroServicio.listarInstrumentoPorNombre(nombreInstrumento, instrumentoFinancieroSeleccionado);
 
                         //notifico a inversores al editare el precio
                         this.notificarObservadores(instrumentoFinancieroEditado.get());
@@ -305,7 +305,7 @@ public class InstrumentoFinancieroController {
 
         try {
 
-            instrumentoFinancieroServicio.registrarNuevoInstrumento(nuevoInstrumento);
+            instrumentoFinancieroServicio.registrarNuevoInstrumento(nuevoInstrumento, instrumentoFinancieroSeleccionado);
         } catch (InstrumentoDuplicadoException e) {
 
             scanner.nextLine();
@@ -345,6 +345,7 @@ public class InstrumentoFinancieroController {
         System.out.println(SALIR_SUBMENU);
         System.out.println(DIVISOR_DOBLE);
     }
+
 
     //Observable
     public void registrarObservador(InstrumentoFinancieroObserver inversor) {
