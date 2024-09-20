@@ -1,8 +1,8 @@
-package model.instrumentoFinanciero.factoryInstrumentos;
+package consoleversion.model.instrumentoFinanciero.factoryInstrumentos;
 
-import model.instrumentoFinanciero.Bono;
-import model.instrumentoFinanciero.InstrumentoFinanciero;
-import model.instrumentoFinanciero.TipoInstrumentoFinanciero;
+import consoleversion.model.instrumentoFinanciero.Bono;
+import consoleversion.model.instrumentoFinanciero.InstrumentoFinanciero;
+import consoleversion.model.instrumentoFinanciero.TipoInstrumentoFinanciero;
 
 import java.time.LocalDate;
 

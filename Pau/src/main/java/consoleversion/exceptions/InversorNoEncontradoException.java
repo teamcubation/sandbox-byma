@@ -1,4 +1,4 @@
-package exceptions;
+package consoleversion.exceptions;
 
 public class InversorNoEncontradoException extends Exception {
     public InversorNoEncontradoException() {

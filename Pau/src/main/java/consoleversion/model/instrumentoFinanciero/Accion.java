@@ -1,4 +1,4 @@
-package model.instrumentoFinanciero;
+package consoleversion.model.instrumentoFinanciero;
 
 
 public class Accion extends InstrumentoFinanciero {

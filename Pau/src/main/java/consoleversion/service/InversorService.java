@@ -1,8 +1,8 @@
-package service;
+package consoleversion.service;
 
-import exceptions.InversorYaRegistradoException;
-import model.Inversor;
-import repository.InversorRepository;
+import consoleversion.exceptions.InversorYaRegistradoException;
+import consoleversion.model.Inversor;
+import consoleversion.repository.InversorRepository;
 
 import java.util.stream.Collectors;
 

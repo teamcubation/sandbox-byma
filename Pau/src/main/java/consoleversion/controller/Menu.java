@@ -1,15 +1,14 @@
-package controller;
+package consoleversion.controller;
 
-import exceptions.InstrumentoDuplicadoException;
-import exceptions.InstrumentoNoEncontradoException;
-import exceptions.InversorYaRegistradoException;
-import exceptions.NoExisteEseTipoDeInstrumentoException;
-import model.Inversor;
-import model.instrumentoFinanciero.InstrumentoFinanciero;
-import service.InstrumentoFinancieroService;
-import model.instrumentoFinanciero.TipoInstrumentoFinanciero;
-import service.InversorService;
-import service.observer.Notificador;
+import consoleversion.exceptions.InstrumentoDuplicadoException;
+import consoleversion.exceptions.InstrumentoNoEncontradoException;
+import consoleversion.exceptions.InversorYaRegistradoException;
+import consoleversion.exceptions.NoExisteEseTipoDeInstrumentoException;
+import consoleversion.model.Inversor;
+import consoleversion.model.instrumentoFinanciero.InstrumentoFinanciero;
+import consoleversion.service.InstrumentoFinancieroService;
+import consoleversion.model.instrumentoFinanciero.TipoInstrumentoFinanciero;
+import consoleversion.service.InversorService;
 
 import java.time.LocalDate;
 import java.util.Scanner;

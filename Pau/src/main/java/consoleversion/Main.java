@@ -1,5 +1,6 @@
-import controller.Menu;
-import model.Inversor;
+package consoleversion;
+
+import consoleversion.controller.Menu;
 
 public class Main {
     public static void main(String[] args) {

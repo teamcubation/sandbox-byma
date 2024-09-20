@@ -1,7 +1,7 @@
-package repository;
+package consoleversion.repository;
 
-import exceptions.InversorNoEncontradoException;
-import model.Inversor;
+import consoleversion.exceptions.InversorNoEncontradoException;
+import consoleversion.model.Inversor;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;

@@ -1,9 +1,9 @@
-package model;
+package consoleversion.model;
 
-import exceptions.InversorNoEncontradoException;
-import model.instrumentoFinanciero.InstrumentoFinanciero;
-import service.observer.Notificador;
-import service.observer.Observer;
+import consoleversion.exceptions.InversorNoEncontradoException;
+import consoleversion.model.instrumentoFinanciero.InstrumentoFinanciero;
+import consoleversion.service.observer.Notificador;
+import consoleversion.service.observer.Observer;
 
 public class Inversor implements Observer {
     private String nombre;

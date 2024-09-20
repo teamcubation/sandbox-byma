@@ -1,12 +1,9 @@
-package service.observer;
+package consoleversion.service.observer;
 
 
-import exceptions.InversorNoEncontradoException;
-import model.Inversor;
-import model.instrumentoFinanciero.InstrumentoFinanciero;
-import repository.InversorRepository;
-
-import java.util.ArrayList;
+import consoleversion.exceptions.InversorNoEncontradoException;
+import consoleversion.model.instrumentoFinanciero.InstrumentoFinanciero;
+import consoleversion.repository.InversorRepository;
 
 public class Notificador {
 

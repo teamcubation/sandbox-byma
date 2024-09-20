@@ -1,7 +1,7 @@
-package repository;
+package consoleversion.repository;
 
-import exceptions.InstrumentoNoEncontradoException;
-import model.instrumentoFinanciero.InstrumentoFinanciero;
+import consoleversion.exceptions.InstrumentoNoEncontradoException;
+import consoleversion.model.instrumentoFinanciero.InstrumentoFinanciero;
 
 import java.util.ArrayList;
 

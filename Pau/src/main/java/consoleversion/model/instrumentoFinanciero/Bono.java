@@ -1,4 +1,4 @@
-package model.instrumentoFinanciero;
+package consoleversion.model.instrumentoFinanciero;
 
 public class Bono extends InstrumentoFinanciero {
 

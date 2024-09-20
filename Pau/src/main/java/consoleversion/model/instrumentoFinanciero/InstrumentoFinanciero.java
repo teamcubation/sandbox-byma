@@ -1,6 +1,6 @@
-package model.instrumentoFinanciero;
+package consoleversion.model.instrumentoFinanciero;
 
-import service.observer.Notificador;
+import consoleversion.service.observer.Notificador;
 
 import java.time.LocalDate;
 

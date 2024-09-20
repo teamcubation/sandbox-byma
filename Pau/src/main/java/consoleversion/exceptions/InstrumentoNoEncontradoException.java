@@ -1,4 +1,4 @@
-package exceptions;
+package consoleversion.exceptions;
 
 public class InstrumentoNoEncontradoException extends Exception {
     public InstrumentoNoEncontradoException() {
