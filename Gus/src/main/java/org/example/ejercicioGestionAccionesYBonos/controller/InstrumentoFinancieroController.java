@@ -47,6 +47,7 @@ public class InstrumentoFinancieroController {
     public static final String POR_FAVOR_INGRESE_EL_NOMBRE_DEL_INSTRUMENTO = "Por favor, ingrese el nombre del instrumento ";
     public static final String QUE_DESEA_ELIMINAR = " que desea eliminar";
     public static final String ERROR_EL_NOMBRE_INGRESADO_ES_INVALIDO = "Error: El nombre ingresado es invalido!!!";
+
     private static InstrumentoFinancieroController instancia;
     private InstrumentoFinancieroServicio instrumentoFinancieroServicio;
     private NotificacionInstrumentoServicio notificacionInstrumentoServicio;
