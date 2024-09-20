@@ -29,30 +29,13 @@ public class GestorIntrumento {
     }
 
     // Método para iniciar la gestión
-    // Método para iniciar la gestión
     public void iniciarGestion() {
         boolean continuar = true;
 
         while (continuar) {
-            mostrarMenu();  // Utilizamos el método modularizado
+            mostrarMenu();
 
-            int opcion = -1; // Valor inicial fuera del rango válido
-            boolean opcionValida = false;
-
-            while (!opcionValida) {
-                try {
-                    opcion = scanner.nextInt();
-                    scanner.nextLine(); // Limpiar el buffer
-                    if (opcion < 1 || opcion > 5) {
-                        System.out.println("Opción no válida. Por favor, ingrese un número entre 1 y 5.");
-                    } else {
-                        opcionValida = true; // Salir del bucle si la opción es válida
-                    }
-                } catch (InputMismatchException e) {
-                    System.out.println("Entrada no válida. Por favor, ingrese un número.");
-                    scanner.nextLine(); // Limpiar el buffer después del error
-                }
-            }
+            int opcion = obtenerOpcionValida();
 
             switch (opcion) {
                 case 1:
@@ -78,7 +61,28 @@ public class GestorIntrumento {
         }
     }
 
-    // Modificar el menú usando StringBuilder para mejorar la legibilidad
+    private int obtenerOpcionValida() {
+        int opcion = -1;
+        boolean opcionValida = false;
+
+        while (!opcionValida) {
+            try {
+                opcion = scanner.nextInt();
+                scanner.nextLine(); // Limpiar el buffer
+                if (opcion < 1 || opcion > 5) {
+                    System.out.println("Opción no válida. Por favor, ingrese un número entre 1 y 5.");
+                } else {
+                    opcionValida = true; // Salir del bucle si la opción es válida
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada no válida. Por favor, ingrese un número.");
+                scanner.nextLine(); // Limpiar el buffer después del error
+            }
+        }
+
+        return opcion;
+    }
+
     private void mostrarMenu() {
         StringBuilder menu = new StringBuilder();
         menu.append("Seleccione una opción:\n")
@@ -126,8 +130,8 @@ public class GestorIntrumento {
                 System.out.println("3. Dividendo");
             } else if (instrumento instanceof Bono) {
                 System.out.println("3. Tasa de interés");
-            }else{
-               // throw new Exception("tiene que ser un bono o una accion");
+            } else {
+                // throw new Exception("tiene que ser un bono o una accion");
             }
 
             int opcion = scanner.nextInt();
