@@ -2,10 +2,7 @@ package controllers;
 
 import exceptions.InstrumentoDuplicadoException;
 import exceptions.InstrumentoNoEncontradoException;
-import models.AccionFactory;
-import models.BonoFactory;
-import models.InstrumentoFactory;
-import models.InstrumentoFinanciero;
+import models.*;
 import services.InstrumentoService;
 
 import java.util.InputMismatchException;
@@ -51,11 +48,11 @@ public class InstrumentoController {
                     consultarInstrumentos();
                     break;
                 case 3:
-                    /*editarInstrumento();
+                    editarInstrumento();
                     break;
                 case 4:
                     eliminarInstrumentoPorNombre();
-                    break;*/
+                    break;
                 case 5:
                     continuar = false;
                     System.out.println("Gracias por usar el sistema. ¡Hasta luego!");
@@ -64,6 +61,64 @@ public class InstrumentoController {
                     System.out.println("Opción no válida. Inténtelo de nuevo.");
                     break;
             }
+        }
+    }
+
+    private void editarInstrumento() {
+        System.out.print("Introduce el nombre del instrumento a editar: ");
+        String nombreInstrumento = scanner.nextLine();
+        try {
+            InstrumentoFinanciero instrumento = buscarInstrumentoPorNombre(nombreInstrumento);
+            System.out.println("Instrumento encontrado: " + instrumento);
+            System.out.println("Seleccione el campo a editar:");
+            System.out.println("1. Nombre");
+            System.out.println("2. Precio");
+
+            if (instrumento instanceof Accion) {
+                System.out.println("3. Dividendo");
+            } else if (instrumento instanceof Bono) {
+                System.out.println("3. Tasa de interés");
+            }else{
+                throw new InstrumentoNoEncontradoException("El instrumento no es ni Accion ni Bono");
+            }
+
+            int opcion = obtenerOpcionValida();
+
+            switch (opcion) {
+                case 1:
+                    System.out.print("Introduce el nuevo nombre: ");
+                    String nuevoNombre = scanner.nextLine();
+                    instrumento.modificarNombre(nuevoNombre);
+                    System.out.println("Nombre actualizado exitosamente.");
+                    break;
+                case 2:
+                    System.out.print("Introduce el nuevo precio: ");
+                    double nuevoPrecio = scanner.nextDouble();
+                    instrumento.modificarPrecio(nuevoPrecio);
+                    System.out.println("Precio actualizado exitosamente.");
+                    break;
+                case 3:
+                    if (instrumento instanceof Accion) {
+                        System.out.print("Introduce el nuevo dividendo: ");
+                        double nuevoDividendo = scanner.nextDouble();
+                        ((Accion) instrumento).modificarDividendo(nuevoDividendo);
+                        System.out.println("Dividendo actualizado exitosamente.");
+                    } else if (instrumento instanceof Bono) {
+                        System.out.print("Introduce la nueva tasa de interés: ");
+                        double nuevaTasaInteres = scanner.nextDouble();
+                        ((Bono) instrumento).modificarTasaInteres(nuevaTasaInteres);
+                        System.out.println("Tasa de interés actualizada exitosamente.");
+                    }
+                    break;
+                default:
+                    System.out.println("Opción no válida. Inténtelo de nuevo.");
+                    break;
+            }
+        } catch (InstrumentoNoEncontradoException e) {
+            System.out.println(e.getMessage());
+        } catch (InputMismatchException e) {
+            System.out.println("Error: Entrada no válida.");
+            scanner.nextLine();
         }
     }
 
@@ -164,27 +219,15 @@ public class InstrumentoController {
         instrumentoService.verificarDuplicado(nombreInstrumento);
     }
 
-    /*public void modificarNombre(InstrumentoFinanciero instrumento) {
-        instrumentoService.modificarNombre(instrumento);
-    }
-
-    public void modificarPrecio(InstrumentoFinanciero instrumento) {
-        instrumentoService.modificarPrecio(instrumento);
-    }
-
-    public void modificarDividendo(InstrumentoFinanciero instrumento) {
-        instrumentoService.modificarDividendo((Accion) instrumento);
-    }
-
-    public void modificarTasaInteres(InstrumentoFinanciero instrumento) {
-        instrumentoService.modificarTasaInteres((Bono) instrumento);
-    }
-
-    public void eliminarInstrumentoPorNombre(String nombreInstrumento) {
+    private void eliminarInstrumentoPorNombre() {
+        System.out.print("Introduce el nombre del instrumento a eliminar: ");
+        String nombreInstrumento = scanner.nextLine();
         try {
             instrumentoService.eliminarInstrumentoPorNombre(nombreInstrumento);
-        } catch (Exception e) {
+            System.out.println("Instrumento eliminado con éxito.");
+        } catch (InstrumentoNoEncontradoException e) {
             System.out.println(e.getMessage());
         }
-    }*/
+    }
+
 }

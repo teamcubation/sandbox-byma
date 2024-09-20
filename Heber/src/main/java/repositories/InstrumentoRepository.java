@@ -48,14 +48,9 @@ public class InstrumentoRepository {
         }
     }
 
-    /*public void eliminarInstrumentoPorNombre(String nombreInstrumento) throws InstrumentoNoEncontradoException {
-        boolean eliminado = instrumentos.removeIf(instrumento -> instrumento.getNombre().equalsIgnoreCase(nombreInstrumento));
+    public boolean eliminarInstrumentoPorNombre(String nombreInstrumento) {
+        return instrumentos.removeIf(instrumento -> instrumento.getNombre().equalsIgnoreCase(nombreInstrumento));
+    }
 
-        if (!eliminado) {
-            throw new InstrumentoNoEncontradoException("El instrumento con el nombre " + nombreInstrumento + " no se ha encontrado");
-        } else {
-            System.out.println("Instrumento con el nombre " + nombreInstrumento + " eliminado exitosamente.");
-        }
-    }*/
 }
 
