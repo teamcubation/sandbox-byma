@@ -9,6 +9,7 @@ import springApp.java.com.example.demo.models.InstrumentoFinancieroModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class InstrumentoRepository {
@@ -34,6 +35,28 @@ public class InstrumentoRepository {
 
     public List<InstrumentoFinancieroModel> obtenerInstrumentos() {
         return instrumentosFinancieros;
+    }
+
+    public Optional<InstrumentoFinancieroModel> eliminarInstrumento(Long id) {
+        Optional<InstrumentoFinancieroModel> instrumento = instrumentosFinancieros.stream().filter(i -> i.getId().equals(id)).findFirst();
+        if (instrumento.isPresent()) {
+            instrumentosFinancieros.remove(instrumento.get());
+        }
+        return instrumento;
+    }
+
+    public Object obtenerInstrumento(Long id) {
+        return instrumentosFinancieros.stream().filter(i -> i.getId().equals(id)).findFirst();
+    }
+
+    public Object actualizarInstrumento(InstrumentoFinancieroModel instrumento) {
+        Optional<InstrumentoFinancieroModel> instrumentoEncontrado = instrumentosFinancieros.stream().filter(i -> i.getId().equals(instrumento.getId())).findFirst();
+        if (instrumentoEncontrado.isPresent()) {
+            instrumentosFinancieros.remove(instrumentoEncontrado.get());
+            instrumentosFinancieros.add(instrumento);
+            return instrumento;
+        }
+        return null;
     }
 }
 

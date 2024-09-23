@@ -54,4 +54,20 @@ public class InstrumentoController {
         return new ResponseEntity<>(instrumentoService.obtenerInstrumentos(), HttpStatus.OK);
     }
 
+    //buscar por id
+    @GetMapping("/obtenerInstrumento/{id}")
+    public ResponseEntity<?> obtenerInstrumento(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(instrumentoService.obtenerInstrumento(id), HttpStatus.OK);
+    }
+
+    @DeleteMapping ("/eliminarInstrumento/{id}")
+    public ResponseEntity<?> eliminarInstrumento(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(instrumentoService.eliminarInstrumento(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/actualizarInstrumento")
+    public ResponseEntity<?> actualizarInstrumento(@RequestBody InstrumentoFinancieroModel instrumento) {
+        return new ResponseEntity<>(instrumentoService.actualizarInstrumento(instrumento), HttpStatus.OK);
+    }
+
 }

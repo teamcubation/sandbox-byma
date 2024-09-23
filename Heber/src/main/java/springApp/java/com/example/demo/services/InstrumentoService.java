@@ -10,6 +10,7 @@ import springApp.java.com.example.demo.repositories.InstrumentoRepository;
 import consoleApp.models.InstrumentoFinanciero;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -40,4 +41,15 @@ public class InstrumentoService {
     }
 
 
+    public Optional<InstrumentoFinancieroModel> eliminarInstrumento(Long id) {
+        return instrumentoRepository.eliminarInstrumento(id);
+    }
+
+    public Object actualizarInstrumento(InstrumentoFinancieroModel instrumento) {
+        return instrumentoRepository.actualizarInstrumento(instrumento);
+    }
+
+    public Object obtenerInstrumento(Long id) {
+        return instrumentoRepository.obtenerInstrumento(id);
+    }
 }
