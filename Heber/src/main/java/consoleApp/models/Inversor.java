@@ -1,7 +1,4 @@
-package springApp.java.com.example.demo.models;
-
-import consoleApp.models.InstrumentoFinanciero;
-import consoleApp.models.Observer;
+package consoleApp.models;
 
 public class Inversor implements Observer {
     private String nombre;

@@ -1,14 +1,17 @@
 package springApp.java.com.example.demo.controllers;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import springApp.java.com.example.demo.models.AccionModel;
+import springApp.java.com.example.demo.models.BonoModel;
+import springApp.java.com.example.demo.models.InstrumentoFinancieroModel;
+import springApp.java.com.example.demo.models.TipoInstrumento;
 import springApp.java.com.example.demo.services.InstrumentoService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-//@RequestMapping("/instrumento") // Este seria el math base del controller
+//@RequestMapping("/instrumento") // Este seria el path base del controller
 public class InstrumentoController {
 
     @Autowired
@@ -16,7 +19,7 @@ public class InstrumentoController {
 
     @GetMapping("/hola")
     public String instrumento() {
-        return "Instrumento";
+        return "asdasd";
     }
 
     // GET URL: localhost:8081/service-service
@@ -33,6 +36,22 @@ public class InstrumentoController {
         return instrumentoService.helloRepository();
     }
 
+    ///////////METODOS CRUD/////////////////
+    // AGREGAR INSTRUMENTO
+    @PostMapping("/agregarInstrumento")
+    public ResponseEntity<InstrumentoFinancieroModel> agregarInstrumento(@RequestBody InstrumentoFinancieroModel instrumento) {
+        if (instrumento instanceof AccionModel) {
+            return new ResponseEntity<>(instrumentoService.agregarAccion((AccionModel) instrumento), HttpStatus.CREATED);
+        } else if (instrumento instanceof BonoModel) {
+            return new ResponseEntity<>(instrumentoService.agregarBono((BonoModel) instrumento), HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 
+    // OBTENER TODOS LOS INSTRUMENTOS
+    @GetMapping("/obtenerInstrumentos")
+    public ResponseEntity<?> obtenerInstrumentos() {
+        return new ResponseEntity<>(instrumentoService.obtenerInstrumentos(), HttpStatus.OK);
+    }
 
 }

@@ -2,8 +2,8 @@ package consoleApp.services;
 
 import consoleApp.exceptions.InstrumentoDuplicadoException;
 import consoleApp.exceptions.InstrumentoNoEncontradoException;
-import consoleApp.models.*;
 import consoleApp.repositories.InstrumentoRepository;
+import consoleApp.models.InstrumentoFinanciero;
 
 import java.util.Scanner;
 
