@@ -51,10 +51,6 @@ public class InstrumentoService {
         return instrumentoRepository.eliminarInstrumento(id);
     }
 
-    public Object actualizarInstrumento(InstrumentoFinancieroModel instrumento) {
-        return instrumentoRepository.actualizarInstrumento(instrumento);
-    }
-
     public Optional<InstrumentoFinancieroModel> obtenerInstrumento(Long id) {
         Optional<InstrumentoFinancieroModel> instrumento = instrumentoRepository.obtenerInstrumento(id);
         if (!instrumento.isPresent()) {
@@ -68,5 +64,9 @@ public class InstrumentoService {
         if (!instrumento.isPresent()) {
             throw new InstrumentoNoEncontradoException("El instrumento con id " + id + " no existe");
         }
+    }
+
+    public void editarInstrumento(Long id, InstrumentoFinancieroModel nuevoInstrumento) {
+        instrumentoRepository.editarInstrumento(id, nuevoInstrumento);
     }
 }

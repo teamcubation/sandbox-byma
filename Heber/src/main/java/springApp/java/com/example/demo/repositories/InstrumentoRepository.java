@@ -1,6 +1,7 @@
 package springApp.java.com.example.demo.repositories;
 
 import org.springframework.stereotype.Repository;
+import springApp.java.com.example.demo.exceptions.InstrumentoNoEncontradoException;
 import springApp.java.com.example.demo.models.AccionModel;
 import springApp.java.com.example.demo.models.BonoModel;
 import springApp.java.com.example.demo.models.InstrumentoFinancieroModel;
@@ -48,18 +49,15 @@ public class InstrumentoRepository {
         return instrumentosFinancieros.stream().filter(i -> i.getId().equals(id)).findFirst();
     }
 
-    public Object actualizarInstrumento(InstrumentoFinancieroModel instrumento) {
-        Optional<InstrumentoFinancieroModel> instrumentoEncontrado = instrumentosFinancieros.stream().filter(i -> i.getId().equals(instrumento.getId())).findFirst();
-        if (instrumentoEncontrado.isPresent()) {
-            instrumentosFinancieros.remove(instrumentoEncontrado.get());
-            instrumentosFinancieros.add(instrumento);
-            return instrumento;
-        }
-        return null;
-    }
-
     public boolean verificarInstrumentoDuplicado(InstrumentoFinancieroModel instrumento) {
         return instrumentosFinancieros.stream().anyMatch(i -> i.getNombre().equals(instrumento.getNombre()));
+    }
+
+    public void editarInstrumento(Long id, InstrumentoFinancieroModel nuevoInstrumento) {
+        InstrumentoFinancieroModel instrumentoExistente = obtenerInstrumento(id)
+                .orElseThrow(() -> new InstrumentoNoEncontradoException("Instrumento no encontrado."));
+        instrumentosFinancieros.remove(instrumentoExistente);
+        instrumentosFinancieros.add(nuevoInstrumento);
     }
 }
 

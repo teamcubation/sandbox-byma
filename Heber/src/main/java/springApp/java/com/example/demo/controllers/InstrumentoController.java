@@ -46,16 +46,19 @@ public class InstrumentoController {
     //EJEMPLO DE JSON PARA AGREGAR ACCION
     /*
     {
-        "nombre": "Accion 1",
+        "tipo":"ACCION",
+        "nombre": "BYMA",
         "precio": 100,
         "cantidad": 10,
         "dividendo": 10
+    }
      */
 
     //EJEMPLO DE JSON PARA AGREGAR BONO
     /*
     {
-        "nombre": "Bono 1",
+        "tipo":"BONO",
+        "nombre": "AL30",
         "precio": 100,
         "cantidad": 10,
         "interes": 10
@@ -102,7 +105,7 @@ public class InstrumentoController {
         }
     }
 
-    // ELIMINAR INSTRUMENTO
+    // ELIMINAR INSTRUMENTO POR ID
     //http://localhost:5000/api/instrumentos/1
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarInstrumentoPorId(@PathVariable("id") Long id) {
@@ -116,32 +119,38 @@ public class InstrumentoController {
         }
     }
 
-    // ACTUALIZAR INSTRUMENTO
-    //http://localhost:5000/api/instrumentos/actualizarInstrumento
-    //EJEMPLO DE JSON PARA ACTUALIZAR ACCION
+    //EDITAR INSTRUMENTO
+    //http://localhost:5000/api/instrumentos/1
+    //EJEMPLO DE JSON PARA EDITAR ACCION
     /*
     {
-        "id": 1,
-        "nombre": "Accion 1",
+        "nombre": "BYMA",
         "precio": 100,
         "cantidad": 10,
         "dividendo": 10
     }
      */
 
-    //EJEMPLO DE JSON PARA ACTUALIZAR BONO
+    //EJEMPLO DE JSON PARA EDITAR BONO
     /*
     {
-        "id": 1,
-        "nombre": "Bono 1",
+        "nombre": "AL30",
         "precio": 100,
         "cantidad": 10,
         "interes": 10
     }
      */
-    @PutMapping("/actualizarInstrumento")
-    public ResponseEntity<?> actualizarInstrumento(@RequestBody InstrumentoFinancieroModel instrumento) {
-        return new ResponseEntity<>(instrumentoService.actualizarInstrumento(instrumento), HttpStatus.OK);
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> editarInstrumento(@PathVariable("id") Long id, @RequestBody InstrumentoFinancieroModel instrumento) {
+        try {
+            instrumentoService.editarInstrumento(id, instrumento);
+            return ResponseEntity.ok("Instrumento editado correctamente.");
+        } catch (InstrumentoNoEncontradoException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al editar instrumento", HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
