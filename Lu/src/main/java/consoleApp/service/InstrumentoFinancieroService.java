@@ -36,7 +36,7 @@ public class InstrumentoFinancieroService {
         return this.instrumentosFinancierosRepository.eliminar(nombre);
     }
 
-    public InstrumentoFinanciero registrar(String nombre, double precio, int tipo) throws OpcionInvalidaException, InstrumentoDuplicadoException {
+    public InstrumentoFinanciero registrar(String nombre, double precio, int tipo) throws InstrumentoDuplicadoException {
         return this.instrumentosFinancierosRepository.registrar(nombre, precio, tipo);
     }
 }
