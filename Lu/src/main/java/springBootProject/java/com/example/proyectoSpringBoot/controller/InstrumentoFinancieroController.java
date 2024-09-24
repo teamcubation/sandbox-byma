@@ -1,6 +1,9 @@
 package springBootProject.java.com.example.proyectoSpringBoot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springBootProject.java.com.example.proyectoSpringBoot.excepciones.InstrumentoDuplicadoException;
 import springBootProject.java.com.example.proyectoSpringBoot.excepciones.InstrumentoNoEncontradoException;
@@ -21,38 +24,41 @@ public class InstrumentoFinancieroController {
     }
 
     @RequestMapping("/consultar/{nombre}")
-    private String consultar(@PathVariable("nombre") String nombre) {
+    private ResponseEntity<?> consultar(@PathVariable("nombre") String nombre) {
         try {
-            return this.instrumentoFinancieroService.consultar(nombre).toString();
+            return ResponseEntity.ok(this.instrumentoFinancieroService.consultar(nombre));
         } catch (InstrumentoNoEncontradoException mensaje) {
-            return mensaje.getMessage();
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(mensaje.getMessage());
         }
     }
 
     @PostMapping("/crear/{nombre}/{precio}")
-    private String registrar (@PathVariable("nombre") String nombre, @PathVariable("precio") double precio) {
+    private ResponseEntity<?> registrar (@PathVariable("nombre") String nombre, @PathVariable("precio") double precio) {
         try {
-            return "Instrumento financiero creado con éxito: " + this.instrumentoFinancieroService.registrar(nombre, precio, 1).toString();
+            String instrumentoFinancieroNuevo = this.instrumentoFinancieroService.registrar(nombre, precio, 1).toString();
+            return ResponseEntity.status(HttpStatus.CREATED).body("Instrumento financiero creado con éxito: " + instrumentoFinancieroNuevo);
         } catch (InstrumentoDuplicadoException mensaje) {
-            return mensaje.getMessage();
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(mensaje.getMessage());
         }
     }
 
     @DeleteMapping("/eliminar/{nombre}")
-    private String eliminar(@PathVariable("nombre") String nombre){
+    private ResponseEntity<?> eliminar(@PathVariable("nombre") String nombre){
         try {
-            return "Instrumento financiero eliminado con éxito: " + this.instrumentoFinancieroService.eliminar(nombre).toString();
+            String instrumentoFinancieroEliminado = this.instrumentoFinancieroService.eliminar(nombre).toString();
+            return ResponseEntity.ok("Instrumento financiero eliminado con éxito: " + instrumentoFinancieroEliminado);
         } catch (InstrumentoNoEncontradoException mensaje) {
-            return mensaje.getMessage();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(mensaje.getMessage());
         }
     }
 
     @PutMapping("/editar/{instrumentoAEditar}/{nombre}/{precio}")
-    private String editar(@PathVariable("instrumentoAEditar") String instrumentoAEditar, @PathVariable("nombre") String nombreNuevo, @PathVariable("precio") double precio) {
+    private ResponseEntity<?> editar(@PathVariable("instrumentoAEditar") String instrumentoAEditar, @PathVariable("nombre") String nombreNuevo, @PathVariable("precio") double precio) {
         try {
-            return "Instrumento financiero editado con éxito: " + this.instrumentoFinancieroService.editar(instrumentoAEditar, nombreNuevo, precio).toString();
+            String instrumentoFinancieroEditado = this.instrumentoFinancieroService.editar(instrumentoAEditar, nombreNuevo, precio).toString();
+            return ResponseEntity.ok("Instrumento financiero editado con éxito: " + instrumentoFinancieroEditado);
         } catch (InstrumentoNoEncontradoException mensaje) {
-            return mensaje.getMessage();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(mensaje.getMessage());
         }
     }
 }
