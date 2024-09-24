@@ -7,12 +7,15 @@ public abstract class InstrumentoFinanciero {
     private double precio;
     private Tipo tipo;
 
-    public InstrumentoFinanciero(){}
+    public InstrumentoFinanciero() {
+    }
+
     public InstrumentoFinanciero(String nombre, double precio, Tipo tipo) {
         this.nombre = nombre;
         this.precio = precio;
         this.tipo = tipo;
     }
+
     public double getPrecio() {
         return precio;
     }
@@ -35,13 +38,19 @@ public abstract class InstrumentoFinanciero {
     }
 
     public void setNombre(String nombre) {
-        if (nombre == null || nombre.isBlank()) {
-            throw new IllegalArgumentException("El nombre no puede ser nulo o vacío.");
+        if (nombre == null) {
+            throw new IllegalArgumentException("El nombre no puede ser nulo .");
+        }
+        if (!nombre.isBlank()) {
+            throw new IllegalArgumentException("El nombre no puede ser  vacío.");
         }
         this.nombre = nombre;
     }
 
     public void setTipo(Tipo tipo) {
+        if (tipo == null) {
+            throw new NullPointerException("El tipo no puede ser nulo .");
+        }
         if (!tipo.equals(Tipo.ACCION) && !tipo.equals(Tipo.BONO)) {
             throw new IllegalArgumentException("Error. Tipo invalido");
         }
@@ -61,4 +70,9 @@ public abstract class InstrumentoFinanciero {
         }
     }
 
+    public void actualizar(InstrumentoFinanciero instrumento) {
+        this.setNombre(instrumento.getNombre());
+        this.setTipo(instrumento.getTipo());
+        this.setPrecio(instrumento.getPrecio());
+    }
 }

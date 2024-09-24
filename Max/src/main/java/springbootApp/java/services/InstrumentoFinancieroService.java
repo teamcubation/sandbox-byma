@@ -11,9 +11,11 @@ import springbootApp.java.models.Tipo;
 import springbootApp.java.repositories.InstrumentoFinancieroRepository;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 @Service
 public class InstrumentoFinancieroService {
+    private static final Logger LOGGER = Logger.getLogger(InstrumentoFinancieroService.class.getName());
     @Autowired
     private final InstrumentoFinancieroRepository instrumentoFinancieroRepository;
 
@@ -21,7 +23,7 @@ public class InstrumentoFinancieroService {
         this.instrumentoFinancieroRepository = InstrumentoFinancieroRepository.getInstrumentoFinancieroRepository();
     }
 
-    public void registrarInstrumentoFinanciero(String nombre, double precio, Tipo tipo) {
+    public void registrarInstrumentoFinanciero(String nombre, double precio, Tipo tipo) throws InstrumentoDuplicadoException {
         InstrumentoFinanciero instrumento = instrumentoFinancieroRepository.buscarInstrumento(nombre);
         if (instrumento != null) {
             throw new InstrumentoDuplicadoException("Error. Accion existente");
@@ -38,7 +40,7 @@ public class InstrumentoFinancieroService {
         return instrumentoFinancieroRepository.consultarTodosLosInstrumentos();
     }
 
-    public void modificarInstrumento(String variable, String modificacion, String nombre) {
+    public void modificarInstrumento(String nombre, String variable, String modificacion) throws InstrumentoNoEncontradoException {
         InstrumentoFinanciero instrumento = instrumentoFinancieroRepository.buscarInstrumento(nombre);
         if (instrumento != null) {
             switch (variable) {
@@ -46,6 +48,7 @@ public class InstrumentoFinancieroService {
                     instrumento.setNombre(modificacion);
                     break;
                 case "2":
+                    System.out.println("el tipo es " + modificacion );;
                     if (modificacion.equals("1")) {
                         instrumento.setTipo(Tipo.ACCION);
                     } else if (modificacion.equals("2")) {
@@ -59,7 +62,7 @@ public class InstrumentoFinancieroService {
                         double numero = Double.parseDouble(modificacion);
                         instrumento.setPrecio(numero);
                     } catch (NumberFormatException e) {
-                        System.out.println("Error de formato: ingrese un número.");
+                        throw new IllegalArgumentException("Error. El precio debe ser un valor numérico");
                     }
                     break;
                 default:
@@ -70,7 +73,7 @@ public class InstrumentoFinancieroService {
         }
     }
 
-    public void eliminarInstrumento(String nombre) {
+    public void eliminarInstrumento(String nombre) throws InstrumentoNoEncontradoException {
         InstrumentoFinanciero instrumento = instrumentoFinancieroRepository.buscarInstrumento(nombre);
         if (instrumento == null) {
             throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
@@ -80,5 +83,9 @@ public class InstrumentoFinancieroService {
 
     public InstrumentoFinanciero buscarInstrumento(String nombre) {
         return instrumentoFinancieroRepository.buscarInstrumento(nombre);
+    }
+
+    public void actualizarInstrumento(String nombre, InstrumentoFinanciero instrumento) {
+        instrumentoFinancieroRepository.modificarInstrumento(nombre, instrumento);
     }
 }

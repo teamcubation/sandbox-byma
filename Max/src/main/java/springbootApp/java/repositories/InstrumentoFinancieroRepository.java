@@ -38,4 +38,9 @@ public class InstrumentoFinancieroRepository {
         }
         return instrumentoADevolver;
     }
+
+    public void modificarInstrumento(String nombre, InstrumentoFinanciero instrumento) {
+        InstrumentoFinanciero instrumentoEncontrado = this.buscarInstrumento(nombre);
+        instrumentoEncontrado.actualizar(instrumento);
+    }
 }

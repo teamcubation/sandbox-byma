@@ -30,14 +30,14 @@ public class Inversor implements Observer {
         this.dni = dni;
     }
 
-    public void suscribirse(InstrumentoFinanciero instrumento) {
+    public void suscribirse(InstrumentoFinanciero instrumento) throws InstrumentoDuplicadoException {
         if (tieneInstrumento(instrumento)) {
             throw new InstrumentoDuplicadoException("Error. Ya estas suscripto a este instrumento");
         }
         cartera.add(instrumento);
     }
 
-    public void desuscribirse(InstrumentoFinanciero instrumento) {
+    public void desuscribirse(InstrumentoFinanciero instrumento) throws InstrumentoNoEncontradoException {
         if (!tieneInstrumento(instrumento)) {
             throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
         }

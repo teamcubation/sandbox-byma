@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
 import springbootApp.java.models.Accion;
 import springbootApp.java.models.InstrumentoDTO;
 import springbootApp.java.models.InstrumentoFinanciero;
@@ -19,8 +20,8 @@ public class InstrumentoFinancieroController {
     @Autowired
     private InstrumentoFinancieroService instrumentoFinancieroService;
 
-    public InstrumentoFinancieroController() {
-        this.instrumentoFinancieroService = new InstrumentoFinancieroService();
+    public InstrumentoFinancieroController(InstrumentoFinancieroService instrumentoFinancieroService) {
+        this.instrumentoFinancieroService = instrumentoFinancieroService;
     }
 
     @GetMapping("/prueba")
@@ -60,15 +61,19 @@ public class InstrumentoFinancieroController {
     }
 
     @DeleteMapping("/eliminarInstrumento/{nombre}")
-    public String eliminarInstrumento(@PathVariable String nombre) {
+    public String eliminarInstrumento(@PathVariable String nombre) throws InstrumentoNoEncontradoException {
         instrumentoFinancieroService.eliminarInstrumento(nombre);
         return "Instrumento eliminado";
     }
 
     @PutMapping("/modificarInstrumento/{nombre}/variable/{variable}")
-    public String modificarInstrumento(@PathVariable String nombre, @RequestBody String variable, @PathVariable String modificacion) {
-        instrumentoFinancieroService.modificarInstrumento(variable, modificacion, nombre);
+    public String modificarInstrumento(@PathVariable String nombre, @PathVariable String variable, @RequestBody String modificacion) throws InstrumentoNoEncontradoException {
+        instrumentoFinancieroService.modificarInstrumento(nombre, variable, modificacion);
         return "Instrumento modificado";
     }
-
+    @PutMapping("/actualizarInstrumento/{nombre}")
+    public String actualizarInstrumento(@PathVariable String nombre, @RequestBody InstrumentoFinanciero instrumento) throws InstrumentoNoEncontradoException {
+        instrumentoFinancieroService.actualizarInstrumento(nombre, instrumento);
+        return "Instrumento modificado";
+    }
 }

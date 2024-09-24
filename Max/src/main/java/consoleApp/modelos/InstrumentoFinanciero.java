@@ -1,5 +1,6 @@
 package consoleApp.modelos;
 
+import consoleApp.excepciones.InstrumentoDuplicadoException;
 import consoleApp.excepciones.InstrumentoNoEncontradoException;
 import consoleApp.excepciones.InversorExistenteException;
 import consoleApp.servicios.ObserverService;
@@ -73,7 +74,7 @@ public abstract class InstrumentoFinanciero {
         ObserverService.notificarCambioDePrecio(inversoresList, this);
     }
 
-    public void suscribirse(Inversor inversor) {
+    public void suscribirse(Inversor inversor) throws InversorExistenteException, InstrumentoDuplicadoException {
         if (tieneInversor(inversor)) {
             throw new InversorExistenteException("Error. El inversor ya estaba suscripto");
         } else {
@@ -82,7 +83,7 @@ public abstract class InstrumentoFinanciero {
         }
     }
 
-    public void desuscribirse(Inversor inversor) {
+    public void desuscribirse(Inversor inversor) throws InstrumentoNoEncontradoException {
         if (!tieneInversor(inversor)) {
             throw new InstrumentoNoEncontradoException("Error. inversor no encontrado");
         }
