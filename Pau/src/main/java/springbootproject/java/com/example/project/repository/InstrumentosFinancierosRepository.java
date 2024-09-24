@@ -46,18 +46,22 @@ public class InstrumentosFinancierosRepository {
         InstrumentoFinanciero instrumento = consultarPorUnInstrumentoFinanciero(nombreActual);
         if (instrumento == null) {
             throw new InstrumentoNoEncontradoException("El instrumento con nombre " + nombreActual + " no fue encontrado.");
-        } // Editar el instrumento encontrado
-        instrumento.setNombre(nombreNuevo);
-        return instrumento;
+        } else {
+            instrumento.setNombre(nombreNuevo);
+            return instrumento;
+        }
+
     }
 
     public InstrumentoFinanciero editarPrecioInstrumento(String nombreActual, double precioNuevo) throws InstrumentoNoEncontradoException {
         InstrumentoFinanciero instrumento = consultarPorUnInstrumentoFinanciero(nombreActual);
         if (instrumento == null) {
             throw new InstrumentoNoEncontradoException("El instrumento con nombre " + nombreActual + " no fue encontrado.");
-        } // Editar el instrumento encontrado
-        instrumento.setPrecio(precioNuevo);
-        return instrumento;
+        } else {
+            instrumento.setPrecio(precioNuevo);
+            return instrumento;
+        }
+
     }
 
     public void eliminarInstrumentoFinanciero(String nombre) throws InstrumentoNoEncontradoException {
