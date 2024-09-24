@@ -1,4 +1,4 @@
-package consoleApp.exceptions;
+package springApp.java.com.example.demo.exceptions;
 
 public class InstrumentoDuplicadoException extends RuntimeException {
     public InstrumentoDuplicadoException(String message) {

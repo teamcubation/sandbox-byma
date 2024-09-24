@@ -1,6 +1,6 @@
 package consoleApp.models;
 
-import consoleApp.exceptions.InstrumentoDuplicadoException;
+import springApp.java.com.example.demo.exceptions.InstrumentoDuplicadoException;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

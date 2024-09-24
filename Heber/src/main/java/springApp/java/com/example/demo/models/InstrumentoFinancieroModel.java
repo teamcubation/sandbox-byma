@@ -6,7 +6,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "tipo" // Usamos el campo "tipo" para identificar la subclase
+        property = "tipo",
+        visible = true // Hacer visible el campo 'tipo' durante la deserialización
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = AccionModel.class, name = "ACCION"),
@@ -20,6 +21,9 @@ public abstract class InstrumentoFinancieroModel {
 
     // Constructor vacío necesario para Jackson
     public InstrumentoFinancieroModel() {
+        if (!(this instanceof AccionModel) && !(this instanceof BonoModel)) {
+            throw new IllegalArgumentException("Tipo de instrumento no válido");
+        }
     }
 
     // Constructor parametrizado

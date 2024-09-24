@@ -1,7 +1,7 @@
 /*package app;
 
 import consoleApp.controllers.InstrumentoController;
-import consoleApp.exceptions.InstrumentoNoEncontradoException;
+import springApp.java.com.example.demo.exceptions.InstrumentoNoEncontradoException;
 import consoleApp.models.Accion;
 import consoleApp.models.Bono;
 import consoleApp.models.InstrumentoFactory;

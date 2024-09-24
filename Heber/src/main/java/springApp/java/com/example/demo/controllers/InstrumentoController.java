@@ -4,18 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springApp.java.com.example.demo.exceptions.InstrumentoNoEncontradoException;
 import springApp.java.com.example.demo.models.AccionModel;
 import springApp.java.com.example.demo.models.BonoModel;
 import springApp.java.com.example.demo.models.InstrumentoFinancieroModel;
-import springApp.java.com.example.demo.models.TipoInstrumento;
 import springApp.java.com.example.demo.services.InstrumentoService;
+import springApp.java.com.example.demo.exceptions.InstrumentoDuplicadoException;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
-//@RequestMapping("/instrumento") // Este seria el path base del controller
+@RequestMapping("/api/instrumentos") // Este es el path base del controller
 public class InstrumentoController {
 
     @Autowired
-    private InstrumentoService instrumentoService;
+    InstrumentoService instrumentoService;
 
     @GetMapping("/hola")
     public String instrumento() {
@@ -38,33 +42,103 @@ public class InstrumentoController {
 
     ///////////METODOS CRUD/////////////////
     // AGREGAR INSTRUMENTO
+    //http://localhost:5000/api/instrumentos/agregarInstrumento
+    //EJEMPLO DE JSON PARA AGREGAR ACCION
+    /*
+    {
+        "nombre": "Accion 1",
+        "precio": 100,
+        "cantidad": 10,
+        "dividendo": 10
+     */
+
+    //EJEMPLO DE JSON PARA AGREGAR BONO
+    /*
+    {
+        "nombre": "Bono 1",
+        "precio": 100,
+        "cantidad": 10,
+        "interes": 10
+    }
+     */
     @PostMapping("/agregarInstrumento")
-    public ResponseEntity<InstrumentoFinancieroModel> agregarInstrumento(@RequestBody InstrumentoFinancieroModel instrumento) {
-        if (instrumento instanceof AccionModel) {
-            return new ResponseEntity<>(instrumentoService.agregarAccion((AccionModel) instrumento), HttpStatus.CREATED);
-        } else if (instrumento instanceof BonoModel) {
-            return new ResponseEntity<>(instrumentoService.agregarBono((BonoModel) instrumento), HttpStatus.CREATED);
+    public ResponseEntity<String> agregarInstrumento(@RequestBody InstrumentoFinancieroModel instrumento) {
+        try {
+            if (instrumento instanceof AccionModel) {
+                instrumentoService.agregarAccion((AccionModel) instrumento);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Accion agregada");
+            } else if (instrumento instanceof BonoModel) {
+                instrumentoService.agregarBono((BonoModel) instrumento);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Bono agregado");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tipo de instrumento no valido");
+            }
+        } catch (InstrumentoDuplicadoException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al agregar instrumento");
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+
     // OBTENER TODOS LOS INSTRUMENTOS
-    @GetMapping("/obtenerInstrumentos")
-    public ResponseEntity<?> obtenerInstrumentos() {
+    //http://localhost:5000/api/instrumentos
+    @GetMapping
+    public ResponseEntity<List<InstrumentoFinancieroModel>> obtenerInstrumentos() {
         return new ResponseEntity<>(instrumentoService.obtenerInstrumentos(), HttpStatus.OK);
     }
 
     //buscar por id
+    //http://localhost:5000/api/instrumentos/obtenerInstrumento/1
     @GetMapping("/obtenerInstrumento/{id}")
     public ResponseEntity<?> obtenerInstrumento(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(instrumentoService.obtenerInstrumento(id), HttpStatus.OK);
+        try {
+            Optional<InstrumentoFinancieroModel> instrumento = instrumentoService.obtenerInstrumento(id);
+            return new ResponseEntity<>(instrumento, HttpStatus.OK);
+        } catch (InstrumentoNoEncontradoException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al obtener instrumento", HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @DeleteMapping ("/eliminarInstrumento/{id}")
-    public ResponseEntity<?> eliminarInstrumento(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(instrumentoService.eliminarInstrumento(id), HttpStatus.OK);
+    // ELIMINAR INSTRUMENTO
+    //http://localhost:5000/api/instrumentos/1
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> eliminarInstrumentoPorId(@PathVariable("id") Long id) {
+        try {
+            instrumentoService.eliminarInstrumentoPorId(id);
+            return ResponseEntity.ok("Instrumento eliminado.");
+        } catch (InstrumentoNoEncontradoException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al eliminar instrumento", HttpStatus.BAD_REQUEST);
+        }
     }
 
+    // ACTUALIZAR INSTRUMENTO
+    //http://localhost:5000/api/instrumentos/actualizarInstrumento
+    //EJEMPLO DE JSON PARA ACTUALIZAR ACCION
+    /*
+    {
+        "id": 1,
+        "nombre": "Accion 1",
+        "precio": 100,
+        "cantidad": 10,
+        "dividendo": 10
+    }
+     */
+
+    //EJEMPLO DE JSON PARA ACTUALIZAR BONO
+    /*
+    {
+        "id": 1,
+        "nombre": "Bono 1",
+        "precio": 100,
+        "cantidad": 10,
+        "interes": 10
+    }
+     */
     @PutMapping("/actualizarInstrumento")
     public ResponseEntity<?> actualizarInstrumento(@RequestBody InstrumentoFinancieroModel instrumento) {
         return new ResponseEntity<>(instrumentoService.actualizarInstrumento(instrumento), HttpStatus.OK);

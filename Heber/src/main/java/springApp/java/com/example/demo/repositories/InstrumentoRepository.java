@@ -1,7 +1,6 @@
 package springApp.java.com.example.demo.repositories;
 
 import org.springframework.stereotype.Repository;
-import consoleApp.models.InstrumentoFinanciero;
 import springApp.java.com.example.demo.models.AccionModel;
 import springApp.java.com.example.demo.models.BonoModel;
 import springApp.java.com.example.demo.models.InstrumentoFinancieroModel;
@@ -45,7 +44,7 @@ public class InstrumentoRepository {
         return instrumento;
     }
 
-    public Object obtenerInstrumento(Long id) {
+    public Optional<InstrumentoFinancieroModel> obtenerInstrumento(Long id) {
         return instrumentosFinancieros.stream().filter(i -> i.getId().equals(id)).findFirst();
     }
 
@@ -57,6 +56,10 @@ public class InstrumentoRepository {
             return instrumento;
         }
         return null;
+    }
+
+    public boolean verificarInstrumentoDuplicado(InstrumentoFinancieroModel instrumento) {
+        return instrumentosFinancieros.stream().anyMatch(i -> i.getNombre().equals(instrumento.getNombre()));
     }
 }
 
