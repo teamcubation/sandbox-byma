@@ -2,6 +2,7 @@ package springBootProject.java.com.example.proyectoSpringBoot.service.serviceImp
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import springBootProject.java.com.example.proyectoSpringBoot.dto.InstrumentoFinancieroDTO;
 import springBootProject.java.com.example.proyectoSpringBoot.excepciones.InstrumentoDuplicadoException;
 import springBootProject.java.com.example.proyectoSpringBoot.excepciones.InstrumentoNoEncontradoException;
 import springBootProject.java.com.example.proyectoSpringBoot.model.InstrumentoFinanciero;
@@ -33,16 +34,16 @@ public class InstrumentoFinancieroServiceImpl implements InstrumentoFinancieroSe
         return instrumentoFinanciero.get();
     }
 
-    public InstrumentoFinanciero registrar(String nombre, double precio, int tipo) throws InstrumentoDuplicadoException {
-        Optional<InstrumentoFinanciero> instrumentoFinanciero = this.instrumentoFinancieroRepository.buscarInstrumentoFinanciero(nombre);
+    public InstrumentoFinanciero registrar(InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws InstrumentoDuplicadoException {
+        Optional<InstrumentoFinanciero> instrumentoFinanciero = this.instrumentoFinancieroRepository.buscarInstrumentoFinanciero(instrumentoFinancieroDTO.getNombre());
 
         if (instrumentoFinanciero.isPresent()) {
             throw new InstrumentoDuplicadoException("El instrumento financiero a registrar ya existe, no se permiten instrumentos duplicados.");
         }
 
-        InstrumentoFinanciero instrumentoFinancieroNuevo = InstrumentoFinancieroFactory.crearInstrumentoFinanciero(tipo);
-        instrumentoFinancieroNuevo.setPrecio(precio);
-        instrumentoFinancieroNuevo.setNombre(nombre);
+        InstrumentoFinanciero instrumentoFinancieroNuevo = InstrumentoFinancieroFactory.crearInstrumentoFinanciero(instrumentoFinancieroDTO.getTipo());
+        instrumentoFinancieroNuevo.setPrecio(instrumentoFinancieroDTO.getPrecio());
+        instrumentoFinancieroNuevo.setNombre(instrumentoFinancieroDTO.getNombre());
 
         this.instrumentoFinancieroRepository.registrar(instrumentoFinancieroNuevo);
 
@@ -62,7 +63,7 @@ public class InstrumentoFinancieroServiceImpl implements InstrumentoFinancieroSe
         return instrumentoFinanciero.get();
     }
 
-    public InstrumentoFinanciero editar(String instrumentoAEditar, String nombreNuevo, double precio) throws InstrumentoNoEncontradoException {
+    public InstrumentoFinanciero editar(String instrumentoAEditar, InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws InstrumentoNoEncontradoException {
         Optional<InstrumentoFinanciero> instrumentoFinanciero = this.instrumentoFinancieroRepository.buscarInstrumentoFinanciero(instrumentoAEditar);
 
         if (instrumentoFinanciero.isEmpty()) {
@@ -70,8 +71,8 @@ public class InstrumentoFinancieroServiceImpl implements InstrumentoFinancieroSe
         }
 
         InstrumentoFinanciero instrumentoFinancieroAEditar = instrumentoFinanciero.get();
-        instrumentoFinancieroAEditar.setNombre(nombreNuevo);
-        instrumentoFinancieroAEditar.setPrecio(precio);
+        instrumentoFinancieroAEditar.setNombre(instrumentoFinancieroDTO.getNombre());
+        instrumentoFinancieroAEditar.setPrecio(instrumentoFinancieroDTO.getPrecio());
 
         return instrumentoFinancieroAEditar;
     }

@@ -1,5 +1,6 @@
 package springBootProject.java.com.example.proyectoSpringBoot.service;
 
+import springBootProject.java.com.example.proyectoSpringBoot.dto.InstrumentoFinancieroDTO;
 import springBootProject.java.com.example.proyectoSpringBoot.excepciones.InstrumentoDuplicadoException;
 import springBootProject.java.com.example.proyectoSpringBoot.excepciones.InstrumentoNoEncontradoException;
 import springBootProject.java.com.example.proyectoSpringBoot.model.InstrumentoFinanciero;
@@ -12,9 +13,9 @@ public interface InstrumentoFinancieroService {
 
     InstrumentoFinanciero consultar(String nombre) throws InstrumentoNoEncontradoException;
 
-    InstrumentoFinanciero registrar(String nombre, double precio, int tipo) throws InstrumentoDuplicadoException;
+    InstrumentoFinanciero registrar(InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws InstrumentoDuplicadoException;
 
     InstrumentoFinanciero eliminar(String nombre) throws InstrumentoNoEncontradoException;
 
-    InstrumentoFinanciero editar(String instrumentoAEditar, String nombreNuevo, double precio) throws InstrumentoNoEncontradoException;
+    InstrumentoFinanciero editar(String instrumentoAEditar, InstrumentoFinancieroDTO instrumentoDTO) throws InstrumentoNoEncontradoException;
 }
