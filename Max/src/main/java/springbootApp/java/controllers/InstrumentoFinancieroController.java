@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springbootApp.java.exceptions.InstrumentoDuplicadoException;
 import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
-import springbootApp.java.models.InstrumentoDTO;
+import springbootApp.java.DTOs.InstrumentoDTO;
 import springbootApp.java.models.InstrumentoFinanciero;
 import springbootApp.java.services.InstrumentoFinancieroService;
 

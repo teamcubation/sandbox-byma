@@ -1,4 +1,6 @@
-package springbootApp.java.models;
+package springbootApp.java.DTOs;
+
+import springbootApp.java.models.Tipo;
 
 public class InstrumentoDTO {
     private String nombre;

@@ -3,6 +3,7 @@ package springbootApp.java.models;
 
 
 
+import springbootApp.java.DTOs.InstrumentoDTO;
 import springbootApp.java.exceptions.InstrumentoDuplicadoException;
 import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
 import springbootApp.java.exceptions.InversorExistenteException;

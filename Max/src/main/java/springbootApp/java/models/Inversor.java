@@ -1,4 +1,5 @@
 package springbootApp.java.models;
+import springbootApp.java.DTOs.InversorDTO;
 import springbootApp.java.exceptions.InstrumentoDuplicadoException;
 import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
 import java.util.ArrayList;

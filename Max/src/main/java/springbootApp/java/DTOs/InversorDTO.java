@@ -1,4 +1,4 @@
-package springbootApp.java.models;
+package springbootApp.java.DTOs;
 
 public class InversorDTO {
 

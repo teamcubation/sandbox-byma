@@ -32,7 +32,7 @@ public class ObserverController {
         }
     }
     @PostMapping("/desubscribirse")
-    public ResponseEntity desuscribirse(@PathVariable String dni, @PathVariable String nombreInstrumento ) {
+    public ResponseEntity<String> desuscribirse(@PathVariable String dni, @PathVariable String nombreInstrumento ) {
         try {
             observerService.metodoParaDesuscribirse(dni, nombreInstrumento);
             System.out.println("Desuscripción exitosa");

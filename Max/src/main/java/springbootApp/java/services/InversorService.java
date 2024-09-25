@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import springbootApp.java.exceptions.InversorNoEncontradoException;
 import springbootApp.java.models.InstrumentoFinanciero;
 import springbootApp.java.models.Inversor;
-import springbootApp.java.models.InversorDTO;
+import springbootApp.java.DTOs.InversorDTO;
 import springbootApp.java.repositories.InversorRepository;
 
 import java.util.List;
@@ -37,23 +37,6 @@ public class InversorService {
             throw new InversorNoEncontradoException("Error. Inversor no encontrado");
         }
         inversoresRepository.borrarInversor(inversor);
-    }
-
-    public void modificarInversor(String variable, String modificacion, String dni) throws InversorNoEncontradoException {
-        Inversor inversor = inversoresRepository.buscarInversor(dni);
-        if (inversor == null) {
-            throw new InversorNoEncontradoException("Error. Inversor no encontrado");
-        }
-        switch (variable) {
-            case "1":
-                inversor.setNombre(modificacion);
-                break;
-            case "2":
-                inversor.setDni(modificacion);
-                break;
-            default:
-                throw new IllegalArgumentException("Error. los campos no coinciden");
-        }
     }
 
     public List<Inversor> consultarTodosLosInversores() {

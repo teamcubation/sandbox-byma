@@ -2,13 +2,13 @@ package springbootApp.java.repositories;
 
 import org.springframework.stereotype.Repository;
 import springbootApp.java.models.Inversor;
-import springbootApp.java.models.InversorDTO;
+import springbootApp.java.repositories.interfaces.IInversorRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class InversorRepository {
+public class InversorRepository implements IInversorRepository {
     private final List<Inversor> inversoresList = new ArrayList<>();
 
 

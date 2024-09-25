@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import springbootApp.java.exceptions.InversorNoEncontradoException;
 import springbootApp.java.models.InstrumentoFinanciero;
 import springbootApp.java.models.Inversor;
-import springbootApp.java.models.InversorDTO;
+import springbootApp.java.DTOs.InversorDTO;
 import springbootApp.java.services.InversorService;
 
 import java.util.List;
