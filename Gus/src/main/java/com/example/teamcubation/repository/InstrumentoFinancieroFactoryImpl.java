@@ -5,6 +5,7 @@ import com.example.teamcubation.model.Accion;
 import com.example.teamcubation.model.Bono;
 import com.example.teamcubation.model.InstrumentoDTO.InstrumentoFinancieroDTO;
 import com.example.teamcubation.model.instrumentoEnums.TipoInstrumentoFinanciero;
+import com.example.teamcubation.repository.interfaces.InstrumentoFinancieroFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository

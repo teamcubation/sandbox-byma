@@ -3,7 +3,7 @@ package com.example.teamcubation.service;
 
 import com.example.teamcubation.model.InstrumentoDTO.InstrumentoFinancieroDTO;
 import com.example.teamcubation.model.instrumentoEnums.TipoInstrumentoFinanciero;
-import com.example.teamcubation.repository.InstrumentoFinancieroFactory;
+import com.example.teamcubation.repository.interfaces.InstrumentoFinancieroFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

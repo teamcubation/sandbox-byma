@@ -1,4 +1,4 @@
-package com.example.teamcubation.repository;
+package com.example.teamcubation.repository.interfaces;
 
 
 import com.example.teamcubation.model.InstrumentoFinanciero;

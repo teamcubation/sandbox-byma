@@ -3,6 +3,7 @@ package com.example.teamcubation.repository;
 
 import com.example.teamcubation.model.InstrumentoFinanciero;
 import com.example.teamcubation.model.instrumentoEnums.TipoInstrumentoFinanciero;
+import com.example.teamcubation.repository.interfaces.InstrumentoFinancieroRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

@@ -4,14 +4,13 @@ import com.example.teamcubation.model.InstrumentoDTO.InstrumentoFinancieroDTO;
 import com.example.teamcubation.model.InstrumentoFinanciero;
 import com.example.teamcubation.model.instrumentoEnums.TipoInstrumentoFinanciero;
 import com.example.teamcubation.service.InstrumentoFinancieroFactoryService;
-import org.springframework.stereotype.Component;
 
-@Component
 public class InstrumentoFinancieroMapper {
 
     //toInstrumentoFinanciero
     public static InstrumentoFinanciero instrumentoDTOtoInstrumentoFinanciero(InstrumentoFinancieroDTO instrumentoDTO, InstrumentoFinancieroFactoryService instrumentoFinancieroFactoryService) {
 
+        //return  InstrumentoFactory.crearInstrumento(instrumentoDTO);
         return instrumentoFinancieroFactoryService.crearInstrumento(instrumentoDTO, TipoInstrumentoFinanciero.valueOf(instrumentoDTO.getTipo().toUpperCase()));
     }
 
