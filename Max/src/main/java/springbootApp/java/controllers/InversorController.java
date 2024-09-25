@@ -1,6 +1,7 @@
 package springbootApp.java.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springbootApp.java.exceptions.InversorNoEncontradoException;
 import springbootApp.java.models.InstrumentoFinanciero;
@@ -8,7 +9,7 @@ import springbootApp.java.models.Inversor;
 import springbootApp.java.models.InversorDTO;
 import springbootApp.java.services.InversorService;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/inversor")
@@ -17,37 +18,59 @@ public class InversorController {
     @Autowired
     private InversorService inversorService;
 
-    public InversorController(InversorService inversorService) {
-        this.inversorService = inversorService;
+    @PostMapping("/")
+    public ResponseEntity<InversorDTO> registrarInversor(@RequestBody InversorDTO inversor) {
+        try {
+            System.out.println("intentando registrar inversor...");
+            inversorService.registrarInversor(inversor.getNombre(), inversor.getDni());
+            return ResponseEntity.ok(inversor);
+        } catch (Exception e) {
+            System.out.println("Error al registrar inversor: " + e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-    @PostMapping("/registrarInversor")
-    public String registrarInversor(@RequestBody InversorDTO inversor) {
-        inversorService.registrarInversor(inversor.getNombre(), inversor.getDni());
-        return "Inversor registrado";
+    @GetMapping("/")
+    public ResponseEntity<List<Inversor>> obtenerTodosLosInversores() {
+        try {
+            System.out.println("intentando obtener inversores...");
+            return ResponseEntity.ok(inversorService.consultarTodosLosInversores());
+        } catch (Exception e) {
+            System.out.println("Error al obtener inversores: " + e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-    @GetMapping("/obtenerTodosLosInversores")
-    public ArrayList<Inversor> obtenerTodosLosInversores() {
-        ArrayList<Inversor> inversores = inversorService.consultarTodosLosInversores();
-        return inversores;
+    @GetMapping("/instrumentos/{dni}")
+    public ResponseEntity<List<InstrumentoFinanciero>> obtenerInstrumentosDeInversor(@PathVariable String dni) throws InversorNoEncontradoException {
+        try {
+            return ResponseEntity.ok(inversorService.consultarInstrumentosDeInversor(dni));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-    @GetMapping("/obtenerInstrumentosDeInversor/{dni}")
-    public ArrayList<InstrumentoFinanciero> obtenerInstrumentosDeInversor(@PathVariable String dni) throws InversorNoEncontradoException {
-        return inversorService.consultarInstrumentosDeInversor(dni);
+
+    @PutMapping("/{dni}")
+    public ResponseEntity<InversorDTO> actualizarInversor(@PathVariable String dni, @RequestBody InversorDTO inversor) throws InversorNoEncontradoException {
+        try {
+            inversorService.actualizarInversor(dni, inversor);
+            return ResponseEntity.ok(inversor);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-
-    @RequestMapping("/actualizarInversor/{dni}")
-    public String actualizarInversor(@PathVariable String dni, @RequestBody InversorDTO inversor) throws InversorNoEncontradoException {
-        inversorService.actualizarInversor(dni, inversor);
-        return "Inversor modificado";
-    }
-
-    @RequestMapping("/eliminarInversor/{dni}")
-    public String eliminarInversor(@PathVariable String dni) throws InversorNoEncontradoException {
-        inversorService.eliminarInversor(dni);
-        return "Inversor eliminado";
+    @DeleteMapping("/{dni}")
+    public ResponseEntity<String> eliminarInversor(@PathVariable String dni) throws InversorNoEncontradoException {
+        try {
+            inversorService.eliminarInversor(dni);
+            return ResponseEntity.ok("Inversor eliminado");
+        } catch (InversorNoEncontradoException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

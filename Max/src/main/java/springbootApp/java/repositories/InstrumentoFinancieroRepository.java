@@ -7,21 +7,14 @@ import springbootApp.java.models.InstrumentoFinanciero;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class InstrumentoFinancieroRepository {
-    private static InstrumentoFinancieroRepository instrumentoFinancieroRepository;
-    private ArrayList<InstrumentoFinanciero> instrumentoFinancieroList;
 
-    private InstrumentoFinancieroRepository(){
-        this.instrumentoFinancieroList = new ArrayList<>();
-    }
 
-    public static InstrumentoFinancieroRepository getInstrumentoFinancieroRepository() {
-        if (instrumentoFinancieroRepository == null)
-            instrumentoFinancieroRepository = new InstrumentoFinancieroRepository();
-        return instrumentoFinancieroRepository;
-    }
+    private List<InstrumentoFinanciero> instrumentoFinancieroList = new ArrayList<>();
+
 
     public void registrarInstrumento(InstrumentoFinanciero instrumento){
         this.instrumentoFinancieroList.add(instrumento);
@@ -29,7 +22,7 @@ public class InstrumentoFinancieroRepository {
     public void eliminarInstrumento(InstrumentoFinanciero instrumento){
         this.instrumentoFinancieroList.remove(instrumento);
     }
-    public ArrayList<InstrumentoFinanciero> consultarTodosLosInstrumentos() {
+    public List<InstrumentoFinanciero> consultarTodosLosInstrumentos() {
         return this.instrumentoFinancieroList;
     }
 
@@ -50,7 +43,7 @@ public class InstrumentoFinancieroRepository {
         if (instrumentoExistente(instrumento.getNombre())) {
             throw new InstrumentoDuplicadoException("Error. Instrumento con nombre existente");
         }
-        instrumentoEncontrado.actualizar(instrumento);
+        instrumentoEncontrado.actualizarInstrumento(instrumento);
     }
 
     private boolean instrumentoExistente(String nombre) {

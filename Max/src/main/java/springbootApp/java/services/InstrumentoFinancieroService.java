@@ -11,16 +11,14 @@ import springbootApp.java.models.InstrumentoFactory;
 import springbootApp.java.models.Tipo;
 import springbootApp.java.repositories.InstrumentoFinancieroRepository;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class InstrumentoFinancieroService {
     @Autowired
-    private final InstrumentoFinancieroRepository instrumentoFinancieroRepository;
+    private InstrumentoFinancieroRepository instrumentoFinancieroRepository;
 
-    public InstrumentoFinancieroService() {
-        this.instrumentoFinancieroRepository = InstrumentoFinancieroRepository.getInstrumentoFinancieroRepository();
-    }
+
 
     public void registrarInstrumentoFinanciero(String nombre, double precio, Tipo tipo) throws InstrumentoDuplicadoException {
         InstrumentoFinanciero instrumento = instrumentoFinancieroRepository.buscarInstrumento(nombre);
@@ -32,7 +30,7 @@ public class InstrumentoFinancieroService {
         }
     }
 
-    public ArrayList<InstrumentoFinanciero> consultarTodosLosInstrumentos() {
+    public List<InstrumentoFinanciero> consultarTodosLosInstrumentos() {
         for (InstrumentoFinanciero instrumento : instrumentoFinancieroRepository.consultarTodosLosInstrumentos()) {
             System.out.println(instrumento);
         }

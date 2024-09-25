@@ -9,15 +9,14 @@ import springbootApp.java.models.Inversor;
 import springbootApp.java.models.InversorDTO;
 import springbootApp.java.repositories.InversorRepository;
 
-import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class InversorService {
-    @Autowired
-    private static InversorRepository inversoresRepository;
 
-    public InversorService() {
-        inversoresRepository = InversorRepository.getInversorRepository();
-    }
+    @Autowired
+    private InversorRepository inversoresRepository;
+
     public void registrarInversor(String nombre, String dni) {
         Inversor inversor = inversoresRepository.buscarInversor(dni);
         if (inversor != null)
@@ -25,7 +24,7 @@ public class InversorService {
         inversoresRepository.registrarInversor(new Inversor(nombre, dni));
     }
 
-    public ArrayList<InstrumentoFinanciero> consultarInstrumentosDeInversor(String dni) throws InversorNoEncontradoException {
+    public List<InstrumentoFinanciero> consultarInstrumentosDeInversor(String dni) throws InversorNoEncontradoException {
         Inversor inversor = inversoresRepository.buscarInversor(dni);
         if (inversor == null) {
             throw new InversorNoEncontradoException("Error. Inversor no encontrado");
@@ -57,7 +56,7 @@ public class InversorService {
         }
     }
 
-    public ArrayList<Inversor> consultarTodosLosInversores() {
+    public List<Inversor> consultarTodosLosInversores() {
         return inversoresRepository.consultarTodosLosInversores();
     }
 
