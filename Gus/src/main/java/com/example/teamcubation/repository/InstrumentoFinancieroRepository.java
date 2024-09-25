@@ -9,22 +9,22 @@ import java.util.Optional;
 
 @Repository
 public interface InstrumentoFinancieroRepository {
-    List<InstrumentoFinanciero> listarBonosYAcciones();
+    List<InstrumentoFinanciero> getAll();
 
-    List<InstrumentoFinanciero> consultarBonos();
+    List<InstrumentoFinanciero> getBonos();
 
-    List<InstrumentoFinanciero> consultarAcciones();
+    List<InstrumentoFinanciero> getAcciones();
 
-    Optional<InstrumentoFinanciero> listarInstrumentoPorNombre(String nombreInstrumento);
+    Optional<InstrumentoFinanciero> getByName(String nombreInstrumento);
 
-    void registrarNuevoInstrumento(InstrumentoFinanciero nuevoInstrumento);
+    void create(com.example.teamcubation.model.InstrumentoFinanciero nuevoInstrumento);
 
-    void editarInstrumento(String nuevoNombre, double nuevoPrecio, String nombreInstrumento);
+    void update(InstrumentoFinanciero instrumentoActualizado, String nombreInstrumento);
 
-    void editarNombreInstrumento(String nuevoNombre, String nombreInstrumento);
+//    void updateName(EditarInstrumentoDTO instrumentoDTO);
+//
+//    void updatePrice(EditarInstrumentoDTO instrumentoDTO);
 
-    void editarPrecioInstrumento(double nuevoPrecio, String nombreInstrumento);
-
-    void eliminarInstrumento(String nombreInstrumento);
+    void delete(String nombreInstrumento);
 
 }

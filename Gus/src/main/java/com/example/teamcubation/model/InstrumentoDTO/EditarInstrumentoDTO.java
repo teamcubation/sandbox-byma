@@ -1,16 +1,18 @@
 package com.example.teamcubation.model.InstrumentoDTO;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class EditarInstrumentoDTO {
 
+
+    //Atributos del DTO tienen que se OBJETOS
     private String nombreInstrumento;
-    private double nuevoPrecio;
+    private Double nuevoPrecio;
     private String nuevoNombre;
     private String tipo;
 }

@@ -3,22 +3,22 @@ package com.example.teamcubation.repository;
 
 import com.example.teamcubation.model.Accion;
 import com.example.teamcubation.model.Bono;
-import com.example.teamcubation.model.InstrumentoFinanciero;
+import com.example.teamcubation.model.InstrumentoDTO.InstrumentoFinancieroDTO;
 import com.example.teamcubation.model.instrumentoEnums.TipoInstrumentoFinanciero;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class InstrumentoFinancieroFactoryImpl implements InstrumentoFinancieroFactory {
     @Override
-    public InstrumentoFinanciero crearInstrumento(String nombre, double precio, TipoInstrumentoFinanciero tipo) {
-        InstrumentoFinanciero nuevoInstrumentoFinanciero = null;
+    public com.example.teamcubation.model.InstrumentoFinanciero crear(InstrumentoFinancieroDTO instrumentoDTO, TipoInstrumentoFinanciero tipo) {
+        com.example.teamcubation.model.InstrumentoFinanciero nuevoInstrumentoFinanciero = null;
         if (tipo.equals(TipoInstrumentoFinanciero.ACCION)) {
-            nuevoInstrumentoFinanciero = new Accion(nombre, precio);
+            nuevoInstrumentoFinanciero = new Accion(instrumentoDTO.getNombreInstrumento(), instrumentoDTO.getPrecio());
         }
 
 
         if (tipo.equals(TipoInstrumentoFinanciero.BONO)) {
-            nuevoInstrumentoFinanciero = new Bono(nombre, precio);
+            nuevoInstrumentoFinanciero = new Bono(instrumentoDTO.getNombreInstrumento(), instrumentoDTO.getPrecio());
         }
         return nuevoInstrumentoFinanciero;
     }

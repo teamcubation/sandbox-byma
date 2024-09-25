@@ -12,32 +12,32 @@ import java.util.stream.Collectors;
 
 @Repository
 public class InstrumentoFinancieroRepositoryImpl implements InstrumentoFinancieroRepository {
-    private ArrayList<InstrumentoFinanciero> listaDeInstrumentos = new ArrayList<>();
+    private List<InstrumentoFinanciero> listaDeInstrumentos = new ArrayList<>();
 
-    private static InstrumentoFinanciero getInstrumentoFinanciero(double nuevoPrecio, String nombreInstrumento, InstrumentoFinanciero instrumentoFinanciero) {
-        if (instrumentoFinanciero.getNombre().equalsIgnoreCase(nombreInstrumento)) {
-            instrumentoFinanciero.setPrecio(nuevoPrecio);
-        }
-        return instrumentoFinanciero;
-    }
+//    private InstrumentoFinanciero getInstrumentoFinanciero(EditarInstrumentoDTO instrumentoDTO, InstrumentoFinanciero instrumentoFinanciero) {
+//        if (instrumentoFinanciero.getNombre().equalsIgnoreCase(instrumentoDTO.getNombreInstrumento())) {
+//            instrumentoFinanciero.setPrecio(instrumentoDTO.getNuevoPrecio());
+//        }
+//        return instrumentoFinanciero;
+//    }
 
     @Override
-    public List<InstrumentoFinanciero> listarBonosYAcciones() {
+    public List<InstrumentoFinanciero> getAll() {
         return this.listaDeInstrumentos;
     }
 
     @Override
-    public List<InstrumentoFinanciero> consultarBonos() {
+    public List<InstrumentoFinanciero> getBonos() {
         return this.listaDeInstrumentos.stream().filter(i -> i.getTipo().equals(TipoInstrumentoFinanciero.BONO)).toList();
     }
 
     @Override
-    public List<InstrumentoFinanciero> consultarAcciones() {
+    public List<InstrumentoFinanciero> getAcciones() {
         return this.listaDeInstrumentos.stream().filter(i -> i.getTipo().equals(TipoInstrumentoFinanciero.ACCION)).toList();
     }
 
     @Override
-    public Optional<InstrumentoFinanciero> listarInstrumentoPorNombre(String nombreInstrumento) {
+    public Optional<InstrumentoFinanciero> getByName(String nombreInstrumento) {
         return this.listaDeInstrumentos
                 .stream()
                 .filter(instrumentoFinanciero -> instrumentoFinanciero.getNombre().equalsIgnoreCase(nombreInstrumento))
@@ -45,18 +45,19 @@ public class InstrumentoFinancieroRepositoryImpl implements InstrumentoFinancier
     }
 
     @Override
-    public void registrarNuevoInstrumento(InstrumentoFinanciero nuevoInstrumento) {
+    public void create(InstrumentoFinanciero nuevoInstrumento) {
         this.listaDeInstrumentos.add(nuevoInstrumento);
     }
 
     @Override
-    public void editarInstrumento(String nuevoNombre, double nuevoPrecio, String nombreInstrumento) {
+    public void update(InstrumentoFinanciero instrumentoActualizado, String nombreInstrumeto) {
+
+
         this.listaDeInstrumentos = listaDeInstrumentos
                 .stream()
                 .map(instrumentoFinanciero -> {
-                    if (instrumentoFinanciero.getNombre().equalsIgnoreCase(nombreInstrumento)) {
-                        instrumentoFinanciero.setNombre(nuevoNombre);
-                        instrumentoFinanciero.setPrecio(nuevoPrecio);
+                    if (instrumentoFinanciero.getNombre().equalsIgnoreCase(nombreInstrumeto)) {
+                        return instrumentoActualizado;
                     }
                     return instrumentoFinanciero;
                 })
@@ -64,33 +65,33 @@ public class InstrumentoFinancieroRepositoryImpl implements InstrumentoFinancier
     }
 
     @Override
-    public void editarNombreInstrumento(String nuevoNombre, String nombreInstrumento) {
-        this.listaDeInstrumentos = this.listaDeInstrumentos
-                .stream()
-                .map(instrumentoFinanciero -> {
-                    if (instrumentoFinanciero.getNombre().equalsIgnoreCase(nombreInstrumento)) {
-                        instrumentoFinanciero.setNombre(nuevoNombre);
-                    }
-                    return instrumentoFinanciero;
-                })
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    @Override
-    public void editarPrecioInstrumento(double nuevoPrecio, String nombreInstrumento) {
-        this.listaDeInstrumentos = this.listaDeInstrumentos
-                .stream()
-                .map(instrumentoFinanciero -> {
-                    return getInstrumentoFinanciero(nuevoPrecio, nombreInstrumento, instrumentoFinanciero);
-                })
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    @Override
-    public void eliminarInstrumento(String nombreInstrumento) {
+    public void delete(String nombreInstrumento) {
         this.listaDeInstrumentos = this.listaDeInstrumentos
                 .stream()
                 .filter(instrumentoFinanciero -> !instrumentoFinanciero.getNombre().equalsIgnoreCase(nombreInstrumento))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
+
+//    @Override
+//    public void updateName(EditarInstrumentoDTO instrumentoDTO) {
+//        this.listaDeInstrumentos = this.listaDeInstrumentos
+//                .stream()
+//                .map(instrumentoFinanciero -> {
+//                    if (instrumentoFinanciero.getNombre().equalsIgnoreCase(instrumentoDTO.getNombreInstrumento())) {
+//                        instrumentoFinanciero.setNombre(instrumentoDTO.getNuevoNombre());
+//                    }
+//                    return instrumentoFinanciero;
+//                })
+//                .collect(Collectors.toCollection(ArrayList::new));
+//    }
+//
+//    @Override
+//    public void updatePrice(EditarInstrumentoDTO instrumentoDTO) {
+//        this.listaDeInstrumentos = this.listaDeInstrumentos
+//                .stream()
+//                .map(instrumentoFinanciero -> getInstrumentoFinanciero(instrumentoDTO, instrumentoFinanciero))
+//                .collect(Collectors.toCollection(ArrayList::new));
+//    }
+
+
 }

@@ -1,7 +1,7 @@
 package com.example.teamcubation.service;
 
 
-import com.example.teamcubation.model.InstrumentoFinanciero;
+import com.example.teamcubation.model.InstrumentoDTO.InstrumentoFinancieroDTO;
 import com.example.teamcubation.model.instrumentoEnums.TipoInstrumentoFinanciero;
 import com.example.teamcubation.repository.InstrumentoFinancieroFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class InstrumentoFinancieroFactoryService {
         this.instrumentoFinancieroFactory = instrumentoFinancieroFactory;
     }
 
-    public InstrumentoFinanciero crearInstrumento(String nombre, double precio, TipoInstrumentoFinanciero tipo) {
-        return instrumentoFinancieroFactory.crearInstrumento(nombre, precio, tipo);
+    public com.example.teamcubation.model.InstrumentoFinanciero crearInstrumento(InstrumentoFinancieroDTO instrumentoDTO, TipoInstrumentoFinanciero tipo) {
+        return instrumentoFinancieroFactory.crear(instrumentoDTO, tipo);
     }
 }

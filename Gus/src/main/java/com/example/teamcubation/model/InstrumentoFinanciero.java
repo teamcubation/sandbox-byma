@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public abstract class InstrumentoFinanciero {
-
+    
     //El nombre es unico para cada instrumento, ya sea bono o accion
     private String nombre;
     private double precio;
