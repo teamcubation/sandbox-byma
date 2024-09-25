@@ -1,5 +1,8 @@
 package springbootApp.java.repositories;
 
+import springbootApp.java.exceptions.InstrumentoDuplicadoException;
+import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
+import springbootApp.java.models.InstrumentoDTO;
 import springbootApp.java.models.InstrumentoFinanciero;
 import org.springframework.stereotype.Repository;
 
@@ -39,8 +42,18 @@ public class InstrumentoFinancieroRepository {
         return instrumentoADevolver;
     }
 
-    public void modificarInstrumento(String nombre, InstrumentoFinanciero instrumento) {
+    public void modificarInstrumento(String nombre, InstrumentoDTO instrumento) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
         InstrumentoFinanciero instrumentoEncontrado = this.buscarInstrumento(nombre);
+        if (instrumentoEncontrado == null) {
+            throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
+        }
+        if (instrumentoExistente(instrumento.getNombre())) {
+            throw new InstrumentoDuplicadoException("Error. Instrumento con nombre existente");
+        }
         instrumentoEncontrado.actualizar(instrumento);
+    }
+
+    private boolean instrumentoExistente(String nombre) {
+        return this.buscarInstrumento(nombre) != null;
     }
 }

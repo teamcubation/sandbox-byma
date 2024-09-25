@@ -1,7 +1,6 @@
 package springbootApp.java.models;
 import springbootApp.java.exceptions.InstrumentoDuplicadoException;
 import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
-import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 
 public class Inversor implements Observer{
@@ -19,7 +18,7 @@ public class Inversor implements Observer{
         if (nombre == null) {
             throw new IllegalArgumentException("El nombre no puede ser nulo .");
         }
-        if (!nombre.isBlank()) {
+        if (nombre.isBlank()) {
             throw new IllegalArgumentException("El nombre no puede ser  vacío.");
         }
         this.nombre = nombre;
@@ -57,10 +56,9 @@ public class Inversor implements Observer{
         return dni;
     }
 
-    public void consultarInstrumentos() {
-        for (InstrumentoFinanciero instrumentoFinanciero : cartera) {
-            System.out.println(instrumentoFinanciero);
-        }
+    public ArrayList<InstrumentoFinanciero> consultarInstrumentos() {
+
+        return cartera;
     }
 
     @Override
@@ -76,5 +74,10 @@ public class Inversor implements Observer{
     public void actualizar(InstrumentoFinanciero instrumento) {
         System.out.println("el precio del instrumento " + instrumento.getNombre() + " cambio a "
                 + instrumento.getPrecio());
+    }
+
+    public void actualizarInversor(InversorDTO inversor) {
+        this.setDni(inversor.getDni());
+        this.setNombre(inversor.getNombre());
     }
 }

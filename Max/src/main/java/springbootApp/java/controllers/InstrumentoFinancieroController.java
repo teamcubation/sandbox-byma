@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springbootApp.java.exceptions.InstrumentoDuplicadoException;
 import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
 import springbootApp.java.models.Accion;
 import springbootApp.java.models.InstrumentoDTO;
@@ -24,26 +25,19 @@ public class InstrumentoFinancieroController {
         this.instrumentoFinancieroService = instrumentoFinancieroService;
     }
 
-    @GetMapping("/prueba")
-    public String hello() {
-        return "holamundo";
-    }
 
-    @PostMapping("/prueba")
-    public String prueba(@RequestBody String variable) {
-        return variable;
-    }
+
 
     @PostMapping("/registrarInstrumentoFinanciero")
-    public String registrarInstrumentoFinanciero(@RequestBody InstrumentoDTO instrumentoFinanciero) {
+    public ResponseEntity<InstrumentoDTO> registrarInstrumentoFinanciero(@RequestBody InstrumentoDTO instrumentoFinanciero) {
         try {
             instrumentoFinancieroService.registrarInstrumentoFinanciero(instrumentoFinanciero.getNombre(),
                     instrumentoFinanciero.getPrecio(), instrumentoFinanciero.getTipo());
             System.out.println("instrumento registrado");
-            return instrumentoFinanciero.getNombre();
+            return new ResponseEntity<InstrumentoDTO>(instrumentoFinanciero, HttpStatus.CREATED);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return "error";
+            return ResponseEntity.badRequest().build();
         }
 
         // return "Nuevo instrumento registrado de tipo " + instrumentoFinanciero.getTipo() +
@@ -61,19 +55,19 @@ public class InstrumentoFinancieroController {
     }
 
     @DeleteMapping("/eliminarInstrumento/{nombre}")
-    public String eliminarInstrumento(@PathVariable String nombre) throws InstrumentoNoEncontradoException {
-        instrumentoFinancieroService.eliminarInstrumento(nombre);
-        return "Instrumento eliminado";
+    public String eliminarInstrumento(@PathVariable String nombre)  {
+        try {
+            instrumentoFinancieroService.eliminarInstrumento(nombre);
+            return "Instrumento eliminado";
+        } catch (InstrumentoNoEncontradoException e) {
+            return e.getMessage();
+        }
     }
 
-    @PutMapping("/modificarInstrumento/{nombre}/variable/{variable}")
-    public String modificarInstrumento(@PathVariable String nombre, @PathVariable String variable, @RequestBody String modificacion) throws InstrumentoNoEncontradoException {
-        instrumentoFinancieroService.modificarInstrumento(nombre, variable, modificacion);
-        return "Instrumento modificado";
-    }
+
     @PutMapping("/actualizarInstrumento/{nombre}")
-    public String actualizarInstrumento(@PathVariable String nombre, @RequestBody InstrumentoFinanciero instrumento) throws InstrumentoNoEncontradoException {
+    public InstrumentoDTO actualizarInstrumento(@PathVariable String nombre, @RequestBody InstrumentoDTO instrumento) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
         instrumentoFinancieroService.actualizarInstrumento(nombre, instrumento);
-        return "Instrumento modificado";
+        return instrumento;
     }
 }

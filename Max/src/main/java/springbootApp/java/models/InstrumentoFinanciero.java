@@ -41,7 +41,7 @@ public abstract class InstrumentoFinanciero {
         if (nombre == null) {
             throw new IllegalArgumentException("El nombre no puede ser nulo .");
         }
-        if (!nombre.isBlank()) {
+        if (nombre.isBlank()) {
             throw new IllegalArgumentException("El nombre no puede ser  vacío.");
         }
         this.nombre = nombre;
@@ -70,7 +70,7 @@ public abstract class InstrumentoFinanciero {
         }
     }
 
-    public void actualizar(InstrumentoFinanciero instrumento) {
+    public void actualizar(InstrumentoDTO instrumento) {
         this.setNombre(instrumento.getNombre());
         this.setTipo(instrumento.getTipo());
         this.setPrecio(instrumento.getPrecio());

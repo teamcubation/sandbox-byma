@@ -3,6 +3,7 @@ package springbootApp.java.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
+import springbootApp.java.models.InstrumentoDTO;
 import springbootApp.java.models.InstrumentoFinanciero;
 import org.springframework.stereotype.Service;
 import springbootApp.java.exceptions.InstrumentoDuplicadoException;
@@ -11,11 +12,9 @@ import springbootApp.java.models.Tipo;
 import springbootApp.java.repositories.InstrumentoFinancieroRepository;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 @Service
 public class InstrumentoFinancieroService {
-    private static final Logger LOGGER = Logger.getLogger(InstrumentoFinancieroService.class.getName());
     @Autowired
     private final InstrumentoFinancieroRepository instrumentoFinancieroRepository;
 
@@ -85,7 +84,7 @@ public class InstrumentoFinancieroService {
         return instrumentoFinancieroRepository.buscarInstrumento(nombre);
     }
 
-    public void actualizarInstrumento(String nombre, InstrumentoFinanciero instrumento) {
+    public void actualizarInstrumento(String nombre, InstrumentoDTO instrumento) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
         instrumentoFinancieroRepository.modificarInstrumento(nombre, instrumento);
     }
 }
