@@ -15,8 +15,19 @@ public class GlobalException {
 
     @ExceptionHandler(com.fasterxml.jackson.databind.exc.InvalidTypeIdException.class)
     public ResponseEntity<String> handleInvalidTypeIdException(com.fasterxml.jackson.databind.exc.InvalidTypeIdException ex) {
-        // Retornamos un mensaje más amigable sin la información técnica de la excepción
         return new ResponseEntity<>("Tipo de instrumento no válido", HttpStatus.BAD_REQUEST);
+    }
+
+    // Manejo de InstrumentoDuplicadoException
+    @ExceptionHandler(InstrumentoDuplicadoException.class)
+    public ResponseEntity<String> handleInstrumentoDuplicadoException(InstrumentoDuplicadoException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    // Manejo de InstrumentoNoEncontradoException
+    @ExceptionHandler(InstrumentoNoEncontradoException.class)
+    public ResponseEntity<String> handleInstrumentoNoEncontradoException(InstrumentoNoEncontradoException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     // Puedes agregar más métodos para manejar otras excepciones si es necesario
