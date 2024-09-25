@@ -8,7 +8,6 @@ import springbootproject.java.com.example.project.exceptions.InstrumentoDuplicad
 import springbootproject.java.com.example.project.exceptions.InstrumentoNoEncontradoException;
 import springbootproject.java.com.example.project.exceptions.NoExisteEseTipoDeInstrumentoException;
 import springbootproject.java.com.example.project.model.instrumentoFinanciero.InstrumentoFinanciero;
-import springbootproject.java.com.example.project.model.instrumentoFinanciero.InstrumentoFinancieroDTO;
 import springbootproject.java.com.example.project.service.InstrumentoFinancieroService;
 
 import java.util.List;
@@ -82,7 +81,7 @@ public class InstrumentoFinancieroController {
         }
     }
 
-    @DeleteMapping("/delete-instrumento/{nombre}")
+    @DeleteMapping("/instrumentos/{nombre}")
     public ResponseEntity<?> deleteInstrumento(@PathVariable("nombre") String nombre) {
         try {
             this.instrumentoFinancieroService.eliminarInstrumentoFinanciero(nombre);
@@ -92,7 +91,7 @@ public class InstrumentoFinancieroController {
         }
     }
 
-    @PutMapping("/editar-instrumento-nombre/{nombre}/{nuevoNombre}")
+    @PutMapping("/instrumentos/{nombre}/nombre/{nuevoNombre}")
     public ResponseEntity<?> editarNombreInstrumento(@PathVariable("nombre") String nombre, @PathVariable("nuevoNombre") String nuevoNombre) {
         try {
             return ResponseEntity.ok(this.instrumentoFinancieroService.editarNombreInstrumentoFinanciero(nombre, nuevoNombre));
@@ -101,7 +100,7 @@ public class InstrumentoFinancieroController {
         }
     }
 
-    @PutMapping("/editar-instrumento-precio/{nombre}/{nuevoPrecio}")
+    @PutMapping("/instrumentos/{nombre}/precio/{nuevoPrecio}")
     public ResponseEntity<?> editarPrecioInstrumento(@PathVariable("nombre") String nombre, @PathVariable("nuevoPrecio") Double nuevoPrecio) {
         try {
             return ResponseEntity.ok(this.instrumentoFinancieroService.editarPrecioInstrumentoFinanciero(nombre, nuevoPrecio));
