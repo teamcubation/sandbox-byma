@@ -1,8 +1,11 @@
 package springBootProject.java.com.example.proyectoSpringBoot.model;
 
-public abstract class InstrumentoFinanciero {
+import springBootProject.java.com.example.proyectoSpringBoot.service.observer.Notificador;
+
+public abstract class InstrumentoFinanciero extends Notificador{
     private String nombre;
-    private double precio;
+    private Double precio;
+    private Integer tipo;
 
     public String getNombre() {
         return nombre;
@@ -16,15 +19,16 @@ public abstract class InstrumentoFinanciero {
         return precio;
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
+        setEstado(this.precio, this);
     }
 
-    @Override
-    public String toString() {
-        return "\n" + this.getClass().getSimpleName() +
-                "\n" + "Nombre: " + getNombre() +
-                "\n" + "Precio: " + getPrecio() +
-                "\n";
+    public Integer getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
     }
 }

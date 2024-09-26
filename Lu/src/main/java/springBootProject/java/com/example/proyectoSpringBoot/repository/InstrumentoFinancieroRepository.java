@@ -15,23 +15,30 @@ public class InstrumentoFinancieroRepository {
     private List<InstrumentoFinanciero> instrumentosFinancieros = new ArrayList<>();
 
     public InstrumentoFinancieroRepository() {
+        precargaDatos();
+    }
+
+    private void precargaDatos() {
         InstrumentoFinanciero bono = new Bono();
         InstrumentoFinanciero accion = new Accion();
 
         bono.setNombre("Bono prueba");
-        bono.setPrecio(888);
+        bono.setPrecio(888.0);
+        bono.setTipo(1);
 
         accion.setNombre("Accion prueba");
-        accion.setPrecio(444);
+        accion.setPrecio(88.0);
+        accion.setTipo(2);
 
         instrumentosFinancieros.add(bono);
         instrumentosFinancieros.add(accion);
     }
 
-    public Optional<InstrumentoFinanciero> buscarInstrumentoFinanciero(String nombre) {
+    public Optional<InstrumentoFinanciero> buscar(String nombre) {
         return  this.instrumentosFinancieros.stream()
                 .filter(instrumento -> instrumento.getNombre().equals(nombre))
                 .findFirst();
+
     }
 
     public List<InstrumentoFinanciero> consultarTodos() {
@@ -39,7 +46,7 @@ public class InstrumentoFinancieroRepository {
     }
 
     public Optional<InstrumentoFinanciero> consultar(String nombre) {
-        return buscarInstrumentoFinanciero(nombre);
+        return buscar(nombre);
     }
 
     public void registrar(InstrumentoFinanciero instrumentoFinanciero) {

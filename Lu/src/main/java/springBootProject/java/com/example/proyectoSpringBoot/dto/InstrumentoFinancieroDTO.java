@@ -2,10 +2,10 @@ package springBootProject.java.com.example.proyectoSpringBoot.dto;
 
 public class InstrumentoFinancieroDTO {
     private String nombre;
-    private double precio;
-    private int tipo;
+    private Double precio;
+    private Integer tipo;
 
-    public InstrumentoFinancieroDTO(String nombre, double precio, int tipo) {
+    public InstrumentoFinancieroDTO(String nombre, Double precio, Integer tipo) {
         this.nombre = nombre;
         this.precio = precio;
         this.tipo = tipo;
@@ -19,19 +19,19 @@ public class InstrumentoFinancieroDTO {
         this.nombre = nombre;
     }
 
-    public double getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 
-    public int getTipo() {
+    public Integer getTipo() {
         return tipo;
     }
 
-    public void setTipo(int tipo) {
+    public void setTipo(Integer tipo) {
         this.tipo = tipo;
     }
 }

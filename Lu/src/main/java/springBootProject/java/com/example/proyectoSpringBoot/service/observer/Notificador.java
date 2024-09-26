@@ -1,6 +1,6 @@
-package consoleApp.service.observer;
+package springBootProject.java.com.example.proyectoSpringBoot.service.observer;
 
-import consoleApp.modelo.InstrumentoFinanciero;
+import springBootProject.java.com.example.proyectoSpringBoot.model.InstrumentoFinanciero;
 
 import java.util.ArrayList;
 import java.util.List;

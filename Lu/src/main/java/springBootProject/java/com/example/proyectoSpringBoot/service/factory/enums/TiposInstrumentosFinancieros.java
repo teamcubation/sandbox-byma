@@ -1,6 +1,7 @@
 package springBootProject.java.com.example.proyectoSpringBoot.service.factory.enums;
 
-import consoleApp.excepciones.OpcionInvalidaException;
+
+import springBootProject.java.com.example.proyectoSpringBoot.excepciones.OpcionInvalidaException;
 
 public enum TiposInstrumentosFinancieros {
     BONO(1),
@@ -16,12 +17,12 @@ public enum TiposInstrumentosFinancieros {
         return opcion;
     }
 
-    public static TiposInstrumentosFinancieros opcionSeleccionada(int opcionUsuario) {
+    public static TiposInstrumentosFinancieros opcionSeleccionada(Integer opcionUsuario) throws OpcionInvalidaException {
         for (TiposInstrumentosFinancieros opcion : TiposInstrumentosFinancieros.values()) {
             if (opcion.getOpcion() == opcionUsuario) {
                 return opcion;
             }
         }
-        throw new OpcionInvalidaException("\n----------- El instrumento financiero a registrar no es valido. Por favor selecciona una opción valida entre las que figuran en pantalla. -----------\n");
+        throw new OpcionInvalidaException("Por favor ingrese un instrumento financieron valido.");
     }
 }
