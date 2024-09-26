@@ -8,33 +8,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalException {
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
+    // Manejo de IllegalArgumentException y InvalidTypeIdException
+    @ExceptionHandler({IllegalArgumentException.class, com.fasterxml.jackson.databind.exc.InvalidTypeIdException.class})
+    public ResponseEntity<String> handleInvalidArgumentException(Exception ex) {
         return new ResponseEntity<>("Tipo de instrumento no válido", HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(com.fasterxml.jackson.databind.exc.InvalidTypeIdException.class)
-    public ResponseEntity<String> handleInvalidTypeIdException(com.fasterxml.jackson.databind.exc.InvalidTypeIdException ex) {
-        return new ResponseEntity<>("Tipo de instrumento no válido", HttpStatus.BAD_REQUEST);
-    }
-
-    // Manejo de InstrumentoDuplicadoException
-    @ExceptionHandler(InstrumentoDuplicadoException.class)
-    public ResponseEntity<String> handleInstrumentoDuplicadoException(InstrumentoDuplicadoException ex) {
+    // Manejo de InstrumentoDuplicadoException, InstrumentoNoEncontradoException e InvalidInstrumentoDataException
+    @ExceptionHandler({InstrumentoDuplicadoException.class, InstrumentoNoEncontradoException.class, InvalidInstrumentoDataException.class})
+    public ResponseEntity<String> handleInstrumentoExceptions(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
-    // Manejo de InstrumentoNoEncontradoException
-    @ExceptionHandler(InstrumentoNoEncontradoException.class)
-    public ResponseEntity<String> handleInstrumentoNoEncontradoException(InstrumentoNoEncontradoException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    // Manejo de excepciones generales
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGeneralException(Exception ex) {
+        return new ResponseEntity<>("Error interno del servidor", HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    @ExceptionHandler(InvalidInstrumentoDataException.class)
-    public ResponseEntity<String> handleInvalidInstrumentoDataException(InvalidInstrumentoDataException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-
-    // puedo seguir agregando metodos para todas las excepciones que quiera manejar
 }
+
