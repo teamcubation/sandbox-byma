@@ -1,4 +1,4 @@
-package springApp.java.com.example.demo.exceptions;
+package springApp.java.com.example.gestoralyc.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

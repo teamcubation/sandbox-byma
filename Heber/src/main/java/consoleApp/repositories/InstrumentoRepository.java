@@ -1,6 +1,6 @@
 package consoleApp.repositories;
 
-import springApp.java.com.example.demo.exceptions.InstrumentoDuplicadoException;
+import springApp.java.com.example.gestoralyc.exceptions.InstrumentoDuplicadoException;
 import consoleApp.models.InstrumentoFinanciero;
 
 import java.util.ArrayList;

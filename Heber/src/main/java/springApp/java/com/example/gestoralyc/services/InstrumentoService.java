@@ -1,12 +1,12 @@
-package springApp.java.com.example.demo.services;
+package springApp.java.com.example.gestoralyc.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import springApp.java.com.example.demo.exceptions.InstrumentoDuplicadoException;
-import springApp.java.com.example.demo.exceptions.InstrumentoNoEncontradoException;
-import springApp.java.com.example.demo.models.InstrumentoFinancieroModel;
-import springApp.java.com.example.demo.repositories.InstrumentoRepository;
-import springApp.java.com.example.demo.utils.ValidationUtils;
+import springApp.java.com.example.gestoralyc.exceptions.InstrumentoDuplicadoException;
+import springApp.java.com.example.gestoralyc.exceptions.InstrumentoNoEncontradoException;
+import springApp.java.com.example.gestoralyc.models.InstrumentoFinancieroModel;
+import springApp.java.com.example.gestoralyc.repositories.InstrumentoRepository;
+import springApp.java.com.example.gestoralyc.utils.ValidationUtils;
 
 import java.util.List;
 import java.util.Optional;

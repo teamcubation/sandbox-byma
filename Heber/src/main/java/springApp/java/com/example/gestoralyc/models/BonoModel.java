@@ -1,4 +1,4 @@
-package springApp.java.com.example.demo.models;
+package springApp.java.com.example.gestoralyc.models;
 
 public class BonoModel extends InstrumentoFinancieroModel {
     private double tasaInteres;

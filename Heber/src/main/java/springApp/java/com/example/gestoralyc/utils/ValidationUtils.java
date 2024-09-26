@@ -1,6 +1,6 @@
-package springApp.java.com.example.demo.utils;
+package springApp.java.com.example.gestoralyc.utils;
 
-import springApp.java.com.example.demo.exceptions.InvalidInstrumentoDataException;
+import springApp.java.com.example.gestoralyc.exceptions.InvalidInstrumentoDataException;
 
 public class ValidationUtils {
 

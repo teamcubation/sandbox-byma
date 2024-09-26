@@ -1,10 +1,10 @@
-package springApp.java.com.example.demo.mappers;
+package springApp.java.com.example.gestoralyc.mappers;
 
-import springApp.java.com.example.demo.dto.InstrumentoDTO;
-import springApp.java.com.example.demo.exceptions.InvalidInstrumentoDataException;
-import springApp.java.com.example.demo.models.AccionModel;
-import springApp.java.com.example.demo.models.BonoModel;
-import springApp.java.com.example.demo.models.InstrumentoFinancieroModel;
+import springApp.java.com.example.gestoralyc.dto.InstrumentoDTO;
+import springApp.java.com.example.gestoralyc.exceptions.InvalidInstrumentoDataException;
+import springApp.java.com.example.gestoralyc.models.AccionModel;
+import springApp.java.com.example.gestoralyc.models.BonoModel;
+import springApp.java.com.example.gestoralyc.models.InstrumentoFinancieroModel;
 
 public class InstrumentoMapper {
 

@@ -1,9 +1,9 @@
-package springApp.java.com.example.demo.repositories;
+package springApp.java.com.example.gestoralyc.repositories;
 
 import org.springframework.stereotype.Repository;
-import springApp.java.com.example.demo.exceptions.InstrumentoNoEncontradoException;
-import springApp.java.com.example.demo.models.InstrumentoFinancieroModel;
-import springApp.java.com.example.demo.utils.ValidationUtils;
+import springApp.java.com.example.gestoralyc.exceptions.InstrumentoNoEncontradoException;
+import springApp.java.com.example.gestoralyc.models.InstrumentoFinancieroModel;
+import springApp.java.com.example.gestoralyc.utils.ValidationUtils;
 
 
 import java.util.ArrayList;

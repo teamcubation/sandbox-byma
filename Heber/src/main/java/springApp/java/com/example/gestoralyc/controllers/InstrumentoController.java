@@ -1,13 +1,13 @@
-package springApp.java.com.example.demo.controllers;
+package springApp.java.com.example.gestoralyc.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springApp.java.com.example.demo.dto.InstrumentoDTO;
-import springApp.java.com.example.demo.mappers.InstrumentoMapper;
-import springApp.java.com.example.demo.models.InstrumentoFinancieroModel;
-import springApp.java.com.example.demo.services.InstrumentoService;
+import springApp.java.com.example.gestoralyc.dto.InstrumentoDTO;
+import springApp.java.com.example.gestoralyc.mappers.InstrumentoMapper;
+import springApp.java.com.example.gestoralyc.models.InstrumentoFinancieroModel;
+import springApp.java.com.example.gestoralyc.services.InstrumentoService;
 
 import java.util.List;
 import java.util.Optional;

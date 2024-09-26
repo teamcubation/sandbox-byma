@@ -1,6 +1,6 @@
-package springApp.java.com.example.demo.dto;
+package springApp.java.com.example.gestoralyc.dto;
 
-import springApp.java.com.example.demo.models.TipoInstrumento;
+import springApp.java.com.example.gestoralyc.models.TipoInstrumento;
 
 public class InstrumentoDTO {
     //el controller recibe un InstrumentoDTO y devuelve un InstrumentoDTO

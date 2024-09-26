@@ -1,4 +1,4 @@
-package springApp.java.com.example.demo.models;
+package springApp.java.com.example.gestoralyc.models;
 
 public class AccionModel extends InstrumentoFinancieroModel {
     private double dividendo;

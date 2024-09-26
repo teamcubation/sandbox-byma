@@ -1,7 +1,7 @@
 package consoleApp.services;
 
-import springApp.java.com.example.demo.exceptions.InstrumentoDuplicadoException;
-import springApp.java.com.example.demo.exceptions.InstrumentoNoEncontradoException;
+import springApp.java.com.example.gestoralyc.exceptions.InstrumentoDuplicadoException;
+import springApp.java.com.example.gestoralyc.exceptions.InstrumentoNoEncontradoException;
 import consoleApp.repositories.InstrumentoRepository;
 import consoleApp.models.InstrumentoFinanciero;
 

@@ -1,4 +1,4 @@
-package springApp.java.com.example.demo.exceptions;
+package springApp.java.com.example.gestoralyc.exceptions;
 
 public class InvalidInstrumentoDataException extends RuntimeException {
     public InvalidInstrumentoDataException(String message) {
