@@ -1,22 +1,35 @@
 package springApp.java.com.example.gestoralyc.models;
 
+import java.time.LocalDate;
+
 public abstract class InstrumentoFinancieroModel {
 
     private Long id;
+    private TipoInstrumento tipo;
     private String nombre;
     private double precio;
+    private LocalDate fechaCreacion;
 
     // Constructor vacío
-    public InstrumentoFinancieroModel() {
-    }
+    public InstrumentoFinancieroModel() {}
 
     // Constructor parametrizado
-    public InstrumentoFinancieroModel(String nombre, double precio) {
+    public InstrumentoFinancieroModel(TipoInstrumento tipoInstrumento, String nombre, double precio) {
+        this.tipo = tipoInstrumento;
         this.nombre = nombre;
         this.precio = precio;
+        this.fechaCreacion = LocalDate.now(); // Fecha actual
     }
 
     // Getters y setters
+    public TipoInstrumento getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoInstrumento tipo) {
+        this.tipo = tipo;
+    }
+
     public Long getId() {
         return id;
     }
@@ -41,12 +54,16 @@ public abstract class InstrumentoFinancieroModel {
         this.precio = precio;
     }
 
+    public LocalDate getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDate fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
     @Override
     public String toString() {
-        return "InstrumentoFinancieroModel{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", precio=" + precio +
-                '}';
+        return "InstrumentoFinancieroModel{" + "id=" + id + ", nombre='" + nombre + '\'' + ", precio=" + precio + '}';
     }
 }

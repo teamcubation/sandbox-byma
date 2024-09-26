@@ -8,9 +8,8 @@ import springApp.java.com.example.gestoralyc.dto.InstrumentoDTO;
 import springApp.java.com.example.gestoralyc.mappers.InstrumentoMapper;
 import springApp.java.com.example.gestoralyc.models.InstrumentoFinancieroModel;
 import springApp.java.com.example.gestoralyc.services.InstrumentoService;
-
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/instrumentos") // Este es el path base del controller
@@ -19,87 +18,42 @@ public class InstrumentoController {
     @Autowired
     InstrumentoService instrumentoService;
 
-    ///////////METODOS CRUD/////////////////
-    // AGREGAR INSTRUMENTO
-    // http://localhost:5000/api/instrumentos/agregarInstrumento
-    // EJEMPLO DE JSON PARA AGREGAR ACCION
-    /*
-    {
-        "tipo":"ACCION",
-        "nombre": "BYMA",
-        "precio": 100,
-        "cantidad": 10,
-        "dividendo": 10
-    }
-    */
-    // EJEMPLO DE JSON PARA AGREGAR BONO
-    /*
-    {
-        "tipo":"BONO",
-        "nombre": "AL30",
-        "precio": 100,
-        "cantidad": 10,
-        "interes": 10
-    }
-    */
-
-    //TODO: devolver lo que se creo SIEMPRE DEVOLVER EL DTO
     @PostMapping("/")
-    public ResponseEntity<?> agregarInstrumento(@RequestBody InstrumentoDTO instrumentoDTO) {
-        // Convierto el DTO a la entidad correspondiente usando el mapper
+    public ResponseEntity<InstrumentoDTO> agregarInstrumento(@RequestBody InstrumentoDTO instrumentoDTO) {
         InstrumentoFinancieroModel instrumento = InstrumentoMapper.mapToModel(instrumentoDTO);
-        instrumentoService.agregarInstrumento(instrumento);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Instrumento agregado");
+        InstrumentoDTO instrumentoCreadoDTO = InstrumentoMapper.mapToDTO(instrumentoService.agregarInstrumento(instrumento));
+        return ResponseEntity.status(HttpStatus.CREATED).body(instrumentoCreadoDTO);
     }
 
-    // OBTENER TODOS LOS INSTRUMENTOS
-    // http://localhost:5000/api/instrumentos
-    @GetMapping
-    public ResponseEntity<List<InstrumentoFinancieroModel>> obtenerInstrumentos() {
-        return new ResponseEntity<>(instrumentoService.obtenerInstrumentos(), HttpStatus.OK);
+    @GetMapping("/")
+    public ResponseEntity<List<InstrumentoDTO>> obtenerInstrumentos() {
+        List<InstrumentoFinancieroModel> instrumentos = instrumentoService.obtenerInstrumentos();
+
+        List<InstrumentoDTO> instrumentosDTO = instrumentos.stream()
+                .map(InstrumentoMapper::mapToDTO)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(instrumentosDTO, HttpStatus.OK);
     }
 
-    // BUSCAR POR ID
-    // http://localhost:5000/api/instrumentos/obtenerInstrumento/1
     @GetMapping("/{id}")
-    public ResponseEntity<InstrumentoFinancieroModel> obtenerInstrumento(@PathVariable("id") Long id) {
-        Optional<InstrumentoFinancieroModel> instrumento = instrumentoService.obtenerInstrumento(id);
-        return new ResponseEntity<>(instrumento.get(), HttpStatus.OK);
+    public ResponseEntity<InstrumentoDTO> obtenerInstrumento(@PathVariable("id") Long id) {
+        InstrumentoFinancieroModel instrumentoModel = instrumentoService.obtenerInstrumento(id);
+        InstrumentoDTO instrumentoDTO = InstrumentoMapper.mapToDTO(instrumentoModel);
+        return new ResponseEntity<>(instrumentoDTO, HttpStatus.OK);
     }
 
-    // ELIMINAR INSTRUMENTO POR ID
-    // http://localhost:5000/api/instrumentos/1
-    //TODO: devolver statud 204
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarInstrumentoPorId(@PathVariable("id") Long id) {
+    public ResponseEntity<?> eliminarInstrumentoPorId(@PathVariable("id") Long id) {
         instrumentoService.eliminarInstrumentoPorId(id);
-        return ResponseEntity.ok("Instrumento eliminado.");
+        return ResponseEntity.noContent().build();
     }
 
-    // EDITAR INSTRUMENTO
-    // http://localhost:5000/api/instrumentos/1
-    // EJEMPLO DE JSON PARA EDITAR ACCION
-    /*
-    {
-        "nombre": "BYMA",
-        "precio": 100,
-        "cantidad": 10,
-        "dividendo": 10
-    }
-    */
-    // EJEMPLO DE JSON PARA EDITAR BONO
-    /*
-    {
-        "nombre": "AL30",
-        "precio": 100,
-        "cantidad": 10,
-        "interes": 10
-    }
-    */
-    //TODO: devolver statud de instrumento editado 201
     @PutMapping("/{id}")
-    public ResponseEntity<String> editarInstrumento(@PathVariable("id") Long id, @RequestBody InstrumentoFinancieroModel instrumento) {
-        instrumentoService.editarInstrumento(id, instrumento);
-        return ResponseEntity.ok("Instrumento editado correctamente.");
+    public ResponseEntity<InstrumentoDTO> editarInstrumento(@PathVariable("id") Long id, @RequestBody InstrumentoDTO instrumento) {
+        InstrumentoFinancieroModel instrumentoFinancieroModel = InstrumentoMapper.mapToModel(instrumento);
+        InstrumentoFinancieroModel instrumentoEditado = instrumentoService.editarInstrumento(id, instrumentoFinancieroModel);
+        InstrumentoDTO instrumentoNuevoADto = InstrumentoMapper.mapToDTO(instrumentoEditado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(instrumentoNuevoADto);
     }
 }

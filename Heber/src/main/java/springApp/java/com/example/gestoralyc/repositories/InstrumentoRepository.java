@@ -16,10 +16,11 @@ public class InstrumentoRepository {
     private List<InstrumentoFinancieroModel> instrumentosFinancieros = new ArrayList<>();
     private Long currentId = 1L; // Variable para gestionar el ID autoincremental
 
-    public void agregarInstrumento(InstrumentoFinancieroModel instrumento) {
+    public InstrumentoFinancieroModel agregarInstrumento(InstrumentoFinancieroModel instrumento) {
         ValidationUtils.validarNoNulo(instrumento, "El instrumento no puede ser nulo.");
         instrumento.setId(generarNuevoId());
         instrumentosFinancieros.add(instrumento);
+        return instrumento;
     }
 
     private Long generarNuevoId() {
@@ -38,19 +39,23 @@ public class InstrumentoRepository {
         return instrumento;
     }
 
-    public Optional<InstrumentoFinancieroModel> obtenerInstrumento(Long id) {
-        return instrumentosFinancieros.stream().filter(i -> i.getId().equals(id)).findFirst();
+    public InstrumentoFinancieroModel obtenerInstrumento(Long id) {
+        return instrumentosFinancieros.stream().filter(i -> i.getId().equals(id)).findFirst().orElse(null);
     }
 
     public boolean existeInstrumento(String nombre) {
         return instrumentosFinancieros.stream().anyMatch(i -> i.getNombre().equals(nombre));
     }
 
-    public void editarInstrumento(Long id, InstrumentoFinancieroModel nuevoInstrumento) {
-        InstrumentoFinancieroModel instrumentoExistente = obtenerInstrumento(id)
-                .orElseThrow(() -> new InstrumentoNoEncontradoException("Instrumento no encontrado."));
+    public InstrumentoFinancieroModel editarInstrumento(Long id, InstrumentoFinancieroModel nuevoInstrumento) {
+        InstrumentoFinancieroModel instrumentoExistente = obtenerInstrumento(id);
+        ValidationUtils.validarNoNulo(instrumentoExistente, "El instrumento no existe.");
         instrumentosFinancieros.remove(instrumentoExistente);
+        nuevoInstrumento.setId(instrumentoExistente.getId()); //le paso el id del instrumentoEliminado al nuevo
         instrumentosFinancieros.add(nuevoInstrumento);
+        return nuevoInstrumento;
     }
+
+
 }
 

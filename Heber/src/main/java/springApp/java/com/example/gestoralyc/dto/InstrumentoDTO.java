@@ -1,17 +1,23 @@
 package springApp.java.com.example.gestoralyc.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import springApp.java.com.example.gestoralyc.models.TipoInstrumento;
+import java.time.DayOfWeek;
 
+import java.time.LocalDate;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class InstrumentoDTO {
-    //el controller recibe un InstrumentoDTO y devuelve un InstrumentoDTO
-    private TipoInstrumento tipo; // ACCION, BONO, etc si en un futuro se agregan agregar al ENUM.
+
+    private Long id;
+    private TipoInstrumento tipo;
     private String nombre;
     private double precio;
     private Double dividendo; // Solo para Accion
     private Double tasaInteres; // Solo para Bono
-    //TODO: Agregar fecha de creacion y parking
-
-    // Getters y Setters
+    private LocalDate fechaCreacion; // Fecha actual
+    private LocalDate finDelParking; // Fecha de vencimiento del parking a 2 días hábiles
+    // Getters y setters
 
     public TipoInstrumento getTipo() {
         return tipo;
@@ -51,5 +57,46 @@ public class InstrumentoDTO {
 
     public void setTasaInteres(Double tasaInteres) {
         this.tasaInteres = tasaInteres;
+    }
+
+    public LocalDate getFinDelParking() {
+        return finDelParking;
+    }
+
+    public void setFinDelParking(LocalDate finDelParking) {
+        this.finDelParking = finDelParking;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
+
+    public void calcularFinDelParking() {
+        LocalDate now = LocalDate.now();
+        LocalDate finParking = now;
+        //System.out.println("Fecha actual: " + now);
+        int diasAgregados = 0;
+
+        while (diasAgregados < 2) {
+            finParking = finParking.plusDays(1);
+            //System.out.println("Fecha agregada: " + finParking);
+            //System.out.println("Día de la semana: " + finParking.getDayOfWeek());
+            // Contar solo si es un día hábil
+            if (finParking.getDayOfWeek() != DayOfWeek.SATURDAY && finParking.getDayOfWeek() != DayOfWeek.SUNDAY) {
+                diasAgregados++;
+            }
+        }
+
+        this.finDelParking = finParking;
+    }
+
+    public LocalDate getFechaCreacion() {
+        return fechaCreacion;
     }
 }

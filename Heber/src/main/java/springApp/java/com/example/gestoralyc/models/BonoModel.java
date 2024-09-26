@@ -3,8 +3,8 @@ package springApp.java.com.example.gestoralyc.models;
 public class BonoModel extends InstrumentoFinancieroModel {
     private double tasaInteres;
 
-    public BonoModel(String nombre, double precio, double tasaInteres) {
-        super(nombre, precio);
+    public BonoModel(TipoInstrumento tipoInstrumento, String nombre, double precio, double tasaInteres) {
+        super(tipoInstrumento, nombre, precio);
         this.tasaInteres = tasaInteres;
     }
 

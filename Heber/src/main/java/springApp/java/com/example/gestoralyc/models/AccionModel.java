@@ -4,8 +4,8 @@ public class AccionModel extends InstrumentoFinancieroModel {
     private double dividendo;
 
     // Constructor sin el parámetro tipo, ya que se gestiona en la clase base
-    public AccionModel(String nombre, double precio, double dividendo) {
-        super(nombre, precio); // Llamamos al constructor de la clase base
+    public AccionModel(TipoInstrumento tipoInstrumento, String nombre, double precio, double dividendo) {
+        super(tipoInstrumento, nombre, precio); // Llamamos al constructor de la clase base
         this.dividendo = dividendo;
     }
 
