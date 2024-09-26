@@ -1,29 +1,13 @@
 package springApp.java.com.example.demo.models;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "tipo",
-        visible = true // Hacer visible el campo 'tipo' durante la deserialización
-)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = AccionModel.class, name = "ACCION"),
-        @JsonSubTypes.Type(value = BonoModel.class, name = "BONO")
-})
 public abstract class InstrumentoFinancieroModel {
 
     private Long id;
     private String nombre;
     private double precio;
 
-    // Constructor vacío necesario para Jackson
+    // Constructor vacío
     public InstrumentoFinancieroModel() {
-        if (!(this instanceof AccionModel) && !(this instanceof BonoModel)) {
-            throw new IllegalArgumentException("Tipo de instrumento no válido");
-        }
     }
 
     // Constructor parametrizado

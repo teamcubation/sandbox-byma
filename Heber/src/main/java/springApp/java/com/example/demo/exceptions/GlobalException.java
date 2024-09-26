@@ -30,5 +30,11 @@ public class GlobalException {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    // Puedes agregar más métodos para manejar otras excepciones si es necesario
+    @ExceptionHandler(InvalidInstrumentoDataException.class)
+    public ResponseEntity<String> handleInvalidInstrumentoDataException(InvalidInstrumentoDataException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+
+    // puedo seguir agregando metodos para todas las excepciones que quiera manejar
 }

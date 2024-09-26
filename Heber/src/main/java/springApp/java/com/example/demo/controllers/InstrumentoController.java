@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springApp.java.com.example.demo.models.AccionModel;
-import springApp.java.com.example.demo.models.BonoModel;
+import springApp.java.com.example.demo.dto.InstrumentoDTO;
+import springApp.java.com.example.demo.mappers.InstrumentoMapper;
 import springApp.java.com.example.demo.models.InstrumentoFinancieroModel;
 import springApp.java.com.example.demo.services.InstrumentoService;
 
@@ -42,17 +42,14 @@ public class InstrumentoController {
         "interes": 10
     }
     */
-    @PostMapping("/agregarInstrumento")
-    public ResponseEntity<String> agregarInstrumento(@RequestBody InstrumentoFinancieroModel instrumento) {
-        if (instrumento instanceof AccionModel) {
-            instrumentoService.agregarAccion((AccionModel) instrumento);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Accion agregada");
-        } else if (instrumento instanceof BonoModel) {
-            instrumentoService.agregarBono((BonoModel) instrumento);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Bono agregado");
-        } else {
-            throw new IllegalArgumentException("Tipo de instrumento no válido");
-        }
+
+    //TODO: devolver lo que se creo SIEMPRE DEVOLVER EL DTO
+    @PostMapping("/")
+    public ResponseEntity<?> agregarInstrumento(@RequestBody InstrumentoDTO instrumentoDTO) {
+        // Convierto el DTO a la entidad correspondiente usando el mapper
+        InstrumentoFinancieroModel instrumento = InstrumentoMapper.mapToModel(instrumentoDTO);
+        instrumentoService.agregarInstrumento(instrumento);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Instrumento agregado");
     }
 
     // OBTENER TODOS LOS INSTRUMENTOS
@@ -64,14 +61,15 @@ public class InstrumentoController {
 
     // BUSCAR POR ID
     // http://localhost:5000/api/instrumentos/obtenerInstrumento/1
-    @GetMapping("/obtenerInstrumento/{id}")
-    public ResponseEntity<Optional<InstrumentoFinancieroModel>> obtenerInstrumento(@PathVariable("id") Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<InstrumentoFinancieroModel> obtenerInstrumento(@PathVariable("id") Long id) {
         Optional<InstrumentoFinancieroModel> instrumento = instrumentoService.obtenerInstrumento(id);
-        return new ResponseEntity<>(instrumento, HttpStatus.OK);
+        return new ResponseEntity<>(instrumento.get(), HttpStatus.OK);
     }
 
     // ELIMINAR INSTRUMENTO POR ID
     // http://localhost:5000/api/instrumentos/1
+    //TODO: devolver statud 204
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarInstrumentoPorId(@PathVariable("id") Long id) {
         instrumentoService.eliminarInstrumentoPorId(id);
@@ -98,6 +96,7 @@ public class InstrumentoController {
         "interes": 10
     }
     */
+    //TODO: devolver statud de instrumento editado 201
     @PutMapping("/{id}")
     public ResponseEntity<String> editarInstrumento(@PathVariable("id") Long id, @RequestBody InstrumentoFinancieroModel instrumento) {
         instrumentoService.editarInstrumento(id, instrumento);
