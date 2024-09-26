@@ -8,11 +8,11 @@ import springbootproject.java.com.example.project.model.instrumentoFinanciero.fa
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class InstrumentosFinancierosRepository {
-    private static InstrumentosFinancierosRepository instance;
-    ArrayList<InstrumentoFinanciero> instrumentosFinancieros;
+    private List<InstrumentoFinanciero> instrumentosFinancieros;
 
     private InstrumentosFinancierosRepository() {
         instrumentosFinancieros = new ArrayList<InstrumentoFinanciero>();
@@ -22,14 +22,8 @@ public class InstrumentosFinancierosRepository {
         this.instrumentosFinancieros.add(accionFactory.createInstrumentoFinanciero("BYMA",741.0, LocalDate.of(2010,10,10)));
         this.instrumentosFinancieros.add(bonoFactory.createInstrumentoFinanciero("AGRO",852.0, LocalDate.of(2011,11,11)));
     }
-    public static InstrumentosFinancierosRepository getInstance() {
-        if (instance == null) {
-            instance = new InstrumentosFinancierosRepository();
-        }
-        return instance;
-    }
 
-    public ArrayList<InstrumentoFinanciero> consultarInstrumentosFinancieros() {
+    public List<InstrumentoFinanciero> consultarInstrumentosFinancieros() {
         return this.instrumentosFinancieros;
     }
 
@@ -42,37 +36,25 @@ public class InstrumentosFinancierosRepository {
         return instrumentoFinanciero;
     }
 
-    public InstrumentoFinanciero editarNombreInstrumento(String nombreActual, String nombreNuevo) throws InstrumentoNoEncontradoException {
-        InstrumentoFinanciero instrumento = consultarPorUnInstrumentoFinanciero(nombreActual);
-        if (instrumento == null) {
-            throw new InstrumentoNoEncontradoException("El instrumento con nombre " + nombreActual + " no fue encontrado.");
-        } else {
-            instrumento.setNombre(nombreNuevo);
-            return instrumento;
-        }
-
-    }
-
-    public InstrumentoFinanciero editarPrecioInstrumento(String nombreActual, double precioNuevo) throws InstrumentoNoEncontradoException {
-        InstrumentoFinanciero instrumento = consultarPorUnInstrumentoFinanciero(nombreActual);
-        if (instrumento == null) {
-            throw new InstrumentoNoEncontradoException("El instrumento con nombre " + nombreActual + " no fue encontrado.");
-        } else {
-            instrumento.setPrecio(precioNuevo);
-            return instrumento;
-        }
-
-    }
-
     public void eliminarInstrumentoFinanciero(String nombre) throws InstrumentoNoEncontradoException {
         if(!this.instrumentosFinancieros.removeIf(x -> x.getNombre().equals(nombre))) {
             throw new InstrumentoNoEncontradoException("No se puede eliminar el instrumento financiero porque no existe en el sistema");
         }
     }
 
-
+    public InstrumentoFinanciero editarInstrumentoFinanciero(String nombreActual, String nuevoNombre, Double nuevoPrecio, LocalDate nuevaFechaDeEmision) {
+        InstrumentoFinanciero instrumento = consultarPorUnInstrumentoFinanciero(nombreActual);
+        if (nuevoNombre != null) {
+            instrumento.setNombre(nuevoNombre);
+        }
+        if (nuevoPrecio != null) {
+            instrumento.setPrecio(nuevoPrecio);
+        }
+        if (nuevaFechaDeEmision != null) {
+            instrumento.setFechaDeEmision(nuevaFechaDeEmision);
+        }
+        return instrumento;
+    }
 
     // TODO: obtener bonos y acciones
-
-
 }

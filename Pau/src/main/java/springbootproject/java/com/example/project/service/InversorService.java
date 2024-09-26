@@ -2,15 +2,14 @@ package springbootproject.java.com.example.project.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import springbootproject.java.com.example.project.controller.InversorDTO;
+import springbootproject.java.com.example.project.controller.dto.InversorDTO;
 import springbootproject.java.com.example.project.exceptions.InversorNoEncontradoException;
 import springbootproject.java.com.example.project.exceptions.InversorYaRegistradoException;
 import springbootproject.java.com.example.project.model.Inversor;
 import springbootproject.java.com.example.project.repository.InversorRepository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 public class InversorService {
@@ -33,7 +32,7 @@ public class InversorService {
         }
     }
 
-    public ArrayList<Inversor> obtenerInversores() {
+    public List<Inversor> obtenerInversores() {
         return this.inversorRepository.obtenerInversores();
     }
 

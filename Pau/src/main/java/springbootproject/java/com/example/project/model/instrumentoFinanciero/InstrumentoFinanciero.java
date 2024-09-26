@@ -10,9 +10,6 @@ public abstract class InstrumentoFinanciero {
     private LocalDate fechaDeEmision;
     private TipoInstrumentoFinanciero tipoInstrumentoFinanciero;
 
-    public InstrumentoFinanciero() {
-    }
-
     public String getNombre() {
         return nombre;
     }
@@ -24,7 +21,8 @@ public abstract class InstrumentoFinanciero {
     // Aca imagino que se podría usar una expresion regular para validar el nombre del instrumento
     public void setNombre(String nombre) {
         this.nombre = nombre;
-        Notificador.getInstance().notificarInteresados(this,"nombre");
+        //Notificador.getInstance().notificarInteresados(this,"nombre");
+        // TODO: resolver notificador
     }
 
     public void setPrecio(Double precio) throws IllegalArgumentException{
@@ -32,7 +30,7 @@ public abstract class InstrumentoFinanciero {
             throw new IllegalArgumentException("El precio no puede ser negativo");
         }
         this.precio = precio;
-        Notificador.getInstance().notificarInteresados(this,"precio");
+        //Notificador.getInstance().notificarInteresados(this,"precio");
     }
 
     public LocalDate getFechaDeEmision() {

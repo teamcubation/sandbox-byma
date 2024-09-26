@@ -1,4 +1,4 @@
-package springbootproject.java.com.example.project.controller;
+package springbootproject.java.com.example.project.controller.dto;
 
 import springbootproject.java.com.example.project.exceptions.NoExisteEseTipoDeInstrumentoException;
 import springbootproject.java.com.example.project.model.instrumentoFinanciero.TipoInstrumentoFinanciero;
@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class InstrumentoFinancieroDTO {
     private String nombre;
-    private double precio;
+    private Double precio;
     private LocalDate fechaDeEmision;
     private String stringTipoInstrumentoFinanciero;
 

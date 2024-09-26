@@ -4,15 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springbootproject.java.com.example.project.controller.dto.EditarInstrumentoDTO;
+import springbootproject.java.com.example.project.controller.dto.InstrumentoFinancieroDTO;
 import springbootproject.java.com.example.project.exceptions.InstrumentoDuplicadoException;
 import springbootproject.java.com.example.project.exceptions.InstrumentoNoEncontradoException;
 import springbootproject.java.com.example.project.exceptions.NoExisteEseTipoDeInstrumentoException;
-import springbootproject.java.com.example.project.model.instrumentoFinanciero.InstrumentoFinanciero;
 import springbootproject.java.com.example.project.service.InstrumentoFinancieroService;
 
-import java.util.List;
-
 @RestController
+@RequestMapping("/instrumentos-financieros")
 public class InstrumentoFinancieroController {
     private final InstrumentoFinancieroService instrumentoFinancieroService;
 
@@ -26,12 +26,12 @@ public class InstrumentoFinancieroController {
         return "Hello World";
     }
 
-    @RequestMapping("/get-all")
-    public List<InstrumentoFinanciero> consultarTodosLosInstrumentosConocidos() {
-        return this.instrumentoFinancieroService.consultarInstrumentosFinancieros();
+    @RequestMapping("/")
+    public ResponseEntity<?> consultarTodosLosInstrumentosConocidos() {
+        return ResponseEntity.ok(instrumentoFinancieroService.consultarInstrumentosFinancieros());
     }
 
-    @RequestMapping("/consultar-por-nombre/{nombre}")
+    @RequestMapping("/{nombre}")
     public ResponseEntity<?> consultarUnInstrumentoFinanciero(@PathVariable("nombre") String nombre) {
         try {
             return ResponseEntity.ok(this.instrumentoFinancieroService.consultarPorUnInstrumentoFinanciero(nombre));
@@ -66,13 +66,11 @@ public class InstrumentoFinancieroController {
 //        }
 //    }
 
-    @PostMapping("/create-instrumento")
+    @PostMapping("/")
     public ResponseEntity<?> crearInstrumento(@RequestBody InstrumentoFinancieroDTO instrumentoFinancieroDTO) {
         try {
-            return ResponseEntity.ok(this.instrumentoFinancieroService.registrarInstrumentoFinanciero(instrumentoFinancieroDTO.getNombre(), instrumentoFinancieroDTO.getPrecio(), instrumentoFinancieroDTO.getFechaDeEmision(),instrumentoFinancieroDTO.getTipoInstrumentoFinanciero()));
-        } catch (NoExisteEseTipoDeInstrumentoException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (InstrumentoNoEncontradoException e) {
+            return ResponseEntity.ok(this.instrumentoFinancieroService.registrarInstrumentoFinanciero(instrumentoFinancieroDTO));
+        } catch (NoExisteEseTipoDeInstrumentoException | InstrumentoNoEncontradoException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (InstrumentoDuplicadoException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
@@ -81,31 +79,31 @@ public class InstrumentoFinancieroController {
         }
     }
 
-    @DeleteMapping("/instrumentos/{nombre}")
+    @DeleteMapping("/{nombre}")
     public ResponseEntity<?> deleteInstrumento(@PathVariable("nombre") String nombre) {
         try {
             this.instrumentoFinancieroService.eliminarInstrumentoFinanciero(nombre);
-            return ResponseEntity.ok("El instrumento financiero de nombre " + nombre + " fue eliminado exitosamente.");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (InstrumentoNoEncontradoException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    @PutMapping("/instrumentos/{nombre}/nombre/{nuevoNombre}")
-    public ResponseEntity<?> editarNombreInstrumento(@PathVariable("nombre") String nombre, @PathVariable("nuevoNombre") String nuevoNombre) {
+    @PutMapping("/{nombre}")
+    public ResponseEntity<?> editarInstrumento(@RequestBody EditarInstrumentoDTO editarInstrumentoDTO, @PathVariable("nombre") String nombre) {
         try {
-            return ResponseEntity.ok(this.instrumentoFinancieroService.editarNombreInstrumentoFinanciero(nombre, nuevoNombre));
+            return ResponseEntity.ok(this.instrumentoFinancieroService.editarInstrumentoFinanciero(nombre, editarInstrumentoDTO));
         } catch (InstrumentoNoEncontradoException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    @PutMapping("/instrumentos/{nombre}/precio/{nuevoPrecio}")
-    public ResponseEntity<?> editarPrecioInstrumento(@PathVariable("nombre") String nombre, @PathVariable("nuevoPrecio") Double nuevoPrecio) {
-        try {
-            return ResponseEntity.ok(this.instrumentoFinancieroService.editarPrecioInstrumentoFinanciero(nombre, nuevoPrecio));
-        } catch (InstrumentoNoEncontradoException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-    }
+//    @PutMapping("/precio/{nombre}/{nuevoPrecio}")
+//    public ResponseEntity<?> editarPrecioInstrumento(@PathVariable("nombre") String nombre, @PathVariable("nuevoPrecio") Double nuevoPrecio) {
+//        try {
+//            return ResponseEntity.ok(this.instrumentoFinancieroService.editarPrecioInstrumentoFinanciero(nombre, nuevoPrecio));
+//        } catch (InstrumentoNoEncontradoException e) {
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+//        }
+//    }
 }

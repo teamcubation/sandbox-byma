@@ -1,4 +1,4 @@
-package springbootproject.java.com.example.project.controller;
+package springbootproject.java.com.example.project.controller.dto;
 
 import java.time.LocalDate;
 
