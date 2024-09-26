@@ -3,6 +3,10 @@ package springbootApp.java.models;
 
 
 
+import jakarta.persistence.Entity;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import springbootApp.java.DTOs.InstrumentoDTO;
 import springbootApp.java.exceptions.InstrumentoDuplicadoException;
 import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
@@ -12,6 +16,9 @@ import springbootApp.java.services.ObserverService;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@ToString
 public abstract class InstrumentoFinanciero {
 
     private String nombre;
@@ -51,26 +58,17 @@ public abstract class InstrumentoFinanciero {
         return inversoresList;
     }
 
-    private void setNombre(String nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    private void setTipo(Tipo tipo) {
+    public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
 
 
-    private void setPrecio(double precio) {
-        this.notificar();
+    public void setPrecio(double precio) {
         this.precio = precio;
-    }
-
-    public void actualizarInstrumento(InstrumentoDTO instrumento) {
-        this.setNombre(instrumento.getNombre());
-        this.setTipo(instrumento.getTipo());
-        if (instrumento.getPrecio() != this.getPrecio()) {
-            this.setPrecio(instrumento.getPrecio());
-        }
     }
 
 

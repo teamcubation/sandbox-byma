@@ -20,11 +20,11 @@ public class Inversor implements Observer{
         return nombre;
     }
 
-    private void setNombre(String nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    private void setDni(String dni) {
+    public void setDni(String dni) {
         this.dni = dni;
     }
 
@@ -71,10 +71,5 @@ public class Inversor implements Observer{
     public void actualizarPrecioInstrumento(InstrumentoFinanciero instrumento) {
         System.out.println(getNombre() + ": el precio del instrumento " + instrumento.getNombre() + " cambio a "
                 + instrumento.getPrecio());
-    }
-
-    public void actualizarInversor(InversorDTO inversor) {
-        this.setDni(inversor.getDni());
-        this.setNombre(inversor.getNombre());
     }
 }

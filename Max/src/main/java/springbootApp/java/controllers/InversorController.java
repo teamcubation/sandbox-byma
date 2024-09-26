@@ -101,7 +101,7 @@ public class InversorController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @PostMapping("/desubscribirse")
+    @PostMapping("/desubscribirse/{dni}/{nombreInstrumento}")
     public ResponseEntity<?> desuscribirse(@PathVariable String dni, @PathVariable String nombreInstrumento ) {
         try {
             log.info("intentando desuscribirse...");

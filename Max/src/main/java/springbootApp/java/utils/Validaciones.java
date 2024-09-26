@@ -19,7 +19,7 @@ public class Validaciones {
     }
 
     public static boolean validarTipo(Tipo tipo) {
-        if (tipo == Tipo.BONO || tipo == Tipo.ACCION)
+        if (tipo != Tipo.BONO && tipo != Tipo.ACCION)
             throw new IllegalArgumentException("Error. Tipo invalido");
         return true;
     }

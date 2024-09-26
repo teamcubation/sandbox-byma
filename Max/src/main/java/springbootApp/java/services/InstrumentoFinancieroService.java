@@ -8,6 +8,7 @@ import springbootApp.java.models.InstrumentoFinanciero;
 import org.springframework.stereotype.Service;
 import springbootApp.java.exceptions.InstrumentoDuplicadoException;
 import springbootApp.java.models.InstrumentoFactory;
+import springbootApp.java.models.Inversor;
 import springbootApp.java.models.Tipo;
 import springbootApp.java.repositories.InstrumentoFinancieroRepository;
 import springbootApp.java.utils.Validaciones;
@@ -21,14 +22,13 @@ public class InstrumentoFinancieroService {
 
 
     public void registrarInstrumentoFinanciero(String nombre, double precio, Tipo tipo) throws InstrumentoDuplicadoException {
+        InstrumentoFinanciero instrumento = instrumentoFinancieroRepository.buscarInstrumento(nombre);
+        if (instrumento != null) {
+            throw new InstrumentoDuplicadoException("Error. Accion existente");
+        }
         if (validarDatos(nombre, precio, tipo)) {
-            InstrumentoFinanciero instrumento = instrumentoFinancieroRepository.buscarInstrumento(nombre);
-            if (instrumento != null) {
-                throw new InstrumentoDuplicadoException("Error. Accion existente");
-            } else {
-                this.instrumentoFinancieroRepository.registrarInstrumento(
-                        InstrumentoFactory.nuevoInstrumento(nombre, precio, tipo));
-            }
+            this.instrumentoFinancieroRepository.registrarInstrumento(
+                    InstrumentoFactory.nuevoInstrumento(nombre, precio, tipo));
         }
     }
 
@@ -51,13 +51,23 @@ public class InstrumentoFinancieroService {
         return instrumentoFinancieroRepository.buscarInstrumento(nombre);
     }
 
-    public void actualizarInstrumento(String nombre, InstrumentoDTO instrumento) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
+    public InstrumentoDTO actualizarInstrumento(String nombre, InstrumentoDTO instrumento) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
+        InstrumentoFinanciero instrumentoEncontrado = this.buscarInstrumento(nombre);
+        if (instrumentoEncontrado == null) {
+            throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
+        }
         validarDatos(instrumento.getNombre(), instrumento.getPrecio(), instrumento.getTipo());
-        instrumentoFinancieroRepository.modificarInstrumento(nombre, instrumento);
+        instrumentoEncontrado.setNombre(instrumento.getNombre());
+        instrumentoEncontrado.setTipo(instrumento.getTipo());
+        if (instrumento.getPrecio() != instrumentoEncontrado.getPrecio()) {
+            instrumentoEncontrado.notificar();
+            instrumentoEncontrado.setPrecio(instrumento.getPrecio());
+        }
+        return instrumento;
     }
 
     private boolean validarDatos(String nombre, double precio, Tipo tipo) {
-        return !Validaciones.validarNombre(nombre) || !Validaciones.validarPrecio(precio) || !Validaciones.validarTipo(tipo);
+        return Validaciones.validarNombre(nombre) && Validaciones.validarPrecio(precio) && Validaciones.validarTipo(tipo);
     }
 
 }

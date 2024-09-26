@@ -3,6 +3,7 @@ package springbootApp.java.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import springbootApp.java.exceptions.InversorExistenteException;
 import springbootApp.java.exceptions.InversorNoEncontradoException;
 import springbootApp.java.models.InstrumentoFinanciero;
 import springbootApp.java.models.Inversor;
@@ -18,11 +19,11 @@ public class InversorService {
     @Autowired
     private InversorRepository inversoresRepository;
 
-    public void registrarInversor(String nombre, String dni) {
+    public void registrarInversor(String nombre, String dni) throws InversorExistenteException {
+        Inversor inversor = inversoresRepository.buscarInversor(dni);
+        if (inversor != null)
+            throw new InversorExistenteException("Error. Inversor existente");
         if (validarDatosInversor(nombre, dni)) {
-            Inversor inversor = inversoresRepository.buscarInversor(dni);
-            if (inversor != null)
-                throw new RuntimeException("Error. Inversor existente");
             inversoresRepository.registrarInversor(new Inversor(nombre, dni));
         }
     }
@@ -48,13 +49,13 @@ public class InversorService {
     }
 
     public void actualizarInversor(String dni, InversorDTO inversor) throws InversorNoEncontradoException {
-        if (!validarDatosInversor(inversor.getNombre(), inversor.getDni())) {
-            Inversor inversorEncontrado = inversoresRepository.buscarInversor(dni);
-            if (inversorEncontrado == null) {
-                throw new InversorNoEncontradoException("Error. Inversor no encontrado");
-            }
-            inversorEncontrado.actualizarInversor(inversor);
+        Inversor inversorEncontrado = inversoresRepository.buscarInversor(dni);
+        if (inversorEncontrado == null) {
+            throw new InversorNoEncontradoException("Error. Inversor no encontrado");
         }
+        validarDatosInversor(inversor.getNombre(), inversor.getDni());
+        inversorEncontrado.setDni(inversor.getDni());
+        inversorEncontrado.setNombre(inversor.getNombre());
     }
 
     private boolean validarDatosInversor(String nombre, String dni) {

@@ -15,8 +15,5 @@ public interface IInstrumentoFinancieroRepository {
 
     public void eliminarInstrumento(InstrumentoFinanciero instrumento);
 
-    public void modificarInstrumento(String nombre, InstrumentoDTO instrumento) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException;
-
-    public boolean instrumentoExistente(String nombre);
     public List<InstrumentoFinanciero> consultarTodosLosInstrumentos();
 }

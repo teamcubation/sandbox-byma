@@ -36,16 +36,4 @@ public class InstrumentoFinancieroRepository implements IInstrumentoFinancieroRe
         }
         return instrumentoADevolver;
     }
-
-    public void modificarInstrumento(String nombre, InstrumentoDTO instrumento) throws InstrumentoDuplicadoException, InstrumentoNoEncontradoException {
-        InstrumentoFinanciero instrumentoEncontrado = this.buscarInstrumento(nombre);
-        if (instrumentoEncontrado == null) {
-            throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
-        }
-        instrumentoEncontrado.actualizarInstrumento(instrumento);
-    }
-
-    public boolean instrumentoExistente(String nombre) {
-        return this.buscarInstrumento(nombre) != null;
-    }
 }

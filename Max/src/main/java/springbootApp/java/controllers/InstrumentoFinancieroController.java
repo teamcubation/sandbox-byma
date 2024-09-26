@@ -14,7 +14,7 @@ import springbootApp.java.services.InstrumentoFinancieroService;
 
 @Slf4j
 @RestController
-@RequestMapping("/instrumentoFinanciero")
+@RequestMapping("/instrumento-Financiero")
 public class InstrumentoFinancieroController {
 
     private static final Logger log = LoggerFactory.getLogger(InstrumentoFinancieroController.class);
@@ -23,7 +23,7 @@ public class InstrumentoFinancieroController {
 
 
     @PostMapping("/")
-    public ResponseEntity<?> registrarInstrumentoFinanciero(@RequestBody InstrumentoDTO instrumentoFinanciero) {
+    public ResponseEntity<?> registrar(@RequestBody InstrumentoDTO instrumentoFinanciero) {
         try {
             log.info("registrando instrumento...");
             instrumentoFinancieroService.registrarInstrumentoFinanciero(instrumentoFinanciero.getNombre(),
@@ -31,7 +31,7 @@ public class InstrumentoFinancieroController {
             log.info("nuevo instrumento creado, de tipo: " + instrumentoFinanciero.getTipo() + " con nombre: " + instrumentoFinanciero.getNombre() + " y precio: " + instrumentoFinanciero.getPrecio());
             return new ResponseEntity<InstrumentoDTO>(instrumentoFinanciero, HttpStatus.CREATED);
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -59,11 +59,13 @@ public class InstrumentoFinancieroController {
     }
 
     @DeleteMapping("/{nombre}")
-    public ResponseEntity<?> eliminarInstrumento(@PathVariable String nombre) {
+    public ResponseEntity<?> eliminar(@PathVariable String nombre) {
         try {
             log.info("eliminando instrumento: " + nombre);
             instrumentoFinancieroService.eliminarInstrumento(nombre);
-            return ResponseEntity.ok("Instrumento eliminado");
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .build();
         } catch (Exception e) {
             log.info(e.getMessage());
             return ResponseEntity.badRequest().build();
@@ -74,8 +76,7 @@ public class InstrumentoFinancieroController {
     public ResponseEntity<?> actualizarInstrumento(@PathVariable String nombre, @RequestBody InstrumentoDTO instrumento) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
         try {
             log.info("actualizando instrumento...");
-            instrumentoFinancieroService.actualizarInstrumento(nombre, instrumento);
-            return ResponseEntity.ok(instrumento);
+            return ResponseEntity.ok(instrumentoFinancieroService.actualizarInstrumento(nombre, instrumento));
         } catch (InstrumentoNoEncontradoException e) {
             log.info("Error al actualizar instrumento: " + e.getMessage());
             return ResponseEntity.notFound().build();
