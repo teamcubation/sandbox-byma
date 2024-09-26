@@ -20,8 +20,8 @@ public class InversorRepository {
         return this.inversores;
     }
 
-    public ArrayList<Inversor> obtenerInversoresSuscriptos() {
-        return (ArrayList<Inversor>) this.inversores.stream().filter(inversor -> inversor.esSuscriptor()).collect(Collectors.toList());
+    public List<Inversor> obtenerInversoresSuscriptos() {
+        return this.inversores.stream().filter(inversor -> inversor.esSuscriptor()).collect(Collectors.toList());
     }
 
     public Inversor agregarInversor(Inversor inversor) {

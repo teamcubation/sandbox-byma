@@ -13,7 +13,6 @@ import java.util.List;
 
 @Service
 public class InversorService {
-    private static InversorService instance;
     private InversorRepository inversorRepository;
 
     @Autowired

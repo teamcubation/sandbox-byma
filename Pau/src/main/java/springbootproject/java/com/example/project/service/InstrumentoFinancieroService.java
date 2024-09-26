@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// SINGLETON
 @Service
 public class InstrumentoFinancieroService {
     private static InstrumentoFinancieroService instance;
