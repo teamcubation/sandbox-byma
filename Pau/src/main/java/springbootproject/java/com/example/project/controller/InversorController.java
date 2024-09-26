@@ -1,5 +1,6 @@
 package springbootproject.java.com.example.project.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import springbootproject.java.com.example.project.service.InversorService;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/inversores")
 public class InversorController {
@@ -24,23 +26,28 @@ public class InversorController {
 
     @RequestMapping("/")
     public List<Inversor> obtenerInversores() {
+        log.info("Consultando inversores.");
         return inversorService.obtenerInversores();
     }
 
     @PostMapping("/")
     public ResponseEntity<?> registrarInversor(@RequestBody InversorDTO inversorDTO) {
         try {
+            log.info("Registrando inversor: {}", inversorDTO);
             return ResponseEntity.ok(this.inversorService.registrarInversor(inversorDTO));
         } catch (InversorYaRegistradoException e) {
+            log.error(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
         }
     }
 
-    @RequestMapping("/inversores/{nombre}")
+    @RequestMapping("/{nombre}")
     public ResponseEntity<?> obtenerInversorPorNombre(@PathVariable String nombre) {
         try {
+            log.info("Buscando inversor por nombre: {}", nombre);
             return ResponseEntity.ok(this.inversorService.consultarPorUnInversor(nombre));
         } catch (InversorNoEncontradoException e) {
+            log.error(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
@@ -49,8 +56,10 @@ public class InversorController {
     public ResponseEntity<?> eliminarInversorPorNombre(@PathVariable String nombre) {
         try {
             this.inversorService.eliminarInversor(nombre);
+            log.info("Eliminando inversor de nombre: {}", nombre);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (InversorNoEncontradoException e) {
+            log.error(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
