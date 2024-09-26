@@ -11,4 +11,5 @@ public interface IInstrumentoFinancieroService {
     List<InstrumentoFinanciero> listarTodosLosInstrumentos();
     Optional<InstrumentoFinanciero> buscarInstrumentoPorNombre(String nombre);
     void editarInstrumento(String nombre, InstrumentoFinanciero nuevoInstrumento);
+    void suscribirInversor(String nombreInstrumento, String nombreInversor);
 }

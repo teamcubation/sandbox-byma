@@ -7,6 +7,9 @@ import springbootMigracion.java.com.example.demo.model.InstrumentoFinanciero;
 
 public class InstrumentoFinancieroFactory {
     public static InstrumentoFinanciero crearInstrumento(InstrumentoDTO instrumentoDTO) {
+        if (instrumentoDTO == null) {
+            throw new IllegalArgumentException("El InstrumentoDTO no puede ser nulo.");
+        }
         if ("accion".equalsIgnoreCase(instrumentoDTO.getTipo())) {
             return new Accion(instrumentoDTO.getNombre(), instrumentoDTO.getPrecio());
         } else if ("bono".equalsIgnoreCase(instrumentoDTO.getTipo())) {

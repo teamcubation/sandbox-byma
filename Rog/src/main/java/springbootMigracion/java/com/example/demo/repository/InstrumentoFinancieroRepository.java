@@ -13,16 +13,8 @@ import java.util.Optional;
 public class InstrumentoFinancieroRepository implements IInstrumentoFinancieroRepository {
 
     private final List<InstrumentoFinanciero> instrumentoFinancieroList = new ArrayList<>();
-    private static InstrumentoFinancieroRepository instrumentoFinancieroRepository;
 
     private InstrumentoFinancieroRepository() {}
-
-//    public static InstrumentoFinancieroRepository getInstance() {
-//        if (instrumentoFinancieroRepository == null) {
-//            instrumentoFinancieroRepository = new InstrumentoFinancieroRepository();
-//        }
-//        return instrumentoFinancieroRepository;
-//    }
 
     @Override
     public void agregarInstrumento(InstrumentoFinanciero instrumento) {
@@ -46,14 +38,12 @@ public class InstrumentoFinancieroRepository implements IInstrumentoFinancieroRe
 
     @Override
     public void eliminarInstrumento(String nombre) {
-        InstrumentoFinanciero instrumento = buscarInstrumentoPorNombre(nombre)
-                .orElseThrow(() -> new InstrumentoNoEncontradoException("Instrumento no encontrado."));
+        Optional<InstrumentoFinanciero> instrumentoExistente = buscarInstrumentoPorNombre(nombre);
+        if (instrumentoExistente.isEmpty()){
+            throw new InstrumentoNoEncontradoException("Instrumento no econtrado.");
+        }
+        InstrumentoFinanciero instrumento = instrumentoExistente.get();
         instrumentoFinancieroList.remove(instrumento);
-//        InstrumentoFinanciero instrumentoExistente = buscarInstrumentoPorNombre(nombre);
-//        if (instrumentoExistente == null){
-//            throw new InstrumentoNoEncontradoException("Instrumento no econtrado.");
-//        }
-//        instrumentoFinancieroList.remove(instrumentoExistente);
     }
 
     @Override
