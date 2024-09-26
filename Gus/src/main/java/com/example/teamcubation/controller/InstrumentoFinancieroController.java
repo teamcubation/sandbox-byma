@@ -33,30 +33,17 @@ public class InstrumentoFinancieroController {
 
 
     @PostMapping("/crear")
-    public ResponseEntity<?> create(@RequestBody InstrumentoFinancieroDTO nuevoInstrumento) {
+    public ResponseEntity<?> create(@RequestBody InstrumentoFinancieroDTO nuevoInstrumento) throws InstrumentoDuplicadoException, ModeloInvalidoException {
         log.info("Instrumento a crear: " + nuevoInstrumento.toString());
 
-        try {
+        InstrumentoFinanciero nuevo = InstrumentoFinancieroMapper.instrumentoDTOtoInstrumentoFinanciero(nuevoInstrumento, instrumentoFinancieroFactoryService);
 
+        instrumentoFinancieroService.crear(nuevo);
 
-            InstrumentoFinanciero nuevo = InstrumentoFinancieroMapper.instrumentoDTOtoInstrumentoFinanciero(nuevoInstrumento, instrumentoFinancieroFactoryService);
-            instrumentoFinancieroService.crear(nuevo);
+        log.info("Instrumento creado: " + nuevo.toString());
 
-            log.info("Instrumento creado: " + nuevo.toString());
+        return new ResponseEntity<>(nuevo, null, HttpStatus.CREATED);
 
-            return new ResponseEntity<>(nuevo, null, HttpStatus.CREATED);
-        } catch (InstrumentoDuplicadoException e) {
-            log.error(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.CONFLICT);
-        } catch (ModeloInvalidoException e) {
-            log.error(e.getMessage());
-
-            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.BAD_REQUEST);
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-
-            return new ResponseEntity<>("Error: datos ingresados invalidos, intente de nuevo!!!", null, HttpStatus.BAD_REQUEST);
-        }
     }
 
     @RequestMapping("/consultar-acciones")
@@ -89,69 +76,28 @@ public class InstrumentoFinancieroController {
 
     //devolver el dto
     @PutMapping("/editar/{nombre}")
-    public ResponseEntity<?> update(@PathVariable String nombre, @RequestBody InstrumentoFinancieroDTO instrumentoDTO) {
+    public ResponseEntity<?> update(@PathVariable String nombre, @RequestBody InstrumentoFinancieroDTO instrumentoDTO) throws ModeloInvalidoException, InstrumentoNoEncontradoException {
 
         log.info("PathVariable nombre=  " + nombre);
         log.info(instrumentoDTO.toString());
+        InstrumentoFinanciero instrumentoFinanciero = InstrumentoFinancieroMapper.instrumentoDTOtoInstrumentoFinanciero(instrumentoDTO, instrumentoFinancieroFactoryService);
+        instrumentoFinancieroService.editar(instrumentoFinanciero, nombre);
 
-        try {
-            InstrumentoFinanciero instrumentoFinanciero = InstrumentoFinancieroMapper.instrumentoDTOtoInstrumentoFinanciero(instrumentoDTO, instrumentoFinancieroFactoryService);
-            instrumentoFinancieroService.editar(instrumentoFinanciero, nombre);
+        log.info("Instrumento actualizado: " + instrumentoFinanciero.toString());
+        return new ResponseEntity<>(instrumentoDTO, null, HttpStatus.OK);
 
-            log.info("Instrumento actualizado: " + instrumentoFinanciero.toString());
-            return new ResponseEntity<>(instrumentoDTO, null, HttpStatus.OK);
-        } catch (InstrumentoNoEncontradoException e) {
-
-            log.error(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.NOT_FOUND);
-        } catch (ModeloInvalidoException e) {
-
-            log.error(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.BAD_REQUEST);
-        } catch (Exception ex) {
-
-            log.error(ex.getMessage());
-            return new ResponseEntity<>("Error: Datos ingresados invalidos. Intente nuevamente", null, HttpStatus.BAD_REQUEST);
-        }
     }
 
     @DeleteMapping("/eliminar/{nombre}")
-    public ResponseEntity<?> eliminarInstrumento(@PathVariable String nombre) {
+    public ResponseEntity<?> eliminarInstrumento(@PathVariable String nombre) throws InstrumentoNoEncontradoException {
 
         log.info("PathVariable nombre=  " + nombre);
+        instrumentoFinancieroService.eliminar(nombre);
 
-        try {
-            instrumentoFinancieroService.eliminar(nombre);
+        log.info("Instrumento eliminado: " + nombre);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-            log.info("Instrumento eliminado: " + nombre);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch (InstrumentoNoEncontradoException e) {
-
-            log.error(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.NOT_FOUND);
-        }
     }
-
-//
-//    @DeleteMapping("/eliminar-accion/{nombre}")
-//    public ResponseEntity<?> eliminarAccion(@PathVariable String nombre) {
-//        try {
-//            instrumentoFinancieroService.eliminar(nombre);
-//            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//        } catch (InstrumentoNoEncontradoException e) {
-//            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.NOT_FOUND);
-//        }
-//    }
-//
-//    @DeleteMapping("/eliminar-bono/{nombre}")
-//    public ResponseEntity<?> eliminarBono(@PathVariable String nombre) {
-//        try {
-//            instrumentoFinancieroService.eliminar(nombre);
-//            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//        } catch (InstrumentoNoEncontradoException e) {
-//            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.NOT_FOUND);
-//        }
-//    }
 
 
 }
