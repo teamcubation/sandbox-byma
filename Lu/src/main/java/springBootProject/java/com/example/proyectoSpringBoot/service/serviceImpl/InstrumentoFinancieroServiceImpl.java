@@ -50,9 +50,7 @@ public class InstrumentoFinancieroServiceImpl implements InstrumentoFinancieroSe
         instrumentoFinancieroNuevo.setNombre(instrumentoFinancieroDTO.getNombre());
         instrumentoFinancieroNuevo.setTipo(instrumentoFinancieroDTO.getTipo());
 
-        this.instrumentoFinancieroRepository.registrar(instrumentoFinancieroNuevo);
-
-        return instrumentoFinancieroNuevo;
+        return this.instrumentoFinancieroRepository.registrar(instrumentoFinancieroNuevo);
     }
 
     public void eliminar(String nombre) throws InstrumentoNoEncontradoException {

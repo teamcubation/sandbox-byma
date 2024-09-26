@@ -49,8 +49,9 @@ public class InstrumentoFinancieroRepository {
         return buscar(nombre);
     }
 
-    public void registrar(InstrumentoFinanciero instrumentoFinanciero) {
+    public InstrumentoFinanciero registrar(InstrumentoFinanciero instrumentoFinanciero) {
         this.instrumentosFinancieros.add(instrumentoFinanciero);
+        return instrumentoFinanciero;
     }
 
     public void eliminar(InstrumentoFinanciero instrumentoFinanciero) {
