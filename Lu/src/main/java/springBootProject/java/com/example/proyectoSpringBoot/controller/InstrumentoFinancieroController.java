@@ -1,5 +1,6 @@
 package springBootProject.java.com.example.proyectoSpringBoot.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,19 +14,20 @@ import springBootProject.java.com.example.proyectoSpringBoot.service.serviceImpl
 
 import java.util.List;
 
+@Slf4j
 @RestController
-@RequestMapping("/instrumentoFinanciero")
+@RequestMapping("/instrumentos-financieros")
 public class InstrumentoFinancieroController {
 
     @Autowired
     private InstrumentoFinancieroServiceImpl instrumentoFinancieroService;
 
-    @RequestMapping("/consultar_todos")
+    @RequestMapping("")
     private List<InstrumentoFinanciero> consultarTodos() {
         return this.instrumentoFinancieroService.consultarTodos();
     }
 
-    @RequestMapping("/consultar/{nombre}")
+    @RequestMapping("/{nombre}")
     private ResponseEntity<?> consultar(@PathVariable("nombre") String nombre) {
         try {
             return ResponseEntity.ok(this.instrumentoFinancieroService.consultar(nombre));
@@ -34,9 +36,10 @@ public class InstrumentoFinancieroController {
         }
     }
 
-    @PostMapping("/crear")
+    @PostMapping("")
     private ResponseEntity<?> registrar (@RequestBody InstrumentoFinancieroDTO instrumentoDTO) {
         try {
+            log.info("instrumento registrado");
             InstrumentoFinanciero instrumentoFinancieroNuevo = this.instrumentoFinancieroService.registrar(instrumentoDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(instrumentoFinancieroNuevo);
         } catch (InstrumentoDuplicadoException | OpcionInvalidaException mensaje) {
@@ -44,7 +47,7 @@ public class InstrumentoFinancieroController {
         }
     }
 
-    @DeleteMapping("/eliminar/{nombre}")
+    @DeleteMapping("/{nombre}")
     private ResponseEntity<?> eliminar(@PathVariable("nombre") String nombre){
         try {
             this.instrumentoFinancieroService.eliminar(nombre);
@@ -54,7 +57,7 @@ public class InstrumentoFinancieroController {
         }
     }
 
-    @PutMapping("/editar/{nombre}")
+    @PutMapping("/{nombre}")
     private ResponseEntity<?> editar(@PathVariable("nombre") String instrumentoAEditar, @RequestBody InstrumentoFinancieroDTO instrumentoDTO) {
         try {
             InstrumentoFinanciero instrumentoFinancieroEditado = this.instrumentoFinancieroService.editar(instrumentoAEditar, instrumentoDTO);
