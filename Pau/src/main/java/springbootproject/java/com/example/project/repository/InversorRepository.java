@@ -5,25 +5,18 @@ import springbootproject.java.com.example.project.exceptions.InversorNoEncontrad
 import springbootproject.java.com.example.project.model.Inversor;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
 public class InversorRepository {
-    private static InversorRepository instance;
-    ArrayList<Inversor> inversores;
+    private List<Inversor> inversores;
 
     private InversorRepository() {
         inversores = new ArrayList<Inversor>();
     }
 
-    public static InversorRepository getInstance() {
-        if (instance == null) {
-            instance = new InversorRepository();
-        }
-        return instance;
-    }
-
-    public ArrayList<Inversor> obtenerInversores() {
+    public List<Inversor> obtenerInversores() {
         return this.inversores;
     }
 

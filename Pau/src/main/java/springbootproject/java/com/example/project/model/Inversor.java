@@ -1,17 +1,22 @@
 package springbootproject.java.com.example.project.model;
 
+import springbootproject.java.com.example.project.SpringCrudApplication;
 import springbootproject.java.com.example.project.exceptions.InversorNoEncontradoException;
 import springbootproject.java.com.example.project.model.instrumentoFinanciero.InstrumentoFinanciero;
 import springbootproject.java.com.example.project.service.observer.Notificador;
 import springbootproject.java.com.example.project.service.observer.Observer;
 
+import java.time.LocalDate;
+
 public class Inversor implements Observer {
     private String nombre;
+    private LocalDate fechaDeNacimiento;
     private boolean esSuscriptor;
 
-    public Inversor(String nombre) {
+    public Inversor(String nombre, LocalDate fechaDeNacimiento) {
         this.nombre = nombre;
-        this.esSuscriptor = true;
+        this.esSuscriptor = false;
+        this.fechaDeNacimiento = fechaDeNacimiento;
     }
 
     public String getNombre() {
@@ -26,16 +31,20 @@ public class Inversor implements Observer {
         return esSuscriptor;
     }
 
+    public boolean isEsSuscriptor() {
+        return esSuscriptor;
+    }
+
     public void setEsSuscriptor(boolean esSuscriptor) {
         this.esSuscriptor = esSuscriptor;
     }
 
-    public void suscribirseANotificaciones() throws InversorNoEncontradoException {
-        Notificador.getInstance().suscribirInversor(this.getNombre());
+    public LocalDate getFechaDeNacimiento() {
+        return fechaDeNacimiento;
     }
 
-    public void desuscribirseANotificaciones() throws InversorNoEncontradoException {
-        Notificador.getInstance().desuscribirInversor(this.getNombre());
+    public void setFechaDeNacimiento(LocalDate fechaDeNacimiento) {
+        this.fechaDeNacimiento = fechaDeNacimiento;
     }
 
     @Override
@@ -45,6 +54,6 @@ public class Inversor implements Observer {
     }
 
     public String toString() {
-        return "Inversor{nombre= " + this.getNombre() + ", esSuscriptor= " + esSuscriptor + "}";
+        return "Inversor{nombre= " + this.getNombre() + ", fechaDeNacimiento= " + getFechaDeNacimiento().toString() + ", esSuscriptor= " + esSuscriptor + "}";
     }
 }
