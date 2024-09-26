@@ -18,13 +18,14 @@ public class InstrumentoRepository {
 
     public InstrumentoFinancieroModel agregarInstrumento(InstrumentoFinancieroModel instrumento) {
         ValidationUtils.validarNoNulo(instrumento, "El instrumento no puede ser nulo.");
-        instrumento.setId(generarNuevoId());
+        generarNuevoId(instrumento);
         instrumentosFinancieros.add(instrumento);
         return instrumento;
     }
 
-    private Long generarNuevoId() {
-        return currentId++;
+    private void generarNuevoId(InstrumentoFinancieroModel instrumento) {
+        instrumento.setId(currentId);
+        currentId++;
     }
 
     public List<InstrumentoFinancieroModel> obtenerInstrumentos() {
