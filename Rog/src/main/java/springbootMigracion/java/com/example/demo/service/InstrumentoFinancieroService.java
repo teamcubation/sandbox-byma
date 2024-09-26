@@ -24,37 +24,51 @@ public class InstrumentoFinancieroService implements IInstrumentoFinancieroServi
 
     @Override
     public void registrarInstrumento(InstrumentoFinanciero instrumento) {
-        instrumentoFinancieroRepository.agregarInstrumento(instrumento);
+        if (buscarInstrumentoPorNombre(instrumento.getNombre()).isPresent()){
+            throw new InstrumentoDuplicadoException("EL instrumento ya existe.");
+        }
+        instrumentoFinancieroRepository.save(instrumento);
     }
 
     @Override
     public void eliminarInstrumento(String nombre) {
-        instrumentoFinancieroRepository.eliminarInstrumento(nombre);
+        InstrumentoFinanciero instrumento = instrumentoFinancieroRepository.findByNombreIgnoreCase(nombre)
+                .orElseThrow(() -> new InstrumentoNoEncontradoException("Instrumento no encontrado"));
+        for (Inversor inversor : instrumento.getInversoresSuscritosList()) {
+            inversor.getInstrumentosSuscritosList().remove(instrumento);
+        }
+        instrumentoFinancieroRepository.delete(instrumento);
     }
 
     @Override
     public List<InstrumentoFinanciero> listarTodosLosInstrumentos() {
-        return instrumentoFinancieroRepository.listarTodosLosInstrumentos();
+        return instrumentoFinancieroRepository.findAll();
     }
 
     @Override
     public Optional<InstrumentoFinanciero> buscarInstrumentoPorNombre(String nombre) {
-        return instrumentoFinancieroRepository.buscarInstrumentoPorNombre(nombre);
+        return instrumentoFinancieroRepository.findByNombreIgnoreCase(nombre);
     }
 
     @Override
     public void editarInstrumento(String nombre, InstrumentoFinanciero nuevoInstrumento) {
-        instrumentoFinancieroRepository.editarInstrumento(nombre, nuevoInstrumento);
+        InstrumentoFinanciero instrumentoExistente = instrumentoFinancieroRepository.findByNombreIgnoreCase(nombre)
+                .orElseThrow(() -> new InstrumentoNoEncontradoException("Instrumento no encontrado"));
+        nuevoInstrumento.setId(instrumentoExistente.getId());
+        instrumentoFinancieroRepository.save(nuevoInstrumento);
     }
 
     @Override
     public void suscribirInversor(String nombreInstrumento, String nombreInversor) {
-        InstrumentoFinanciero instrumento = instrumentoFinancieroRepository.buscarInstrumentoPorNombre(nombreInstrumento)
+        InstrumentoFinanciero instrumento = instrumentoFinancieroRepository.findByNombreIgnoreCase(nombreInstrumento)
                 .orElseThrow(() -> new InstrumentoNoEncontradoException("Instrumento no encontrado."));
-        Inversor inversor = inversorRepository.buscarInversorPorNombre(nombreInversor)
+        Inversor inversor = inversorRepository.findByNombreIgnoreCase(nombreInversor)
                 .orElseThrow(() -> new InversorNoEncontradoException("Inversor no encontrado."));
-        if (!inversor.getInstrumentosSuscritos().contains(instrumento)){
-            inversor.getInstrumentosSuscritos().add(instrumento);
+        if (!inversor.getInstrumentosSuscritosList().contains(instrumento) && !instrumento.getInversoresSuscritosList().contains(inversor)){
+            inversor.getInstrumentosSuscritosList().add(instrumento);
+            instrumento.getInversoresSuscritosList().add(inversor);
+            instrumentoFinancieroRepository.save(instrumento);
+            inversorRepository.save(inversor);
         } else {
             throw new InstrumentoDuplicadoException("Ya se encuentra suscrito al instrumento ingresado");
         }

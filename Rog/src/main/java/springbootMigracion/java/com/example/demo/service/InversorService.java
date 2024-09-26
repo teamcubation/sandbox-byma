@@ -3,6 +3,10 @@ package springbootMigracion.java.com.example.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import springbootMigracion.java.com.example.demo.dto.InversorDTO;
+import springbootMigracion.java.com.example.demo.exception.InstrumentoNoEncontradoException;
+import springbootMigracion.java.com.example.demo.exception.InversorDuplicadoException;
+import springbootMigracion.java.com.example.demo.exception.InversorNoEncontradoException;
+import springbootMigracion.java.com.example.demo.model.InstrumentoFinanciero;
 import springbootMigracion.java.com.example.demo.model.Inversor;
 import springbootMigracion.java.com.example.demo.repository.IInversorRepository;
 
@@ -18,28 +22,39 @@ public class InversorService implements IInversorService {
     @Override
     public void registrarInversor(InversorDTO inversorDTO) {
         Inversor inversor = new Inversor(inversorDTO.getNombre(), inversorDTO.getEmail());
-        inversorRepository.agregarInversor(inversor);
+        if (buscarInversorPorNombre(inversor.getNombre()).isPresent()){
+            throw new InversorDuplicadoException("EL inversor ya existe.");
+        }
+        inversorRepository.save(inversor);
     }
 
     @Override
     public void eliminarInversor(String nombre) {
-        inversorRepository.eliminarInversor(nombre);
+        Inversor inversor = inversorRepository.findByNombreIgnoreCase(nombre)
+                .orElseThrow(() -> new InversorNoEncontradoException("Inversor no encontrado"));
+        for (InstrumentoFinanciero instrumento : inversor.getInstrumentosSuscritosList()) {
+            instrumento.getInversoresSuscritosList().remove(inversor);
+        }
+        inversorRepository.delete(inversor);
     }
 
     @Override
     public List<Inversor> listarTodosLosInversores() {
-        return inversorRepository.listarTodosLosInversores();
+        return inversorRepository.findAll();
     }
 
     @Override
     public Optional<Inversor> buscarInversorPorNombre(String nombre) {
-        return inversorRepository.buscarInversorPorNombre(nombre);
+        return inversorRepository.findByNombreIgnoreCase(nombre);
     }
 
     @Override
     public void editarInversor(String nombre, InversorDTO inversorDTO) {
-        Inversor nuevoInversor = new Inversor(inversorDTO.getNombre(), inversorDTO.getEmail());
-        inversorRepository.editarInversor(nombre, nuevoInversor);
+        Inversor inversorExistente = inversorRepository.findByNombreIgnoreCase(nombre)
+                .orElseThrow(() -> new InversorNoEncontradoException("Inversor no encontrado"));
+        inversorExistente.setNombre(inversorDTO.getNombre());
+        inversorExistente.setEmail(inversorDTO.getEmail());
+        inversorRepository.save(inversorExistente);
     }
 
 }

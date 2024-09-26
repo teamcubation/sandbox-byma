@@ -1,5 +1,14 @@
 package springbootMigracion.java.com.example.demo.model;
 
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Bono extends InstrumentoFinanciero {
     private double tasaDeInteres;
 
@@ -8,19 +17,5 @@ public class Bono extends InstrumentoFinanciero {
         this.tasaDeInteres = tasaDeInteres;
     }
 
-    public double getTasaDeInteres() {
-        return tasaDeInteres;
-    }
-
-    public void setTasaDeInteres(double tasaDeInteres) {
-        this.tasaDeInteres = tasaDeInteres;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() +
-                ", tasaDeInteres= '" + tasaDeInteres + '\'' +
-                "} ";
-    }
 
 }
