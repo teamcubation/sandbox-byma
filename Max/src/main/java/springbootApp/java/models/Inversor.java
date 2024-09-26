@@ -20,20 +20,11 @@ public class Inversor implements Observer{
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        if (nombre == null) {
-            throw new IllegalArgumentException("El nombre no puede ser nulo .");
-        }
-        if (nombre.isBlank()) {
-            throw new IllegalArgumentException("El nombre no puede ser  vacío.");
-        }
+    private void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public void setDni(String dni) {
-        if (nombre == null || nombre.isEmpty()) {
-            throw new IllegalArgumentException("Error. El dni no puede ser nulo o vacío.");
-        }
+    private void setDni(String dni) {
         this.dni = dni;
     }
 

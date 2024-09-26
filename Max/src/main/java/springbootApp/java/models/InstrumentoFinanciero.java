@@ -51,38 +51,18 @@ public abstract class InstrumentoFinanciero {
         return inversoresList;
     }
 
-    public void setNombre(String nombre) {
-        if (nombre == null) {
-            throw new IllegalArgumentException("El nombre no puede ser nulo .");
-        }
-        if (nombre.isBlank()) {
-            throw new IllegalArgumentException("El nombre no puede ser  vacío.");
-        }
+    private void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public void setTipo(Tipo tipo) {
-        if (tipo == null) {
-            throw new NullPointerException("El tipo no puede ser nulo .");
-        }
-        if (!tipo.equals(Tipo.ACCION) && !tipo.equals(Tipo.BONO)) {
-            throw new IllegalArgumentException("Error. Tipo invalido");
-        }
+    private void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
 
 
-    public void setPrecio(double precio) {
-        try {
-            if (precio > 0) {
-                this.precio = precio;
-                notificar();
-            } else {
-                throw new IllegalArgumentException("El precio no puede ser menor o igual a 0.");
-            }
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("El precio debe ser un valor numérico.");
-        }
+    private void setPrecio(double precio) {
+        this.notificar();
+        this.precio = precio;
     }
 
     public void actualizarInstrumento(InstrumentoDTO instrumento) {

@@ -10,8 +10,6 @@ import springbootApp.java.exceptions.InstrumentoDuplicadoException;
 import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
 import springbootApp.java.exceptions.InversorExistenteException;
 import springbootApp.java.exceptions.InversorNoEncontradoException;
-import springbootApp.java.models.InstrumentoFinanciero;
-import springbootApp.java.models.Inversor;
 import springbootApp.java.DTOs.InversorDTO;
 import springbootApp.java.services.InversorService;
 import springbootApp.java.services.ObserverService;

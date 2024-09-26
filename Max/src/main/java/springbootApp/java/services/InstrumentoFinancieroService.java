@@ -10,6 +10,7 @@ import springbootApp.java.exceptions.InstrumentoDuplicadoException;
 import springbootApp.java.models.InstrumentoFactory;
 import springbootApp.java.models.Tipo;
 import springbootApp.java.repositories.InstrumentoFinancieroRepository;
+import springbootApp.java.utils.Validaciones;
 
 import java.util.List;
 
@@ -19,14 +20,15 @@ public class InstrumentoFinancieroService {
     private InstrumentoFinancieroRepository instrumentoFinancieroRepository;
 
 
-
     public void registrarInstrumentoFinanciero(String nombre, double precio, Tipo tipo) throws InstrumentoDuplicadoException {
-        InstrumentoFinanciero instrumento = instrumentoFinancieroRepository.buscarInstrumento(nombre);
-        if (instrumento != null) {
-            throw new InstrumentoDuplicadoException("Error. Accion existente");
-        } else {
-            this.instrumentoFinancieroRepository.registrarInstrumento(
-                    InstrumentoFactory.nuevoInstrumento(nombre, precio, tipo));
+        if (validarDatos(nombre, precio, tipo)) {
+            InstrumentoFinanciero instrumento = instrumentoFinancieroRepository.buscarInstrumento(nombre);
+            if (instrumento != null) {
+                throw new InstrumentoDuplicadoException("Error. Accion existente");
+            } else {
+                this.instrumentoFinancieroRepository.registrarInstrumento(
+                        InstrumentoFactory.nuevoInstrumento(nombre, precio, tipo));
+            }
         }
     }
 
@@ -50,6 +52,12 @@ public class InstrumentoFinancieroService {
     }
 
     public void actualizarInstrumento(String nombre, InstrumentoDTO instrumento) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
+        validarDatos(instrumento.getNombre(), instrumento.getPrecio(), instrumento.getTipo());
         instrumentoFinancieroRepository.modificarInstrumento(nombre, instrumento);
     }
+
+    private boolean validarDatos(String nombre, double precio, Tipo tipo) {
+        return !Validaciones.validarNombre(nombre) || !Validaciones.validarPrecio(precio) || !Validaciones.validarTipo(tipo);
+    }
+
 }

@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import springbootApp.java.exceptions.InstrumentoDuplicadoException;
 import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
 import springbootApp.java.DTOs.InstrumentoDTO;
-import springbootApp.java.models.InstrumentoFinanciero;
 import springbootApp.java.services.InstrumentoFinancieroService;
 
-import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/instrumentoFinanciero")
