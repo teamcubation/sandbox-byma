@@ -24,11 +24,9 @@ public class InversorService {
         Inversor inversor = inversorRepository.buscarInversor(inversorDTO.getNombre());
         if (inversor != null) {
             throw new InversorYaRegistradoException("El inversor de nombre "+ inversorDTO.getNombre() + " ya fue registrado.");
-        } else {
-            Inversor nuevoInversor = new Inversor(inversorDTO.getNombre(), inversorDTO.getFechaDeNacimiento());
-
-            return inversorRepository.agregarInversor(nuevoInversor);
         }
+        Inversor nuevoInversor = new Inversor(inversorDTO.getNombre(), inversorDTO.getFechaDeNacimiento());
+        return inversorRepository.agregarInversor(nuevoInversor);
     }
 
     public List<Inversor> obtenerInversores() {

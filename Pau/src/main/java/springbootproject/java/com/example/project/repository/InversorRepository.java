@@ -10,11 +10,7 @@ import java.util.stream.Collectors;
 
 @Repository
 public class InversorRepository {
-    private List<Inversor> inversores;
-
-    private InversorRepository() {
-        inversores = new ArrayList<Inversor>();
-    }
+    private List<Inversor> inversores = new ArrayList<Inversor>();
 
     public List<Inversor> obtenerInversores() {
         return this.inversores;

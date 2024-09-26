@@ -49,7 +49,7 @@ public class InversorController {
     public ResponseEntity<?> eliminarInversorPorNombre(@PathVariable String nombre) {
         try {
             this.inversorService.eliminarInversor(nombre);
-            return ResponseEntity.ok("El inversor de nombre " + nombre + " fue eliminado exitosamente.");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (InversorNoEncontradoException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

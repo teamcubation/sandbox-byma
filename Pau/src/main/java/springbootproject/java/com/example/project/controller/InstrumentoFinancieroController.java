@@ -97,13 +97,4 @@ public class InstrumentoFinancieroController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-
-//    @PutMapping("/precio/{nombre}/{nuevoPrecio}")
-//    public ResponseEntity<?> editarPrecioInstrumento(@PathVariable("nombre") String nombre, @PathVariable("nuevoPrecio") Double nuevoPrecio) {
-//        try {
-//            return ResponseEntity.ok(this.instrumentoFinancieroService.editarPrecioInstrumentoFinanciero(nombre, nuevoPrecio));
-//        } catch (InstrumentoNoEncontradoException e) {
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-//        }
-//    }
 }
