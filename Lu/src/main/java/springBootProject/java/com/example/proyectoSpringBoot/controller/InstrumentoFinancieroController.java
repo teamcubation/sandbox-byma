@@ -24,7 +24,10 @@ public class InstrumentoFinancieroController {
 
     @RequestMapping("")
     private List<InstrumentoFinanciero> consultarTodos() {
-        return this.instrumentoFinancieroService.consultarTodos();
+        log.info("Consultando instrumentos financieros");
+        List<InstrumentoFinanciero> instrumentosFinancieros = this.instrumentoFinancieroService.consultarTodos();
+        log.info("Instrumentos financieros consultados: {}", instrumentosFinancieros.size());
+        return instrumentosFinancieros;
     }
 
     @RequestMapping("/{nombre}")
@@ -32,6 +35,7 @@ public class InstrumentoFinancieroController {
         try {
             return ResponseEntity.ok(this.instrumentoFinancieroService.consultar(nombre));
         } catch (InstrumentoNoEncontradoException mensaje) {
+            log.error("Error al querer consultar un instrumento financiero");
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(mensaje.getMessage());
         }
     }
@@ -39,10 +43,12 @@ public class InstrumentoFinancieroController {
     @PostMapping("")
     private ResponseEntity<?> registrar (@RequestBody InstrumentoFinancieroDTO instrumentoDTO) {
         try {
-            log.info("instrumento registrado");
+            log.info("registrando instrumento financiero");
             InstrumentoFinanciero instrumentoFinancieroNuevo = this.instrumentoFinancieroService.registrar(instrumentoDTO);
+            log.info("instrumento financiero registrado");
             return ResponseEntity.status(HttpStatus.CREATED).body(instrumentoFinancieroNuevo);
         } catch (InstrumentoDuplicadoException | OpcionInvalidaException mensaje) {
+            log.error("Error al querer registrar un instrumento financiero");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(mensaje.getMessage());
         }
     }
@@ -53,6 +59,7 @@ public class InstrumentoFinancieroController {
             this.instrumentoFinancieroService.eliminar(nombre);
             return ResponseEntity.noContent().build();
         } catch (InstrumentoNoEncontradoException mensaje) {
+            log.error("Error al querer eliminar un instrumento financiero");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(mensaje.getMessage());
         }
     }
@@ -63,6 +70,7 @@ public class InstrumentoFinancieroController {
             InstrumentoFinanciero instrumentoFinancieroEditado = this.instrumentoFinancieroService.editar(instrumentoAEditar, instrumentoDTO);
             return ResponseEntity.ok(instrumentoFinancieroEditado);
         } catch (InstrumentoNoEncontradoException | OpcionInvalidaException mensaje) {
+            log.error("Error al querer editar un instrumento financiero");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(mensaje.getMessage());
         }
     }
