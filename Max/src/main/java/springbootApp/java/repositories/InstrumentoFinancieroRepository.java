@@ -42,9 +42,6 @@ public class InstrumentoFinancieroRepository implements IInstrumentoFinancieroRe
         if (instrumentoEncontrado == null) {
             throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
         }
-        if (instrumentoExistente(instrumento.getNombre())) {
-            throw new InstrumentoDuplicadoException("Error. Instrumento con nombre existente");
-        }
         instrumentoEncontrado.actualizarInstrumento(instrumento);
     }
 

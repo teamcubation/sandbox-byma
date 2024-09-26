@@ -1,5 +1,8 @@
 package springbootApp.java.controllers;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,78 +14,78 @@ import springbootApp.java.models.InstrumentoFinanciero;
 import springbootApp.java.services.InstrumentoFinancieroService;
 
 import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping("/instrumentoFinanciero")
 public class InstrumentoFinancieroController {
 
+    private static final Logger log = LoggerFactory.getLogger(InstrumentoFinancieroController.class);
     @Autowired
     private InstrumentoFinancieroService instrumentoFinancieroService;
 
 
     @PostMapping("/")
-    public ResponseEntity<InstrumentoDTO> registrarInstrumentoFinanciero(@RequestBody InstrumentoDTO instrumentoFinanciero) {
+    public ResponseEntity<?> registrarInstrumentoFinanciero(@RequestBody InstrumentoDTO instrumentoFinanciero) {
         try {
-            System.out.println("registrando instrumento...");
+            log.info("registrando instrumento...");
             instrumentoFinancieroService.registrarInstrumentoFinanciero(instrumentoFinanciero.getNombre(),
                     instrumentoFinanciero.getPrecio(), instrumentoFinanciero.getTipo());
-            System.out.println("nuevo instrumento creado, de tipo: " + instrumentoFinanciero.getTipo() + " con nombre: " + instrumentoFinanciero.getNombre() + " y precio: " + instrumentoFinanciero.getPrecio());
+            log.info("nuevo instrumento creado, de tipo: " + instrumentoFinanciero.getTipo() + " con nombre: " + instrumentoFinanciero.getNombre() + " y precio: " + instrumentoFinanciero.getPrecio());
             return new ResponseEntity<InstrumentoDTO>(instrumentoFinanciero, HttpStatus.CREATED);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.info(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<InstrumentoFinanciero>> obtenerTodosLosInstrumentos() {
+    public ResponseEntity<?> obtenerTodosLosInstrumentos() {
         try {
-            System.out.println("obteniendo todos los instrumentos");
+            log.info("obteniendo todos los instrumentos");
             return ResponseEntity.ok(instrumentoFinancieroService.consultarTodosLosInstrumentos());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.info(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
 
     @GetMapping("/{nombre}")
-    public ResponseEntity<InstrumentoFinanciero> obtenerInstrumentoPorNombre(@PathVariable String nombre) {
+    public ResponseEntity<?> obtenerInstrumentoPorNombre(@PathVariable String nombre) {
         try {
-            System.out.println("obteniendo instrumento por nombre...");
+            log.info("obteniendo instrumento por nombre...");
             return ResponseEntity.ok(instrumentoFinancieroService.buscarInstrumento(nombre));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.info(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
 
     @DeleteMapping("/{nombre}")
-    public ResponseEntity<String> eliminarInstrumento(@PathVariable String nombre) {
+    public ResponseEntity<?> eliminarInstrumento(@PathVariable String nombre) {
         try {
-            System.out.println("eliminando instrumento: " + nombre);
+            log.info("eliminando instrumento: " + nombre);
             instrumentoFinancieroService.eliminarInstrumento(nombre);
             return ResponseEntity.ok("Instrumento eliminado");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.info(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
 
-
     @PutMapping("/{nombre}")
-    public ResponseEntity<InstrumentoDTO> actualizarInstrumento(@PathVariable String nombre, @RequestBody InstrumentoDTO instrumento) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
+    public ResponseEntity<?> actualizarInstrumento(@PathVariable String nombre, @RequestBody InstrumentoDTO instrumento) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
         try {
-            System.out.println("actualizando instrumento");
+            log.info("actualizando instrumento...");
             instrumentoFinancieroService.actualizarInstrumento(nombre, instrumento);
             return ResponseEntity.ok(instrumento);
         } catch (InstrumentoNoEncontradoException e) {
-            System.out.println(e.getMessage());
+            log.info("Error al actualizar instrumento: " + e.getMessage());
             return ResponseEntity.notFound().build();
         } catch (InstrumentoDuplicadoException e) {
-            System.out.println(e.getMessage());
+            log.info("Error al actualizar instrumento: " + e.getMessage());
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.info("Error al actualizar instrumento: "+ e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }

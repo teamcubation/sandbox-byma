@@ -88,7 +88,9 @@ public abstract class InstrumentoFinanciero {
     public void actualizarInstrumento(InstrumentoDTO instrumento) {
         this.setNombre(instrumento.getNombre());
         this.setTipo(instrumento.getTipo());
-        this.setPrecio(instrumento.getPrecio());
+        if (instrumento.getPrecio() != this.getPrecio()) {
+            this.setPrecio(instrumento.getPrecio());
+        }
     }
 
 
