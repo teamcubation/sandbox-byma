@@ -1,16 +1,19 @@
 package com.example.teamcubation.model;
 
 
-import com.example.teamcubation.model.instrumentoEnums.TipoInstrumentoFinanciero;
+import jakarta.persistence.Entity;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@SuperBuilder
+@Data
 public class Bono extends InstrumentoFinanciero {
 
-    public Bono(String nombre, double precio) {
-        super(nombre, precio, TipoInstrumentoFinanciero.BONO);
-    }
+    private double tasaInteres;
 
-    @Override
-    public String mostrarInstrumento() {
-        return "Nombre: " + this.getNombre() + " || Precio: $" + this.getPrecio() + " || Tipo: " + this.getTipo();
-    }
 }

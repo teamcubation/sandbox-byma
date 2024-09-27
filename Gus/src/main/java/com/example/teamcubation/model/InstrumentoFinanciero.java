@@ -1,20 +1,23 @@
 package com.example.teamcubation.model;
 
-import com.example.teamcubation.model.instrumentoEnums.TipoInstrumentoFinanciero;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 
-@AllArgsConstructor
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@SuperBuilder
+@NoArgsConstructor
 @Data
 public abstract class InstrumentoFinanciero {
 
-    //El nombre es unico para cada instrumento, ya sea bono o accion
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private String nombre;
     private double precio;
-    private TipoInstrumentoFinanciero tipo;
 
-
-    public abstract String mostrarInstrumento();
 
 }

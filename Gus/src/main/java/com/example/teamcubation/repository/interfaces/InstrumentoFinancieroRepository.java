@@ -2,29 +2,11 @@ package com.example.teamcubation.repository.interfaces;
 
 
 import com.example.teamcubation.model.InstrumentoFinanciero;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
-
 @Repository
-public interface InstrumentoFinancieroRepository {
-    List<InstrumentoFinanciero> getAll();
+public interface InstrumentoFinancieroRepository extends JpaRepository<InstrumentoFinanciero, Long> {
 
-    List<InstrumentoFinanciero> getBonos();
-
-    List<InstrumentoFinanciero> getAcciones();
-
-    Optional<InstrumentoFinanciero> getByName(String nombreInstrumento);
-
-    void create(com.example.teamcubation.model.InstrumentoFinanciero nuevoInstrumento);
-
-    void update(InstrumentoFinanciero instrumentoActualizado, String nombreInstrumento);
-
-//    void updateName(EditarInstrumentoDTO instrumentoDTO);
-//
-//    void updatePrice(EditarInstrumentoDTO instrumentoDTO);
-
-    void delete(String nombreInstrumento);
 
 }
