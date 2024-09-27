@@ -14,7 +14,7 @@ public class InstrumentoDTO {
     private Long id;
     private TipoInstrumento tipo;
     private String nombre;
-    private double precio;
+    private Double precio;
     private Double dividendo; // Solo para Accion
     private Double tasaInteres; // Solo para Bono
     private LocalDate fechaCreacion; // Fecha actual
