@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalException {
 
+    private static final String MSJ_ERROR_INSTRUMENTO_NO_VALIDO = "Tipo de instrumento no válido";
+
     // Manejo de IllegalArgumentException y InvalidTypeIdException
     @ExceptionHandler({IllegalArgumentException.class, com.fasterxml.jackson.databind.exc.InvalidTypeIdException.class})
     public ResponseEntity<String> handleInvalidArgumentException(Exception ex) {
-        return new ResponseEntity<>("Tipo de instrumento no válido", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(MSJ_ERROR_INSTRUMENTO_NO_VALIDO, HttpStatus.BAD_REQUEST);
     }
 
     // Manejo de InstrumentoDuplicadoException, InstrumentoNoEncontradoException e InvalidInstrumentoDataException

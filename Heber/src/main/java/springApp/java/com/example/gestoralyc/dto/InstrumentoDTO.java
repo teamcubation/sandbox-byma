@@ -1,12 +1,14 @@
 package springApp.java.com.example.gestoralyc.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
 import springApp.java.com.example.gestoralyc.models.TipoInstrumento;
 import java.time.DayOfWeek;
 
 import java.time.LocalDate;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 public class InstrumentoDTO {
 
     private Long id;

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import springApp.java.com.example.gestoralyc.exceptions.InstrumentoDuplicadoException;
 import springApp.java.com.example.gestoralyc.exceptions.InstrumentoNoEncontradoException;
+import springApp.java.com.example.gestoralyc.exceptions.InvalidInstrumentoDataException;
 import springApp.java.com.example.gestoralyc.models.InstrumentoFinancieroModel;
 import springApp.java.com.example.gestoralyc.repositories.InstrumentoRepository;
 import springApp.java.com.example.gestoralyc.utils.ValidationUtils;
@@ -18,7 +19,7 @@ public class InstrumentoService {
     InstrumentoRepository instrumentoRepository;
 
     ///////////METODOS CRUD//////////
-    public InstrumentoFinancieroModel agregarInstrumento(InstrumentoFinancieroModel instrumento) {
+    public InstrumentoFinancieroModel agregarInstrumento(InstrumentoFinancieroModel instrumento) throws InstrumentoDuplicadoException, InvalidInstrumentoDataException {
         // Validaciones antes de agregar el instrumento
         ValidationUtils.validarNoNulo(instrumento, "El instrumento no puede ser nulo");
         ValidationUtils.validarCadenaNoVacia(instrumento.getNombre(), "El nombre del instrumento no puede estar vacío");
@@ -36,20 +37,20 @@ public class InstrumentoService {
         return instrumentoRepository.obtenerInstrumentos();
     }
 
-    public InstrumentoFinancieroModel obtenerInstrumento(Long id) {
+    public InstrumentoFinancieroModel obtenerInstrumento(Long id) throws InvalidInstrumentoDataException {
         InstrumentoFinancieroModel instrumento = instrumentoRepository.obtenerInstrumento(id);
         ValidationUtils.validarNoNulo(instrumento, "El instrumento no existe");
         return instrumento;
     }
 
-    public void eliminarInstrumentoPorId(Long id) {
+    public void eliminarInstrumentoPorId(Long id) throws InstrumentoNoEncontradoException {
         Optional<InstrumentoFinancieroModel> instrumento = instrumentoRepository.eliminarInstrumento(id);
         if (!instrumento.isPresent()) {
             throw new InstrumentoNoEncontradoException("El instrumento con id " + id + " no existe");
         }
     }
 
-    public InstrumentoFinancieroModel editarInstrumento(Long id, InstrumentoFinancieroModel nuevoInstrumento) {
+    public InstrumentoFinancieroModel editarInstrumento(Long id, InstrumentoFinancieroModel nuevoInstrumento) throws InvalidInstrumentoDataException {
         // Validaciones antes de editar el instrumento
         ValidationUtils.validarNoNulo(nuevoInstrumento, "El instrumento no puede ser nulo");
         ValidationUtils.validarCadenaNoVacia(nuevoInstrumento.getNombre(), "El nombre del instrumento no puede estar vacío");

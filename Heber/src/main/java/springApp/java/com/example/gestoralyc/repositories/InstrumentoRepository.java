@@ -2,6 +2,7 @@ package springApp.java.com.example.gestoralyc.repositories;
 
 import org.springframework.stereotype.Repository;
 import springApp.java.com.example.gestoralyc.exceptions.InstrumentoNoEncontradoException;
+import springApp.java.com.example.gestoralyc.exceptions.InvalidInstrumentoDataException;
 import springApp.java.com.example.gestoralyc.models.InstrumentoFinancieroModel;
 import springApp.java.com.example.gestoralyc.utils.ValidationUtils;
 
@@ -16,7 +17,7 @@ public class InstrumentoRepository {
     private List<InstrumentoFinancieroModel> instrumentosFinancieros = new ArrayList<>();
     private Long currentId = 1L; // Variable para gestionar el ID autoincremental
 
-    public InstrumentoFinancieroModel agregarInstrumento(InstrumentoFinancieroModel instrumento) {
+    public InstrumentoFinancieroModel agregarInstrumento(InstrumentoFinancieroModel instrumento) throws InvalidInstrumentoDataException {
         ValidationUtils.validarNoNulo(instrumento, "El instrumento no puede ser nulo.");
         generarNuevoId(instrumento);
         instrumentosFinancieros.add(instrumento);
@@ -48,7 +49,7 @@ public class InstrumentoRepository {
         return instrumentosFinancieros.stream().anyMatch(i -> i.getNombre().equals(nombre));
     }
 
-    public InstrumentoFinancieroModel editarInstrumento(Long id, InstrumentoFinancieroModel nuevoInstrumento) {
+    public InstrumentoFinancieroModel editarInstrumento(Long id, InstrumentoFinancieroModel nuevoInstrumento) throws InvalidInstrumentoDataException {
         InstrumentoFinancieroModel instrumentoExistente = obtenerInstrumento(id);
         ValidationUtils.validarNoNulo(instrumentoExistente, "El instrumento no existe.");
         instrumentosFinancieros.remove(instrumentoExistente);

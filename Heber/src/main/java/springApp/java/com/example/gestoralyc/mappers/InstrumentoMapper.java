@@ -10,7 +10,7 @@ import springApp.java.com.example.gestoralyc.models.TipoInstrumento;
 public class InstrumentoMapper {
 
     // Paso de dto a modelo
-    public static InstrumentoFinancieroModel mapToModel(InstrumentoDTO dto) {
+    public static InstrumentoFinancieroModel mapToModel(InstrumentoDTO dto) throws InvalidInstrumentoDataException {
        if(dto.getFinDelParking() != null || dto.getFechaCreacion() != null || dto.getId() != null) {
             throw new InvalidInstrumentoDataException("Los campos 'finDelParking' y 'fechaCreacion' no son válidos para la creación de un instrumento.");
         }
