@@ -38,25 +38,27 @@ public class InstrumentoService {
     }
 
     public InstrumentoFinancieroModel obtenerInstrumento(Long id) throws InvalidInstrumentoDataException {
-        InstrumentoFinancieroModel instrumento = instrumentoRepository.obtenerInstrumento(id);
+        Optional<InstrumentoFinancieroModel> instrumento = instrumentoRepository.obtenerInstrumento(id);
         ValidationUtils.validarNoNulo(instrumento, "El instrumento no existe");
-        return instrumento;
+        return instrumento.orElse(null);
     }
 
     public void eliminarInstrumentoPorId(Long id) throws InstrumentoNoEncontradoException {
-        Optional<InstrumentoFinancieroModel> instrumento = instrumentoRepository.eliminarInstrumento(id);
-        if (!instrumento.isPresent()) {
+        boolean instrumentoExiste = instrumentoRepository.obtenerInstrumento(id).isPresent();
+        if (!instrumentoExiste) {
             throw new InstrumentoNoEncontradoException("El instrumento con id " + id + " no existe");
         }
+        instrumentoRepository.eliminarInstrumento(id);
     }
 
-    public InstrumentoFinancieroModel editarInstrumento(Long id, InstrumentoFinancieroModel nuevoInstrumento) throws InvalidInstrumentoDataException {
-        // Validaciones antes de editar el instrumento
+    public InstrumentoFinancieroModel editarInstrumento(Long id, InstrumentoFinancieroModel nuevoInstrumento)
+            throws InvalidInstrumentoDataException {
+
         ValidationUtils.validarNoNulo(nuevoInstrumento, "El instrumento no puede ser nulo");
         ValidationUtils.validarCadenaNoVacia(nuevoInstrumento.getNombre(), "El nombre del instrumento no puede estar vacío");
         ValidationUtils.validarPrecioPositivo(nuevoInstrumento.getPrecio(), "El precio del instrumento debe ser mayor que cero");
 
-        instrumentoRepository.editarInstrumento(id, nuevoInstrumento);
-        return nuevoInstrumento;
+        return instrumentoRepository.editarInstrumento(id, nuevoInstrumento)
+                .orElseThrow(() -> new InvalidInstrumentoDataException("El instrumento no existe."));
     }
 }

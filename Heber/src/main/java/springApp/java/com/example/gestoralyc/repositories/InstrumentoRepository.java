@@ -33,29 +33,33 @@ public class InstrumentoRepository {
         return instrumentosFinancieros;
     }
 
-    public Optional<InstrumentoFinancieroModel> eliminarInstrumento(Long id) {
-        Optional<InstrumentoFinancieroModel> instrumento = instrumentosFinancieros.stream().filter(i -> i.getId().equals(id)).findFirst();
-        if (instrumento.isPresent()) {
-            instrumentosFinancieros.remove(instrumento.get());
-        }
-        return instrumento;
+    public void eliminarInstrumento(Long id) {
+        instrumentosFinancieros.removeIf(i -> i.getId().equals(id));
     }
 
-    public InstrumentoFinancieroModel obtenerInstrumento(Long id) {
-        return instrumentosFinancieros.stream().filter(i -> i.getId().equals(id)).findFirst().orElse(null);
+    public Optional<InstrumentoFinancieroModel> obtenerInstrumento(Long id) {
+        return instrumentosFinancieros.stream()
+                .filter(instrumento -> instrumento.getId().equals(id))
+                .findFirst();
     }
 
     public boolean existeInstrumento(String nombre) {
         return instrumentosFinancieros.stream().anyMatch(i -> i.getNombre().equals(nombre));
     }
 
-    public InstrumentoFinancieroModel editarInstrumento(Long id, InstrumentoFinancieroModel nuevoInstrumento) throws InvalidInstrumentoDataException {
-        InstrumentoFinancieroModel instrumentoExistente = obtenerInstrumento(id);
-        ValidationUtils.validarNoNulo(instrumentoExistente, "El instrumento no existe.");
-        instrumentosFinancieros.remove(instrumentoExistente);
-        nuevoInstrumento.setId(instrumentoExistente.getId()); //le paso el id del instrumentoEliminado al nuevo
-        instrumentosFinancieros.add(nuevoInstrumento);
-        return nuevoInstrumento;
+    public Optional<InstrumentoFinancieroModel> editarInstrumento(Long id, InstrumentoFinancieroModel nuevoInstrumento) {
+        Optional<InstrumentoFinancieroModel> instrumentoExistenteOpt = obtenerInstrumento(id);
+
+        if (instrumentoExistenteOpt.isPresent()) {
+            InstrumentoFinancieroModel instrumentoExistente = instrumentoExistenteOpt.get();
+            instrumentosFinancieros.remove(instrumentoExistente);
+            nuevoInstrumento.setId(instrumentoExistente.getId());
+            instrumentosFinancieros.add(nuevoInstrumento);
+
+            return Optional.of(nuevoInstrumento);
+        }
+
+        return Optional.empty();
     }
 
 
