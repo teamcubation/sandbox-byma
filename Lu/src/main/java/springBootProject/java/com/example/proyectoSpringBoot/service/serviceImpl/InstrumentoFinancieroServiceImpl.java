@@ -3,9 +3,9 @@ package springBootProject.java.com.example.proyectoSpringBoot.service.serviceImp
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import springBootProject.java.com.example.proyectoSpringBoot.dto.InstrumentoFinancieroDTO;
-import springBootProject.java.com.example.proyectoSpringBoot.excepciones.InstrumentoDuplicadoException;
-import springBootProject.java.com.example.proyectoSpringBoot.excepciones.InstrumentoNoEncontradoException;
-import springBootProject.java.com.example.proyectoSpringBoot.excepciones.OpcionInvalidaException;
+import springBootProject.java.com.example.proyectoSpringBoot.excepciones.customExcepcions.InstrumentoDuplicadoException;
+import springBootProject.java.com.example.proyectoSpringBoot.excepciones.customExcepcions.InstrumentoNoEncontradoException;
+import springBootProject.java.com.example.proyectoSpringBoot.excepciones.customExcepcions.OpcionInvalidaException;
 import springBootProject.java.com.example.proyectoSpringBoot.model.InstrumentoFinanciero;
 import springBootProject.java.com.example.proyectoSpringBoot.repository.InstrumentoFinancieroRepository;
 import springBootProject.java.com.example.proyectoSpringBoot.service.InstrumentoFinancieroService;

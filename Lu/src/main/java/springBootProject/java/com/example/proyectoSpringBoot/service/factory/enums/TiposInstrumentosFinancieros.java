@@ -1,7 +1,7 @@
 package springBootProject.java.com.example.proyectoSpringBoot.service.factory.enums;
 
 
-import springBootProject.java.com.example.proyectoSpringBoot.excepciones.OpcionInvalidaException;
+import springBootProject.java.com.example.proyectoSpringBoot.excepciones.customExcepcions.OpcionInvalidaException;
 
 public enum TiposInstrumentosFinancieros {
     BONO(1),

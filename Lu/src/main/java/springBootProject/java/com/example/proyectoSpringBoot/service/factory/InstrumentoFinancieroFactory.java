@@ -1,6 +1,6 @@
 package springBootProject.java.com.example.proyectoSpringBoot.service.factory;
 
-import springBootProject.java.com.example.proyectoSpringBoot.excepciones.OpcionInvalidaException;
+import springBootProject.java.com.example.proyectoSpringBoot.excepciones.customExcepcions.OpcionInvalidaException;
 import springBootProject.java.com.example.proyectoSpringBoot.model.Accion;
 import springBootProject.java.com.example.proyectoSpringBoot.model.Bono;
 import springBootProject.java.com.example.proyectoSpringBoot.model.InstrumentoFinanciero;
