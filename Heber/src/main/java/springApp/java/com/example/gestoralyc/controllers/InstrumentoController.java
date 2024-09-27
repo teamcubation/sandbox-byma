@@ -26,12 +26,9 @@ public class InstrumentoController {
     @PostMapping("/")
     public ResponseEntity<InstrumentoDTO> agregarInstrumento(@RequestBody InstrumentoDTO instrumentoDTO) throws InstrumentoDuplicadoException, InvalidInstrumentoDataException {
         log.info("Instrumento recibido en formato cURL: \n{}", generarCurlComando(instrumentoDTO));
-
-        InstrumentoFinancieroModel instrumento = InstrumentoMapper.mapToModel(instrumentoDTO);
-        InstrumentoDTO instrumentoCreadoDTO = InstrumentoMapper.mapToDTO(instrumentoService.agregarInstrumento(instrumento));
-
+        InstrumentoDTO instrumentoCreadoDTO = InstrumentoMapper
+                .mapToDTO(instrumentoService.agregarInstrumento(InstrumentoMapper.mapToModel(instrumentoDTO)));
         log.info("Instrumento creado en formato cURL: \n{}", generarCurlComando(instrumentoCreadoDTO));
-
         return ResponseEntity.status(HttpStatus.CREATED).body(instrumentoCreadoDTO);
     }
 
