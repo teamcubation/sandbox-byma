@@ -1,7 +1,8 @@
 package com.example.teamcubation.service;
 
 
-import com.example.teamcubation.exceptions.ModeloInvalidoException;
+import com.example.teamcubation.exceptions.InstrumentoDuplicadoException;
+import com.example.teamcubation.exceptions.InstrumentoNoEncontradoException;
 import com.example.teamcubation.model.Accion;
 import com.example.teamcubation.model.Bono;
 import com.example.teamcubation.model.InstrumentoFinanciero;
@@ -36,15 +37,20 @@ public class InstrumentoFinancieroService {
         this.instrumentoFinancieroRepository.save(nuevoInstrumento);
     }
 
-    public void createAccion(Accion nuevaAccion) throws ModeloInvalidoException {
+    public void createAccion(Accion nuevaAccion) throws InstrumentoDuplicadoException {
 
-        this.validarAccion(nuevaAccion);
+        if (this.instrumentoDuplicado(nuevaAccion.getNombre())) {
+            throw new InstrumentoDuplicadoException("Error: Ya existe un instrumento con el mismo nombre");
+        }
+
         this.accionRepository.save(nuevaAccion);
     }
 
-    public void createBono(Bono nuevoBono) throws ModeloInvalidoException {
+    public void createBono(Bono nuevoBono) throws InstrumentoDuplicadoException {
 
-        this.validarBono(nuevoBono);
+        if (this.instrumentoDuplicado(nuevoBono.getNombre())) {
+            throw new InstrumentoDuplicadoException("Error: Ya existe un instrumento con el mismo nombre");
+        }
         this.bonoRepository.save(nuevoBono);
     }
 
@@ -68,66 +74,69 @@ public class InstrumentoFinancieroService {
     }
 
 
-    public void update(InstrumentoFinanciero instrumentoFinanciero) {
+    public void updateAccion(Accion accion) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
 
-        this.instrumentoFinancieroRepository.save(instrumentoFinanciero);
+        if (this.instrumentoDuplicado(accion.getNombre())) {
+
+            throw new InstrumentoDuplicadoException("Error: Ya existe un instrumento con el mismo nombre");
+        }
+
+        if (this.accionEsInexistente(accion.getId())) {
+            throw new InstrumentoNoEncontradoException("Error: El instrumento no se encuentra en la base de datos");
+        }
+        this.accionRepository.save(accion);
+
+    }
+
+    public void updateBono(Bono bono) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
+
+        if (this.instrumentoDuplicado(bono.getNombre())) {
+
+            throw new InstrumentoDuplicadoException("Error: Ya existe un instrumento con el mismo nombre");
+        }
+
+        if (this.bonoEsInexistente(bono.getId())) {
+            throw new InstrumentoNoEncontradoException("Error: El instrumento no se encuentra en la base de datos");
+        }
+        this.bonoRepository.save(bono);
+
     }
 
 
-    public void delete(long id) {
+    public void delete(long id) throws InstrumentoNoEncontradoException {
+
+
+        if (this.instrumentoEsInexistente(id)) {
+            throw new InstrumentoNoEncontradoException("Error: El instrumento no se encuentra en la base de datos");
+        }
 
         this.instrumentoFinancieroRepository.deleteById(id);
     }
 
 
-    private void validarAccion(Accion nuevaAccion) throws ModeloInvalidoException {
-        if (nuevaAccion.getNombre().isBlank() || nuevaAccion.getNombre().isEmpty()) {
-
-            log.error("Error: El nombre del instrumento no puede ser vacio");
-            throw new ModeloInvalidoException("Error: El nombre del instrumento no puede ser vacio");
-        }
-
-        if (nuevaAccion.getNombre().matches("^[a-zA-Z0-9\\s]+$\n")) {
-
-            log.error("Error: El nombre del instrumento no puede contener caracteres especiales");
-            throw new ModeloInvalidoException("Error: El nombre del instrumento no puede contener caracteres especiales");
-        }
-        if (nuevaAccion.getPrecio() <= 0) {
-
-            log.error("Error: El precio del instrumento debe ser mayor a 0");
-            throw new ModeloInvalidoException("Error: El precio del instrumento debe ser mayor a 0");
-        }
-
-        if (nuevaAccion.getDividendo() <= 0) {
-
-            log.error("Error: El dividendo del instrumento debe ser mayor a 0");
-            throw new ModeloInvalidoException("Error: El dividendo del instrumento debe ser mayor a 0");
-        }
+    private boolean instrumentoEsInexistente(long id) {
+        return this.instrumentoFinancieroRepository
+                .findById(id).isEmpty();
     }
 
-    private void validarBono(Bono nuevaAccion) throws ModeloInvalidoException {
-        if (nuevaAccion.getNombre().isBlank() || nuevaAccion.getNombre().isEmpty()) {
+    private boolean bonoEsInexistente(long id) {
 
-            log.error("Error: El nombre del instrumento no puede ser vacio");
-            throw new ModeloInvalidoException("Error: El nombre del instrumento no puede ser vacio");
-        }
 
-        if (nuevaAccion.getNombre().matches("^[a-zA-Z0-9\\s]+$\n")) {
+        return !this.bonoRepository
+                .existsById(id);
 
-            log.error("Error: El nombre del instrumento no puede contener caracteres especiales");
-            throw new ModeloInvalidoException("Error: El nombre del instrumento no puede contener caracteres especiales");
-        }
-        if (nuevaAccion.getPrecio() <= 0) {
+    }
 
-            log.error("Error: El precio del instrumento debe ser mayor a 0");
-            throw new ModeloInvalidoException("Error: El precio del instrumento debe ser mayor a 0");
-        }
+    private boolean accionEsInexistente(long id) {
+        return !this.accionRepository
+                .existsById(id);
+    }
 
-        if (nuevaAccion.getTasaInteres() <= 0) {
-
-            log.error("Error: El dividendo del instrumento debe ser mayor a 0");
-            throw new ModeloInvalidoException("Error: El dividendo del instrumento debe ser mayor a 0");
-        }
+    private boolean instrumentoDuplicado(String nombre) {
+        return this.instrumentoFinancieroRepository
+                .findAll()
+                .stream()
+                .anyMatch(instrumentoFinanciero -> instrumentoFinanciero.getNombre().equalsIgnoreCase(nombre));
     }
 
 
