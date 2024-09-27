@@ -1,16 +1,11 @@
 package springbootApp.java.repositories.interfaces;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import springbootApp.java.models.Inversor;
 
-import java.util.List;
+@Repository
+public interface IInversorRepository extends JpaRepository<Inversor, Long> {
 
-public interface IInversorRepository {
-
-    public void registrarInversor(Inversor inversor);
-
-    public void borrarInversor(Inversor inversor);
-
-    public Inversor buscarInversor(String dni);
-
-    public List<Inversor> consultarTodosLosInversores();
+    public Inversor findByDni(String dni);
 }

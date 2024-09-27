@@ -7,7 +7,7 @@ import springbootApp.java.exceptions.InversorExistenteException;
 import springbootApp.java.exceptions.InversorNoEncontradoException;
 import springbootApp.java.models.InstrumentoFinanciero;
 import springbootApp.java.models.Inversor;
-import springbootApp.java.repositories.InversorRepository;
+import springbootApp.java.repositories.interfaces.IInversorRepository;
 import springbootApp.java.utils.Validaciones;
 
 import java.util.List;
@@ -16,56 +16,53 @@ import java.util.List;
 public class InversorService {
 
     @Autowired
-    private InversorRepository inversoresRepository;
+    private IInversorRepository inversorRepository;
 
     public void registrarInversor(Inversor inversor) throws InversorExistenteException {
-        Inversor inversorNuevo = inversoresRepository.buscarInversor(inversor.getDni());
+        Inversor inversorNuevo = inversorRepository.findByDni(inversor.getDni());
         if (inversorNuevo != null)
             throw new InversorExistenteException("Error. Inversor existente");
-        if (validarDatosInversor(inversor.getNombre(), inversor.getDni())) {
-            inversoresRepository.registrarInversor(new Inversor(inversor.getNombre(), inversor.getDni()));
+        if (Validaciones.validarDatosInversor(inversor.getNombre(), inversor.getDni())) {
+            inversorRepository.save(new Inversor(inversor.getNombre(), inversor.getDni()));
         }
     }
 
     public List<InstrumentoFinanciero> consultarInstrumentosDeInversor(String dni) throws InversorNoEncontradoException {
-        Inversor inversor = inversoresRepository.buscarInversor(dni);
+        Inversor inversor = inversorRepository.findByDni(dni);
         if (inversor == null) {
             throw new InversorNoEncontradoException("Error. Inversor no encontrado");
         }
-        return inversor.getInstrumentosInversor();
+        return inversor.getInstrumentosDelInversor();
     }
 
     public void eliminarInversor(String dni) throws InversorNoEncontradoException {
-        Inversor inversor = inversoresRepository.buscarInversor(dni);
+        Inversor inversor = inversorRepository.findByDni(dni);
         if (inversor == null) {
             throw new InversorNoEncontradoException("Error. Inversor no encontrado");
         }
-        inversoresRepository.borrarInversor(inversor);
+        inversorRepository.delete(inversor);
     }
 
     public List<Inversor> consultarTodosLosInversores() {
-        return inversoresRepository.consultarTodosLosInversores();
+        return inversorRepository.findAll();
     }
 
     public Inversor actualizarInversor(String dni, Inversor inversor) throws InversorNoEncontradoException {
-        Inversor inversorEncontrado = inversoresRepository.buscarInversor(dni);
+        Inversor inversorEncontrado = inversorRepository.findByDni(dni);
         if (inversorEncontrado == null) {
             throw new InversorNoEncontradoException("Error. Inversor no encontrado");
         }
-        if (validarDatosInversor(inversor.getNombre(), inversor.getDni())) {
+        if (Validaciones.validarDatosInversor(inversor.getNombre(), inversor.getDni())) {
             inversorEncontrado.setDni(inversor.getDni());
             inversorEncontrado.setNombre(inversor.getNombre());
+            inversorRepository.save(inversorEncontrado);
         }
-        return inversor;
-    }
-
-    private boolean validarDatosInversor(String nombre, String dni) {
-        return Validaciones.validarDni(dni) && Validaciones.validarNombre(nombre);
+        return inversorEncontrado;
     }
 
     public Inversor consultarInversor(String dni) throws InversorNoEncontradoException {
-        if (inversoresRepository.buscarInversor(dni) == null)
+        if (inversorRepository.findByDni(dni) == null)
             throw new InversorNoEncontradoException("Error. Inversor no encontrado");
-        return inversoresRepository.buscarInversor(dni);
+        return inversorRepository.findByDni(dni);
     }
 }

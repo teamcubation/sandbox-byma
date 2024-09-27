@@ -20,7 +20,7 @@ import springbootApp.java.services.ObserverService;
 
 import java.util.List;
 
-@Slf4j
+//@Slf4j
 @RestController
 @RequestMapping("/inversor")
 public class InversorController {

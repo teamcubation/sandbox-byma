@@ -1,19 +1,19 @@
 package springbootApp.java.repositories.interfaces;
 
-import springbootApp.java.exceptions.InstrumentoDuplicadoException;
-import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
-import springbootApp.java.DTOs.InstrumentoDTO;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import springbootApp.java.models.InstrumentoFinanciero;
 
 import java.util.List;
 
-public interface IInstrumentoFinancieroRepository {
+@Repository
+public interface IInstrumentoFinancieroRepository extends JpaRepository<InstrumentoFinanciero, Long> {
 
-    public void registrarInstrumento(InstrumentoFinanciero instrumento);
+//    public void registrarInstrumento(InstrumentoFinanciero instrumento);
 
-    public InstrumentoFinanciero buscarInstrumento(String nombre);
+    public InstrumentoFinanciero findByNombre(String nombre);
 
-    public void eliminarInstrumento(InstrumentoFinanciero instrumento);
-
-    public List<InstrumentoFinanciero> consultarTodosLosInstrumentos();
+//    public void eliminarInstrumento(InstrumentoFinanciero instrumento);
+//
+//    public List<InstrumentoFinanciero> consultarTodosLosInstrumentos();
 }

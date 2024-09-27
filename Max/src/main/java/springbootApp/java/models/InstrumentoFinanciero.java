@@ -1,22 +1,27 @@
 package springbootApp.java.models;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import springbootApp.java.exceptions.InstrumentoDuplicadoException;
-import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
-import springbootApp.java.exceptions.InversorExistenteException;
-import springbootApp.java.services.ObserverService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public abstract class InstrumentoFinanciero {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nombre;
     private double precio;
     private Tipo tipo;
+    @ManyToMany(mappedBy = "instrumentosDelInversor", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
     private List <Inversor> inversoresList;
 
     public InstrumentoFinanciero(String nombre, double precio, Tipo tipo) {
@@ -25,41 +30,4 @@ public abstract class InstrumentoFinanciero {
         this.tipo = tipo;
         this.inversoresList = new ArrayList<>();
     }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public Tipo getTipo() {
-        return tipo;
-    }
-
-    public List<Inversor> getInversoresList() {
-        return inversoresList;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
-    }
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    @Override
-    public String toString() {
-        return "InstrumentoFinanciero{" +
-                "nombre='" + nombre + '\'' +
-                ", precio=" + precio +
-                ", tipo=" + tipo + "\n inversoresList=" + inversoresList +
-                '}';
-    }
-
 }

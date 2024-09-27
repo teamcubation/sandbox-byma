@@ -34,4 +34,11 @@ public class Validaciones {
         }
         return true;
     }
+    public static boolean validarDatosInstrumento(String nombre, double precio, Tipo tipo) {
+        return validarNombre(nombre) && validarPrecio(precio) && validarTipo(tipo);
+    }
+    public static boolean validarDatosInversor(String nombre, String dni) {
+        return validarDni(dni) && validarNombre(nombre);
+    }
 }
+

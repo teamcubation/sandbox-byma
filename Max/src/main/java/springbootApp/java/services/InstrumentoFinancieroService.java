@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import springbootApp.java.exceptions.InstrumentoDuplicadoException;
 import springbootApp.java.models.InstrumentoFactory;
 import springbootApp.java.models.Tipo;
-import springbootApp.java.repositories.InstrumentoFinancieroRepository;
+import springbootApp.java.repositories.interfaces.IInstrumentoFinancieroRepository;
 import springbootApp.java.utils.Validaciones;
 
 import java.util.List;
@@ -16,57 +16,53 @@ import java.util.List;
 @Service
 public class InstrumentoFinancieroService {
     @Autowired
-    private InstrumentoFinancieroRepository instrumentoFinancieroRepository;
+    private IInstrumentoFinancieroRepository instrumentoFinancieroRepository;
 
 
     public void registrarInstrumentoFinanciero(InstrumentoFinanciero instrumento) throws InstrumentoDuplicadoException {
-        InstrumentoFinanciero instrumentoNuevo = instrumentoFinancieroRepository.buscarInstrumento(instrumento.getNombre());
+        InstrumentoFinanciero instrumentoNuevo = instrumentoFinancieroRepository.findByNombre(instrumento.getNombre());
         if (instrumentoNuevo != null) {
             throw new InstrumentoDuplicadoException("Error. Accion existente");
         }
-        if (validarDatos(instrumento.getNombre(), instrumento.getPrecio(), instrumento.getTipo())) {
-            this.instrumentoFinancieroRepository.registrarInstrumento(
+        if (Validaciones.validarDatosInstrumento(instrumento.getNombre(), instrumento.getPrecio(), instrumento.getTipo())) {
+            this.instrumentoFinancieroRepository.save(
                     InstrumentoFactory.nuevoInstrumento(instrumento.getNombre(), instrumento.getPrecio(), instrumento.getTipo()));
         }
     }
 
     public List<InstrumentoFinanciero> consultarTodosLosInstrumentos() {
-        return instrumentoFinancieroRepository.consultarTodosLosInstrumentos();
+        return instrumentoFinancieroRepository.findAll();
     }
 
     public void eliminarInstrumento(String nombre) throws InstrumentoNoEncontradoException {
-        InstrumentoFinanciero instrumento = instrumentoFinancieroRepository.buscarInstrumento(nombre);
+        InstrumentoFinanciero instrumento = instrumentoFinancieroRepository.findByNombre(nombre);
         if (instrumento == null) {
             throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
         }
-        instrumentoFinancieroRepository.eliminarInstrumento(instrumento);
+        instrumentoFinancieroRepository.delete(instrumento);
     }
 
     public InstrumentoFinanciero buscarInstrumento(String nombre) throws InstrumentoNoEncontradoException {
-        if (instrumentoFinancieroRepository.buscarInstrumento(nombre) == null) {
+        if (instrumentoFinancieroRepository.findByNombre(nombre) == null) {
             throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
         }
-        return instrumentoFinancieroRepository.buscarInstrumento(nombre);
+        return instrumentoFinancieroRepository.findByNombre(nombre);
     }
 
     public InstrumentoFinanciero actualizarInstrumento(String nombre, InstrumentoFinanciero instrumento) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
-        InstrumentoFinanciero instrumentoEncontrado = this.buscarInstrumento(nombre);
+        InstrumentoFinanciero instrumentoEncontrado = instrumentoFinancieroRepository.findByNombre(nombre);
         if (instrumentoEncontrado == null) {
             throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
         }
-        if (validarDatos(instrumento.getNombre(), instrumento.getPrecio(), instrumento.getTipo())) {
+        if (Validaciones.validarDatosInstrumento(instrumento.getNombre(), instrumento.getPrecio(), instrumento.getTipo())) {
             instrumentoEncontrado.setNombre(instrumento.getNombre());
             instrumentoEncontrado.setTipo(instrumento.getTipo());
             if (instrumento.getPrecio() != instrumentoEncontrado.getPrecio()) {
                 instrumentoEncontrado.setPrecio(instrumento.getPrecio());
                 ObserverService.notificarCambioDePrecio(instrumentoEncontrado);
             }
+            instrumentoFinancieroRepository.save(instrumentoEncontrado);
         }
-        return instrumento;
+        return instrumentoEncontrado;
     }
-
-    private boolean validarDatos(String nombre, double precio, Tipo tipo) {
-        return Validaciones.validarNombre(nombre) && Validaciones.validarPrecio(precio) && Validaciones.validarTipo(tipo);
-    }
-
 }

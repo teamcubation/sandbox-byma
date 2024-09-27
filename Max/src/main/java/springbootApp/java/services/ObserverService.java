@@ -9,51 +9,54 @@ import springbootApp.java.exceptions.InversorExistenteException;
 import springbootApp.java.exceptions.InversorNoEncontradoException;
 import springbootApp.java.models.InstrumentoFinanciero;
 import springbootApp.java.models.Inversor;
-import springbootApp.java.repositories.InstrumentoFinancieroRepository;
-import springbootApp.java.repositories.InversorRepository;
+import springbootApp.java.repositories.interfaces.IInstrumentoFinancieroRepository;
+import springbootApp.java.repositories.interfaces.IInversorRepository;
 
-import java.util.List;
 @Service
 public class ObserverService {
     @Autowired
-    private InversorRepository inversoresRepository;
+    private IInversorRepository inversorRepository;
     @Autowired
-    private InstrumentoFinancieroRepository instrumentosRepository;
+    private IInstrumentoFinancieroRepository instrumentosRepository;
 
 
     public void metodoParaSuscribirse(String dni, String nombreInstrumento) throws InversorNoEncontradoException, InversorExistenteException, InstrumentoDuplicadoException {
-        InstrumentoFinanciero instrumento = instrumentosRepository.buscarInstrumento(nombreInstrumento);
+        InstrumentoFinanciero instrumento = instrumentosRepository.findByNombre(nombreInstrumento);
         if (instrumento == null) {
             throw new InversorNoEncontradoException("Error. instrumento no existente");
         }
-        Inversor inversor = inversoresRepository.buscarInversor(dni);
+        Inversor inversor = inversorRepository.findByDni(dni);
         if (inversor == null) {
             throw new InversorNoEncontradoException("Error. inversor no existente");
         }
         if (this.inversorTieneInstrumento(inversor, instrumento)) {
             throw new InstrumentoDuplicadoException("Error. ya estas suscripto a este instrumento");
         }
-        inversor.getInstrumentosInversor().add(instrumento);
+        inversor.getInstrumentosDelInversor().add(instrumento);
         instrumento.getInversoresList().add(inversor);
+        inversorRepository.save(inversor);
+        instrumentosRepository.save(instrumento);
     }
 
     public void metodoParaDesuscribirse(String dni, String nombreInstrumento) throws InversorNoEncontradoException, InstrumentoNoEncontradoException {
-        InstrumentoFinanciero instrumento = instrumentosRepository.buscarInstrumento(nombreInstrumento);
+        InstrumentoFinanciero instrumento = instrumentosRepository.findByNombre(nombreInstrumento);
         if (instrumento == null) {
             throw new InversorNoEncontradoException("Error. instrumento no existente");
         }
-        Inversor inversor = inversoresRepository.buscarInversor(dni);
+        Inversor inversor = inversorRepository.findByDni(dni);
         if (inversor == null) {
             throw new InversorNoEncontradoException("Error. inversor no existente");
         }
         if (!this.inversorTieneInstrumento(inversor, instrumento)) {
             throw new InstrumentoNoEncontradoException("Error. no estas suscripto a este instrumento");
         }
-        inversor.getInstrumentosInversor().remove(instrumento);
+        inversor.getInstrumentosDelInversor().remove(instrumento);
         instrumento.getInversoresList().remove(inversor);
+        inversorRepository.save(inversor);
+        instrumentosRepository.save(instrumento);
     }
     private boolean inversorTieneInstrumento(Inversor inversor, InstrumentoFinanciero instrumento) {
-        return inversor.getInstrumentosInversor().stream().anyMatch(i -> i.equals(instrumento));
+        return inversor.getInstrumentosDelInversor().stream().anyMatch(i -> i.equals(instrumento));
     }
 
     public static void notificarCambioDePrecio(InstrumentoFinanciero instrumento) {
