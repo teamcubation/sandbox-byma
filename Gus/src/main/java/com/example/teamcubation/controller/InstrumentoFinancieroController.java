@@ -32,7 +32,7 @@ public class InstrumentoFinancieroController {
 
     //Create
     @PostMapping("/accion")
-    public ResponseEntity<?> createAccion(@RequestBody CreateAccionDTO nuevaAccion) {
+    public ResponseEntity<?> createAccion(@RequestBody CreateAccionDTO nuevaAccion) throws ModeloInvalidoException {
         log.info("Instrumento a crear: " + nuevaAccion.toString());
 
         Accion nuevo = Accion
@@ -50,7 +50,7 @@ public class InstrumentoFinancieroController {
     }
 
     @PostMapping("/bono")
-    public ResponseEntity<?> createBono(@RequestBody CreateBonoDTO nuevoBono) {
+    public ResponseEntity<?> createBono(@RequestBody CreateBonoDTO nuevoBono) throws ModeloInvalidoException {
 
         log.info("Instrumento a crear: " + nuevoBono.toString());
 

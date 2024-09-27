@@ -1,33 +1,44 @@
 package com.example.teamcubation.exceptions;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({InstrumentoNoEncontradoException.class})
-    public ResponseEntity<String> instrumentoNoEncontradoException(Exception e) {
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorMessage instrumentoNoEncontradoException(HttpServletRequest request, Exception e) {
 
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        return new ErrorMessage(e, request.getRequestURI());
     }
 
-    @ExceptionHandler({ModeloInvalidoException.class})
-    public ResponseEntity<?> modeloInvalidoException(Exception e) {
 
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    @ExceptionHandler({ModeloInvalidoException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorMessage modeloInvalidoException(HttpServletRequest request, Exception e) {
+
+        return new ErrorMessage(e, request.getRequestURI());
     }
 
     @ExceptionHandler({InstrumentoDuplicadoException.class})
-    public ResponseEntity<String> instrumentoDuplicadoException(Exception e) {
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseBody
+    public ErrorMessage instrumentoDuplicadoException(HttpServletRequest request, Exception e) {
 
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        return new ErrorMessage(e, request.getRequestURI());
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({Exception.class})
-    public ResponseEntity<?> handleGeneralException(Exception e) {
-        return new ResponseEntity<>("Error interno del servidor", HttpStatus.INTERNAL_SERVER_ERROR);
+    @ResponseBody
+    public ErrorMessage handleGeneralException(HttpServletRequest request, Exception e) {
+        return new ErrorMessage(e, request.getRequestURI());
     }
 }
