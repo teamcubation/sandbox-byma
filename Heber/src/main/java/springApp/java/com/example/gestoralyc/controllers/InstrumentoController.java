@@ -63,12 +63,12 @@ public class InstrumentoController {
     @GetMapping("/")
     public ResponseEntity<List<InstrumentoDTO>> obtenerInstrumentos() {
         log.info("Obteniendo instrumentos");
-        List<InstrumentoFinancieroModel> instrumentos = instrumentoService.obtenerInstrumentos();
-        List<InstrumentoDTO> instrumentosDTO = instrumentos.stream()
+        List<InstrumentoFinancieroModel> instrumentosFinancieroList = instrumentoService.obtenerInstrumentos();
+        List<InstrumentoDTO> instrumentoFinancieroDTOList = instrumentosFinancieroList.stream()
                 .map(InstrumentoMapper::mapToDTO)
                 .collect(Collectors.toList());
-        log.info("Instrumentos obtenidos: {}", instrumentosDTO);
-        return new ResponseEntity<>(instrumentosDTO, HttpStatus.OK);
+        log.info("Instrumentos obtenidos: {}", instrumentoFinancieroDTOList);
+        return ResponseEntity.ok(instrumentoFinancieroDTOList);
     }
 
     @GetMapping("/{id}")
