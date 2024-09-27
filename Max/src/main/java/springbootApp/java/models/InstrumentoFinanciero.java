@@ -1,18 +1,11 @@
 package springbootApp.java.models;
-
-
-
-
-import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import springbootApp.java.DTOs.InstrumentoDTO;
 import springbootApp.java.exceptions.InstrumentoDuplicadoException;
 import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
 import springbootApp.java.exceptions.InversorExistenteException;
 import springbootApp.java.services.ObserverService;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,15 +38,6 @@ public abstract class InstrumentoFinanciero {
         return tipo;
     }
 
-    @Override
-    public String toString() {
-        return "InstrumentoFinanciero{" +
-                "nombre='" + nombre + '\'' +
-                ", precio=" + precio +
-                ", tipo=" + tipo + "\n inversoresList=" + inversoresList +
-                '}';
-    }
-
     public List<Inversor> getInversoresList() {
         return inversoresList;
     }
@@ -65,38 +49,17 @@ public abstract class InstrumentoFinanciero {
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
-
-
     public void setPrecio(double precio) {
         this.precio = precio;
     }
 
-
-    public void notificar() {
-        ObserverService.notificarCambioDePrecio(inversoresList, this);
+    @Override
+    public String toString() {
+        return "InstrumentoFinanciero{" +
+                "nombre='" + nombre + '\'' +
+                ", precio=" + precio +
+                ", tipo=" + tipo + "\n inversoresList=" + inversoresList +
+                '}';
     }
 
-    public void suscribirse(Inversor inversor) throws InversorExistenteException, InstrumentoDuplicadoException, InstrumentoDuplicadoException {
-        if (tieneInversor(inversor)) {
-            throw new InversorExistenteException("Error. El inversor ya estaba suscripto");
-        } else {
-            this.inversoresList.add(inversor);
-            inversor.suscribirse(this);
-        }
-    }
-
-    public void desuscribirse(Inversor inversor) throws InstrumentoNoEncontradoException, InstrumentoNoEncontradoException {
-        if (!tieneInversor(inversor)) {
-            throw new InstrumentoNoEncontradoException("Error. inversor no encontrado");
-        }
-        this.inversoresList.remove(inversor);
-        inversor.desuscribirse(this);
-    }
-
-    private boolean tieneInversor(Inversor inversor) {
-        if (inversor == null)
-            return false;
-        else
-            return inversoresList.stream().anyMatch(i -> i.equals(inversor));
-    }
 }

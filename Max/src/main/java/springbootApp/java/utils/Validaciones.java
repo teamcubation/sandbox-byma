@@ -5,9 +5,11 @@ import springbootApp.java.models.Tipo;
 public class Validaciones {
 
     public static boolean validarNombre(String nombre) {
-        if (nombre == null || nombre.isEmpty()) {
-            throw new IllegalArgumentException("Error. El nombre no puede ser nulo o vacío.");
+        if (nombre == null) {
+            throw new IllegalArgumentException("Error. El nombre no puede ser nulo.");
         }
+        if (nombre.isBlank())
+            throw new IllegalArgumentException("Error. El nombre no puede ser vacío.");
         return true;
     }
 
@@ -19,6 +21,9 @@ public class Validaciones {
     }
 
     public static boolean validarTipo(Tipo tipo) {
+        if (tipo == null) {
+            throw new NullPointerException("Error. El tipo no puede ser nulo.");
+        }
         if (tipo != Tipo.BONO && tipo != Tipo.ACCION)
             throw new IllegalArgumentException("Error. Tipo invalido");
         return true;

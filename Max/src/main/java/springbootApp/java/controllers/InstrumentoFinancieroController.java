@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springbootApp.java.controllers.mappers.InstrumentoMapper;
 import springbootApp.java.exceptions.InstrumentoDuplicadoException;
 import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
 import springbootApp.java.DTOs.InstrumentoDTO;
+import springbootApp.java.models.InstrumentoFinanciero;
 import springbootApp.java.services.InstrumentoFinancieroService;
 
 @Slf4j
@@ -23,69 +25,37 @@ public class InstrumentoFinancieroController {
 
 
     @PostMapping("/")
-    public ResponseEntity<?> registrar(@RequestBody InstrumentoDTO instrumentoFinanciero) {
-        try {
+    public ResponseEntity<?> registrar(@RequestBody InstrumentoDTO instrumentoDTO) throws Exception{
             log.info("registrando instrumento...");
-            instrumentoFinancieroService.registrarInstrumentoFinanciero(instrumentoFinanciero.getNombre(),
-                    instrumentoFinanciero.getPrecio(), instrumentoFinanciero.getTipo());
-            log.info("nuevo instrumento creado, de tipo: " + instrumentoFinanciero.getTipo() + " con nombre: " + instrumentoFinanciero.getNombre() + " y precio: " + instrumentoFinanciero.getPrecio());
-            return new ResponseEntity<InstrumentoDTO>(instrumentoFinanciero, HttpStatus.CREATED);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+            InstrumentoFinanciero instrumento = InstrumentoMapper.instrumentoDTOToInstrumento(instrumentoDTO);
+            instrumentoFinancieroService.registrarInstrumentoFinanciero(instrumento);
+            log.info("nuevo instrumento creado, de tipo: " + instrumentoDTO.getTipo() + " con nombre: " + instrumentoDTO.getNombre() + " y precio: " + instrumentoDTO.getPrecio());
+            return new ResponseEntity<InstrumentoDTO>(instrumentoDTO, HttpStatus.CREATED);
     }
 
     @GetMapping("/")
-    public ResponseEntity<?> obtenerTodosLosInstrumentos() {
-        try {
+    public ResponseEntity<?> obtenerTodos() throws Exception{
             log.info("obteniendo todos los instrumentos");
             return ResponseEntity.ok(instrumentoFinancieroService.consultarTodosLosInstrumentos());
-        } catch (Exception e) {
-            log.info(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @GetMapping("/{nombre}")
-    public ResponseEntity<?> obtenerInstrumentoPorNombre(@PathVariable String nombre) {
-        try {
+    public ResponseEntity<?> obtenerPorNombre(@PathVariable String nombre) throws Exception{
             log.info("obteniendo instrumento por nombre...");
             return ResponseEntity.ok(instrumentoFinancieroService.buscarInstrumento(nombre));
-        } catch (Exception e) {
-            log.info(e.getMessage());
-            return ResponseEntity.badRequest().build();
         }
-    }
 
     @DeleteMapping("/{nombre}")
-    public ResponseEntity<?> eliminar(@PathVariable String nombre) {
-        try {
+    public ResponseEntity<?> eliminar(@PathVariable String nombre) throws Exception{
             log.info("eliminando instrumento: " + nombre);
             instrumentoFinancieroService.eliminarInstrumento(nombre);
-            return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .build();
-        } catch (Exception e) {
-            log.info(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/{nombre}")
-    public ResponseEntity<?> actualizarInstrumento(@PathVariable String nombre, @RequestBody InstrumentoDTO instrumento) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
-        try {
+    public ResponseEntity<?> actualizar(@PathVariable String nombre, @RequestBody InstrumentoDTO instrumentoDTO) throws Exception {
             log.info("actualizando instrumento...");
+            InstrumentoFinanciero instrumento = InstrumentoMapper.instrumentoDTOToInstrumento(instrumentoDTO);
             return ResponseEntity.ok(instrumentoFinancieroService.actualizarInstrumento(nombre, instrumento));
-        } catch (InstrumentoNoEncontradoException e) {
-            log.info("Error al actualizar instrumento: " + e.getMessage());
-            return ResponseEntity.notFound().build();
-        } catch (InstrumentoDuplicadoException e) {
-            log.info("Error al actualizar instrumento: " + e.getMessage());
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            log.info("Error al actualizar instrumento: "+ e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
     }
 }

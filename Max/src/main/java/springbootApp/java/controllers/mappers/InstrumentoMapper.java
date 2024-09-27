@@ -1,4 +1,4 @@
-package springbootApp.java.controllers;
+package springbootApp.java.controllers.mappers;
 
 import springbootApp.java.DTOs.InstrumentoDTO;
 import springbootApp.java.models.Accion;

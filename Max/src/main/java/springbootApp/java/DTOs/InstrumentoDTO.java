@@ -4,7 +4,7 @@ import springbootApp.java.models.Tipo;
 
 public class InstrumentoDTO {
     private String nombre;
-    private double precio;
+    private Double precio;
     private Tipo tipo;
     public String getNombre() {
         return nombre;
@@ -14,11 +14,11 @@ public class InstrumentoDTO {
         this.nombre = nombre;
     }
 
-    public double getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 

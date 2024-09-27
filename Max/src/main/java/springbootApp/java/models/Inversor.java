@@ -1,11 +1,10 @@
 package springbootApp.java.models;
-import springbootApp.java.DTOs.InversorDTO;
 import springbootApp.java.exceptions.InstrumentoDuplicadoException;
 import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Inversor implements Observer{
+public class Inversor{
     private String nombre;
     private String dni;
     private List<InstrumentoFinanciero> instrumentosDelInversor;
@@ -23,38 +22,15 @@ public class Inversor implements Observer{
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+    public String getDni() {
+        return dni;
+    }
 
     public void setDni(String dni) {
         this.dni = dni;
     }
 
-    public void suscribirse(InstrumentoFinanciero instrumento) throws InstrumentoDuplicadoException {
-        if (tieneInstrumento(instrumento)) {
-            throw new InstrumentoDuplicadoException("Error. Ya estas suscripto a este instrumento");
-        }
-        instrumentosDelInversor.add(instrumento);
-    }
-
-    public void desuscribirse(InstrumentoFinanciero instrumento) throws InstrumentoNoEncontradoException {
-        if (!tieneInstrumento(instrumento)) {
-            throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
-        }
-        instrumentosDelInversor.remove(instrumento);
-    }
-
-    private boolean tieneInstrumento(InstrumentoFinanciero instrumento) {
-        if (instrumento == null)
-            return false;
-        else
-            return instrumentosDelInversor.stream().anyMatch(i -> i.equals(instrumento));
-    }
-
-    public String getDni() {
-        return dni;
-    }
-
-    public List<InstrumentoFinanciero> consultarInstrumentos() {
-
+    public List<InstrumentoFinanciero> getInstrumentosInversor() {
         return instrumentosDelInversor;
     }
 
@@ -64,12 +40,5 @@ public class Inversor implements Observer{
                 "nombre='" + nombre + '\'' +
                 ", dni='" + dni + '\'' +
                 '}';
-    }
-
-
-    @Override
-    public void actualizarPrecioInstrumento(InstrumentoFinanciero instrumento) {
-        System.out.println(getNombre() + ": el precio del instrumento " + instrumento.getNombre() + " cambio a "
-                + instrumento.getPrecio());
     }
 }

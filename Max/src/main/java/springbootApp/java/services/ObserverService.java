@@ -30,7 +30,11 @@ public class ObserverService {
         if (inversor == null) {
             throw new InversorNoEncontradoException("Error. inversor no existente");
         }
-        instrumento.suscribirse(inversor);
+        if (this.inversorTieneInstrumento(inversor, instrumento)) {
+            throw new InstrumentoDuplicadoException("Error. ya estas suscripto a este instrumento");
+        }
+        inversor.getInstrumentosInversor().add(instrumento);
+        instrumento.getInversoresList().add(inversor);
     }
 
     public void metodoParaDesuscribirse(String dni, String nombreInstrumento) throws InversorNoEncontradoException, InstrumentoNoEncontradoException {
@@ -42,13 +46,20 @@ public class ObserverService {
         if (inversor == null) {
             throw new InversorNoEncontradoException("Error. inversor no existente");
         }
-        instrumento.desuscribirse(inversor);
+        if (!this.inversorTieneInstrumento(inversor, instrumento)) {
+            throw new InstrumentoNoEncontradoException("Error. no estas suscripto a este instrumento");
+        }
+        inversor.getInstrumentosInversor().remove(instrumento);
+        instrumento.getInversoresList().remove(inversor);
+    }
+    private boolean inversorTieneInstrumento(Inversor inversor, InstrumentoFinanciero instrumento) {
+        return inversor.getInstrumentosInversor().stream().anyMatch(i -> i.equals(instrumento));
     }
 
-    public static void notificarCambioDePrecio(List<Inversor> inversoresANotificar,
-                                               InstrumentoFinanciero instrumento) {
-        for (Inversor inversor : inversoresANotificar) {
-            inversor.actualizarPrecioInstrumento(instrumento);
+    public static void notificarCambioDePrecio(InstrumentoFinanciero instrumento) {
+        for (Inversor inversor : instrumento.getInversoresList()) {
+            System.out.println(inversor.getNombre() + ": el precio del instrumento " + instrumento.getNombre() + " cambio a "
+                    + instrumento.getPrecio());
         }
     }
 }
