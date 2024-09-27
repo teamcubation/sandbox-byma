@@ -75,7 +75,7 @@ public class InstrumentoController {
     public ResponseEntity<InstrumentoDTO> obtenerInstrumento(@PathVariable("id") Long id) throws InvalidInstrumentoDataException {
         InstrumentoFinancieroModel instrumentoModel = instrumentoService.obtenerInstrumento(id);
         InstrumentoDTO instrumentoDTO = InstrumentoMapper.mapToDTO(instrumentoModel);
-        return new ResponseEntity<>(instrumentoDTO, HttpStatus.OK);
+        return ResponseEntity.ok(instrumentoDTO);
     }
 
     @DeleteMapping("/{id}")
