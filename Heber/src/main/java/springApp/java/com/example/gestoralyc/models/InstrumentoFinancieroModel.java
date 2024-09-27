@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public abstract class InstrumentoFinancieroModel {
 
-    private Long id;
+    private long id;
     private TipoInstrumento tipo;
     private String nombre;
     private double precio;
