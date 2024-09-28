@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springbootApp.java.controllers.mappers.InstrumentoMapper;
-import springbootApp.java.exceptions.InstrumentoDuplicadoException;
-import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
 import springbootApp.java.DTOs.InstrumentoDTO;
 import springbootApp.java.models.InstrumentoFinanciero;
 import springbootApp.java.services.InstrumentoFinancieroService;
@@ -39,23 +37,30 @@ public class InstrumentoFinancieroController {
             return ResponseEntity.ok(instrumentoFinancieroService.consultarTodosLosInstrumentos());
     }
 
-    @GetMapping("/{nombre}")
+    @GetMapping("/nombre/{nombre}")
     public ResponseEntity<?> obtenerPorNombre(@PathVariable String nombre) throws Exception{
             log.info("obteniendo instrumento por nombre...");
-            return ResponseEntity.ok(instrumentoFinancieroService.buscarInstrumento(nombre));
+            return ResponseEntity.ok(instrumentoFinancieroService.buscarInstrumentoPorNombre(nombre));
         }
 
-    @DeleteMapping("/{nombre}")
-    public ResponseEntity<?> eliminar(@PathVariable String nombre) throws Exception{
-            log.info("eliminando instrumento: " + nombre);
-            instrumentoFinancieroService.eliminarInstrumento(nombre);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerPorID(@PathVariable Long id) throws Exception{
+        log.info("obteniendo instrumento por ID...");
+        return ResponseEntity.ok(instrumentoFinancieroService.buscarInstrumentoPorID(id));
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable Long id) throws Exception{
+            log.info("eliminando instrumento: " + id);
+            instrumentoFinancieroService.eliminarInstrumento(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PutMapping("/{nombre}")
-    public ResponseEntity<?> actualizar(@PathVariable String nombre, @RequestBody InstrumentoDTO instrumentoDTO) throws Exception {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody InstrumentoDTO instrumentoDTO) throws Exception {
             log.info("actualizando instrumento...");
             InstrumentoFinanciero instrumento = InstrumentoMapper.instrumentoDTOToInstrumento(instrumentoDTO);
-            return ResponseEntity.ok(instrumentoFinancieroService.actualizarInstrumento(nombre, instrumento));
+            return ResponseEntity.ok(instrumentoFinancieroService.actualizarInstrumento(id, instrumento));
     }
 }

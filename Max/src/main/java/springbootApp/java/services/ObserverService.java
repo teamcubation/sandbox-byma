@@ -20,12 +20,12 @@ public class ObserverService {
     private IInstrumentoFinancieroRepository instrumentosRepository;
 
 
-    public void metodoParaSuscribirse(String dni, String nombreInstrumento) throws InversorNoEncontradoException, InversorExistenteException, InstrumentoDuplicadoException {
-        InstrumentoFinanciero instrumento = instrumentosRepository.findByNombre(nombreInstrumento);
+    public void metodoParaSuscribirse(Long idInversor, Long idInstrumento) throws InversorNoEncontradoException, InversorExistenteException, InstrumentoDuplicadoException {
+        InstrumentoFinanciero instrumento = instrumentosRepository.findById(idInstrumento).orElse(null);
         if (instrumento == null) {
             throw new InversorNoEncontradoException("Error. instrumento no existente");
         }
-        Inversor inversor = inversorRepository.findByDni(dni);
+        Inversor inversor = inversorRepository.findById(idInversor).orElse(null);
         if (inversor == null) {
             throw new InversorNoEncontradoException("Error. inversor no existente");
         }
@@ -38,12 +38,12 @@ public class ObserverService {
         instrumentosRepository.save(instrumento);
     }
 
-    public void metodoParaDesuscribirse(String dni, String nombreInstrumento) throws InversorNoEncontradoException, InstrumentoNoEncontradoException {
-        InstrumentoFinanciero instrumento = instrumentosRepository.findByNombre(nombreInstrumento);
+    public void metodoParaDesuscribirse(Long id, Long idInstrumento) throws InversorNoEncontradoException, InstrumentoNoEncontradoException {
+        InstrumentoFinanciero instrumento = instrumentosRepository.findById(idInstrumento).orElse(null);
         if (instrumento == null) {
             throw new InversorNoEncontradoException("Error. instrumento no existente");
         }
-        Inversor inversor = inversorRepository.findByDni(dni);
+        Inversor inversor = inversorRepository.findById(id).orElse(null);
         if (inversor == null) {
             throw new InversorNoEncontradoException("Error. inversor no existente");
         }

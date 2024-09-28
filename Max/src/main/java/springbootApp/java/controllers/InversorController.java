@@ -1,26 +1,18 @@
 package springbootApp.java.controllers;
 
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springbootApp.java.controllers.mappers.InversorMapper;
-import springbootApp.java.exceptions.InstrumentoDuplicadoException;
-import springbootApp.java.exceptions.InstrumentoNoEncontradoException;
-import springbootApp.java.exceptions.InversorExistenteException;
-import springbootApp.java.exceptions.InversorNoEncontradoException;
 import springbootApp.java.DTOs.InversorDTO;
-import springbootApp.java.models.InstrumentoFinanciero;
 import springbootApp.java.models.Inversor;
 import springbootApp.java.services.InversorService;
 import springbootApp.java.services.ObserverService;
 
 import java.util.List;
 
-//@Slf4j
 @RestController
 @RequestMapping("/inversor")
 public class InversorController {
@@ -45,45 +37,45 @@ public class InversorController {
             return ResponseEntity.ok(inversorService.consultarTodosLosInversores());
     }
 
-    @GetMapping("/{dni}")
-    public ResponseEntity<?> obtenerInversor(@PathVariable String dni) throws Exception {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerInversor(@PathVariable Long id) throws Exception {
             log.info("intentando obtener inversor...");
-            return ResponseEntity.ok(inversorService.consultarInversor(dni));
+            return ResponseEntity.ok(inversorService.consultarInversor(id));
     }
 
-    @GetMapping("/instrumentos/{dni}")
-    public ResponseEntity<?> obtenerInstrumentosDeInversor(@PathVariable String dni) throws Exception {
+    @GetMapping("/instrumentos/{id}")
+    public ResponseEntity<?> obtenerInstrumentosDeInversor(@PathVariable Long id) throws Exception {
             log.info("intentando obtener instrumentos de inversor...");
-            return ResponseEntity.ok(inversorService.consultarInstrumentosDeInversor(dni));
+            return ResponseEntity.ok(inversorService.consultarInstrumentosDeInversor(id));
     }
 
 
-    @PutMapping("/{dni}")
-    public ResponseEntity<?> actualizarInversor(@PathVariable String dni, @RequestBody InversorDTO inversorDTO) throws Exception {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarInversor(@PathVariable Long id, @RequestBody InversorDTO inversorDTO) throws Exception {
             log.info("intentando actualizar inversor...");
             Inversor inversor = InversorMapper.inversorDTOToInversor(inversorDTO);
-            return ResponseEntity.ok(inversorService.actualizarInversor(dni, inversor));
+            return ResponseEntity.ok(inversorService.actualizarInversor(id, inversor));
     }
 
-    @DeleteMapping("/{dni}")
-    public ResponseEntity<?> eliminarInversor(@PathVariable String dni) throws Exception{
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarInversor(@PathVariable Long id) throws Exception{
             log.info("intentando eliminar inversor...");
-            inversorService.eliminarInversor(dni);
+            inversorService.eliminarInversor(id);
             return ResponseEntity.noContent().build();
         }
 
-    @PutMapping("/subscribirse/{dni}/{nombreInstrumento}")
-    public ResponseEntity<?> suscribirse(@PathVariable String dni, @PathVariable String nombreInstrumento) throws Exception{
+    @PutMapping("/subscribirse/{id}/{idInstrumento}")
+    public ResponseEntity<?> suscribirse(@PathVariable Long id, @PathVariable Long idInstrumento) throws Exception{
             log.info("intentando suscribirse...");
-            observerService.metodoParaSuscribirse(dni, nombreInstrumento);
+            observerService.metodoParaSuscribirse(id, idInstrumento);
             log.info("Suscripción exitosa");
             return ResponseEntity.ok("Suscripción exitosa");
     }
 
-    @PutMapping("/desubscribirse/{dni}/{nombreInstrumento}")
-    public ResponseEntity<?> desuscribirse(@PathVariable String dni, @PathVariable String nombreInstrumento) throws Exception{
+    @PutMapping("/desubscribirse/{id}/{idInstrumento}")
+    public ResponseEntity<?> desuscribirse(@PathVariable Long id, @PathVariable Long idInstrumento) throws Exception{
             log.info("intentando desuscribirse...");
-            observerService.metodoParaDesuscribirse(dni, nombreInstrumento);
+            observerService.metodoParaDesuscribirse(id, idInstrumento);
             System.out.println("Desuscripción exitosa");
             return ResponseEntity.ok("Desuscripción exitosa");
     }

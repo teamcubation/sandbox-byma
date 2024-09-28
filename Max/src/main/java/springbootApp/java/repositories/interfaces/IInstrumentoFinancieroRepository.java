@@ -9,11 +9,6 @@ import java.util.List;
 @Repository
 public interface IInstrumentoFinancieroRepository extends JpaRepository<InstrumentoFinanciero, Long> {
 
-//    public void registrarInstrumento(InstrumentoFinanciero instrumento);
-
     public InstrumentoFinanciero findByNombre(String nombre);
 
-//    public void eliminarInstrumento(InstrumentoFinanciero instrumento);
-//
-//    public List<InstrumentoFinanciero> consultarTodosLosInstrumentos();
 }
