@@ -1,4 +1,4 @@
-package springbootproject.java.com.example.project.model.instrumentoFinanciero;
+package com.example.project.model.instrumentoFinanciero;
 
 public enum TipoInstrumentoFinanciero {
     BONO, ACCION

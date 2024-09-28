@@ -1,7 +1,7 @@
-package springbootproject.java.com.example.project.controller.dto;
+package com.example.project.controller.dto;
 
-import springbootproject.java.com.example.project.exceptions.NoExisteEseTipoDeInstrumentoException;
-import springbootproject.java.com.example.project.model.instrumentoFinanciero.TipoInstrumentoFinanciero;
+import com.example.project.exceptions.NoExisteEseTipoDeInstrumentoException;
+import com.example.project.model.instrumentoFinanciero.TipoInstrumentoFinanciero;
 
 import java.time.LocalDate;
 

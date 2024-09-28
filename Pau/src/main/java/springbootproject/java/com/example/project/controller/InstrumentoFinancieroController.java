@@ -1,16 +1,16 @@
-package springbootproject.java.com.example.project.controller;
+package com.example.project.controller;
 
+import com.example.project.controller.dto.InstrumentoFinancieroDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springbootproject.java.com.example.project.controller.dto.EditarInstrumentoDTO;
-import springbootproject.java.com.example.project.controller.dto.InstrumentoFinancieroDTO;
-import springbootproject.java.com.example.project.exceptions.InstrumentoDuplicadoException;
-import springbootproject.java.com.example.project.exceptions.InstrumentoNoEncontradoException;
-import springbootproject.java.com.example.project.exceptions.NoExisteEseTipoDeInstrumentoException;
-import springbootproject.java.com.example.project.service.InstrumentoFinancieroService;
+import com.example.project.controller.dto.EditarInstrumentoDTO;
+import com.example.project.exceptions.InstrumentoDuplicadoException;
+import com.example.project.exceptions.InstrumentoNoEncontradoException;
+import com.example.project.exceptions.NoExisteEseTipoDeInstrumentoException;
+import com.example.project.service.InstrumentoFinancieroService;
 
 @Slf4j
 @RestController
@@ -36,13 +36,8 @@ public class InstrumentoFinancieroController {
 
     @RequestMapping("/{nombre}")
     public ResponseEntity<?> consultarUnInstrumentoFinanciero(@PathVariable("nombre") String nombre) {
-        try {
-            log.info("Consultando instrumento financiero de nombre {}", nombre);
-            return ResponseEntity.ok(this.instrumentoFinancieroService.consultarPorUnInstrumentoFinanciero(nombre));
-        } catch (InstrumentoNoEncontradoException e) {
-            log.error(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+        log.info("Consultando instrumento financiero de nombre {}", nombre);
+        return ResponseEntity.ok(this.instrumentoFinancieroService.buscarInstrumentoPorNombre(nombre));
     }
 
     @PostMapping("/")

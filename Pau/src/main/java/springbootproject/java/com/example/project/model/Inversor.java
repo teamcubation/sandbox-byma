@@ -1,10 +1,10 @@
-package springbootproject.java.com.example.project.model;
+package com.example.project.model;
 
-import springbootproject.java.com.example.project.SpringCrudApplication;
-import springbootproject.java.com.example.project.exceptions.InversorNoEncontradoException;
-import springbootproject.java.com.example.project.model.instrumentoFinanciero.InstrumentoFinanciero;
-import springbootproject.java.com.example.project.service.observer.Notificador;
-import springbootproject.java.com.example.project.service.observer.Observer;
+import com.example.project.SpringCrudApplication;
+import com.example.project.exceptions.InversorNoEncontradoException;
+import com.example.project.model.instrumentoFinanciero.InstrumentoFinanciero;
+import com.example.project.service.observer.Notificador;
+import com.example.project.service.observer.Observer;
 
 import java.time.LocalDate;
 

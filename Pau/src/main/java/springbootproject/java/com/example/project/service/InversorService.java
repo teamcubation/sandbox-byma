@@ -1,14 +1,13 @@
-package springbootproject.java.com.example.project.service;
+package com.example.project.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import springbootproject.java.com.example.project.controller.dto.InversorDTO;
-import springbootproject.java.com.example.project.exceptions.InversorNoEncontradoException;
-import springbootproject.java.com.example.project.exceptions.InversorYaRegistradoException;
-import springbootproject.java.com.example.project.model.Inversor;
-import springbootproject.java.com.example.project.repository.InversorRepository;
+import com.example.project.controller.dto.InversorDTO;
+import com.example.project.exceptions.InversorNoEncontradoException;
+import com.example.project.exceptions.InversorYaRegistradoException;
+import com.example.project.model.Inversor;
+import com.example.project.repository.InversorRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

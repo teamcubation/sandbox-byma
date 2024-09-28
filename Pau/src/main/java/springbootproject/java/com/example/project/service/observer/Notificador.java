@@ -1,11 +1,11 @@
-package springbootproject.java.com.example.project.service.observer;
+package com.example.project.service.observer;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import springbootproject.java.com.example.project.exceptions.InversorNoEncontradoException;
-import springbootproject.java.com.example.project.model.instrumentoFinanciero.InstrumentoFinanciero;
-import springbootproject.java.com.example.project.repository.InversorRepository;
+import com.example.project.exceptions.InversorNoEncontradoException;
+import com.example.project.model.instrumentoFinanciero.InstrumentoFinanciero;
+import com.example.project.repository.InversorRepository;
 
 @Component
 public class Notificador {

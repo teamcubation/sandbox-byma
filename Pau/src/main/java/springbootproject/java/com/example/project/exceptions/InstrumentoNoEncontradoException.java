@@ -1,4 +1,4 @@
-package springbootproject.java.com.example.project.exceptions;
+package com.example.project.exceptions;
 
 public class InstrumentoNoEncontradoException extends Exception {
     public InstrumentoNoEncontradoException() {

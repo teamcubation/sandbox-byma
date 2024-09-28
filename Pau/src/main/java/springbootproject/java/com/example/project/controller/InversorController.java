@@ -1,15 +1,15 @@
-package springbootproject.java.com.example.project.controller;
+package com.example.project.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springbootproject.java.com.example.project.controller.dto.InversorDTO;
-import springbootproject.java.com.example.project.exceptions.InversorNoEncontradoException;
-import springbootproject.java.com.example.project.exceptions.InversorYaRegistradoException;
-import springbootproject.java.com.example.project.model.Inversor;
-import springbootproject.java.com.example.project.service.InversorService;
+import com.example.project.controller.dto.InversorDTO;
+import com.example.project.exceptions.InversorNoEncontradoException;
+import com.example.project.exceptions.InversorYaRegistradoException;
+import com.example.project.model.Inversor;
+import com.example.project.service.InversorService;
 
 import java.util.List;
 

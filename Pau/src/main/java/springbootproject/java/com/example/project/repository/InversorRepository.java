@@ -1,8 +1,8 @@
-package springbootproject.java.com.example.project.repository;
+package com.example.project.repository;
 
 import org.springframework.stereotype.Repository;
-import springbootproject.java.com.example.project.exceptions.InversorNoEncontradoException;
-import springbootproject.java.com.example.project.model.Inversor;
+import com.example.project.exceptions.InversorNoEncontradoException;
+import com.example.project.model.Inversor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 @Repository
 public class InversorRepository {
+
     private List<Inversor> inversores = new ArrayList<Inversor>();
 
     public List<Inversor> obtenerInversores() {

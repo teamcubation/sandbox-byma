@@ -1,8 +1,8 @@
-package springbootproject.java.com.example.project.model.instrumentoFinanciero.factoryInstrumentos;
+package com.example.project.model.instrumentoFinanciero.factoryInstrumentos;
 
-import springbootproject.java.com.example.project.model.instrumentoFinanciero.Bono;
-import springbootproject.java.com.example.project.model.instrumentoFinanciero.InstrumentoFinanciero;
-import springbootproject.java.com.example.project.model.instrumentoFinanciero.TipoInstrumentoFinanciero;
+import com.example.project.model.instrumentoFinanciero.Bono;
+import com.example.project.model.instrumentoFinanciero.InstrumentoFinanciero;
+import com.example.project.model.instrumentoFinanciero.TipoInstrumentoFinanciero;
 
 import java.time.LocalDate;
 
