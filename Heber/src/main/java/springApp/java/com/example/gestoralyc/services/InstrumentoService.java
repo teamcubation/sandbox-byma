@@ -6,7 +6,7 @@ import springApp.java.com.example.gestoralyc.exceptions.InstrumentoDuplicadoExce
 import springApp.java.com.example.gestoralyc.exceptions.InstrumentoNoEncontradoException;
 import springApp.java.com.example.gestoralyc.exceptions.InvalidInstrumentoDataException;
 import springApp.java.com.example.gestoralyc.models.InstrumentoFinancieroModel;
-import springApp.java.com.example.gestoralyc.repositories.InstrumentoRepository;
+import springApp.java.com.example.gestoralyc.repositories.InstrumentoFinancieroRepository;
 import springApp.java.com.example.gestoralyc.utils.ValidationUtils;
 
 import java.util.List;
@@ -16,49 +16,21 @@ import java.util.Optional;
 public class InstrumentoService {
 
     @Autowired
-    InstrumentoRepository instrumentoRepository;
+    InstrumentoFinancieroRepository instrumentoRepository;
 
-    ///////////METODOS CRUD//////////
     public InstrumentoFinancieroModel agregarInstrumento(InstrumentoFinancieroModel instrumento) throws InstrumentoDuplicadoException, InvalidInstrumentoDataException {
-        // Validaciones antes de agregar el instrumento
-        ValidationUtils.validarNoNulo(instrumento, "El instrumento no puede ser nulo");
-        ValidationUtils.validarCadenaNoVacia(instrumento.getNombre(), "El nombre del instrumento no puede estar vacío");
-        ValidationUtils.validarPrecioPositivo(instrumento.getPrecio(), "El precio del instrumento debe ser mayor que cero");
-
-        // Verificar si el instrumento ya existe
-        if (instrumentoRepository.existeInstrumento(instrumento.getNombre())) {
-            throw new InstrumentoDuplicadoException("El instrumento " + instrumento.getNombre() + " ya existe");
+        if (instrumentoRepository.existsById(instrumento.getId())) {
+            throw new InstrumentoDuplicadoException("El instrumento con id " + instrumento.getId() + " ya existe");
         }
-
-        return instrumentoRepository.agregarInstrumento(instrumento);
+        if (!ValidationUtils.isValidInstrumento(instrumento)) {
+            throw new InvalidInstrumentoDataException("Los datos del instrumento no son válidos");
+        }
+        return instrumentoRepository.save(instrumento);
     }
 
     public List<InstrumentoFinancieroModel> obtenerInstrumentos() {
-        return instrumentoRepository.obtenerInstrumentos();
+        return instrumentoRepository.findAll();
     }
 
-    public InstrumentoFinancieroModel obtenerInstrumento(Long id) throws InvalidInstrumentoDataException {
-        Optional<InstrumentoFinancieroModel> instrumento = instrumentoRepository.obtenerInstrumento(id);
-        ValidationUtils.validarNoNulo(instrumento, "El instrumento no existe");
-        return instrumento.orElse(null);
-    }
 
-    public void eliminarInstrumentoPorId(Long id) throws InstrumentoNoEncontradoException {
-        boolean instrumentoExiste = instrumentoRepository.obtenerInstrumento(id).isPresent();
-        if (!instrumentoExiste) {
-            throw new InstrumentoNoEncontradoException("El instrumento con id " + id + " no existe");
-        }
-        instrumentoRepository.eliminarInstrumento(id);
-    }
-
-    public InstrumentoFinancieroModel editarInstrumento(Long id, InstrumentoFinancieroModel nuevoInstrumento)
-            throws InvalidInstrumentoDataException {
-
-        ValidationUtils.validarNoNulo(nuevoInstrumento, "El instrumento no puede ser nulo");
-        ValidationUtils.validarCadenaNoVacia(nuevoInstrumento.getNombre(), "El nombre del instrumento no puede estar vacío");
-        ValidationUtils.validarPrecioPositivo(nuevoInstrumento.getPrecio(), "El precio del instrumento debe ser mayor que cero");
-
-        return instrumentoRepository.editarInstrumento(id, nuevoInstrumento)
-                .orElseThrow(() -> new InvalidInstrumentoDataException("El instrumento no existe."));
-    }
 }

@@ -1,6 +1,7 @@
 package springApp.java.com.example.gestoralyc.utils;
 
 import springApp.java.com.example.gestoralyc.exceptions.InvalidInstrumentoDataException;
+import springApp.java.com.example.gestoralyc.models.InstrumentoFinancieroModel;
 
 public class ValidationUtils {
 
@@ -47,5 +48,12 @@ public class ValidationUtils {
         if (precio <= 0) {
             throw new InvalidInstrumentoDataException(MSJ_ERROR_PRECIO_NEGATIVO);
         }
+    }
+
+    public static boolean isValidInstrumento(InstrumentoFinancieroModel instrumento) {
+        return instrumento != null
+                && instrumento.getNombre() != null
+                && !instrumento.getNombre().trim().isEmpty()
+                && instrumento.getPrecio() > 0;
     }
 }

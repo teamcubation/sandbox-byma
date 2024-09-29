@@ -9,51 +9,88 @@ import springApp.java.com.example.gestoralyc.models.TipoInstrumento;
 
 public class InstrumentoMapper {
 
-    // Paso de dto a modelo
+    // Mapea de DTO a Model
     public static InstrumentoFinancieroModel mapToModel(InstrumentoDTO dto) throws InvalidInstrumentoDataException {
-       if(dto.getFinDelParking() != null || dto.getFechaCreacion() != null || dto.getId() != null) {
-            throw new InvalidInstrumentoDataException("Los campos 'finDelParking' y 'fechaCreacion' no son válidos para la creación de un instrumento.");
-        }
+        validarCamposProhibidos(dto);
+        dto.setFechaCreacion(java.time.LocalDate.now());
+
+        InstrumentoFinancieroModel instrumento;
 
         switch (dto.getTipo()) {
             case ACCION:
-                if (dto.getTasaInteres() != null) {
-                    throw new InvalidInstrumentoDataException("El campo 'tasaInteres' no es válido para una acción.");
-                }
-                if (dto.getDividendo() == null) {
-                    throw new InvalidInstrumentoDataException("El campo 'dividendo' es requerido para una acción.");
-                }
-                return new AccionModel(dto.getTipo(), dto.getNombre(), dto.getPrecio(), dto.getDividendo());
+                validarCamposAccion(dto);
+                instrumento = AccionModel.builder()
+                        .fechaCreacion(dto.getFechaCreacion())
+                        .nombre(dto.getNombre())
+                        .precio(dto.getPrecio())
+                        .dividendo(dto.getDividendo())
+                        .tipo(dto.getTipo())
+                        .build();
+                break;
+
             case BONO:
-                if (dto.getDividendo() != null) {
-                    throw new InvalidInstrumentoDataException("El campo 'dividendo' no es válido para un bono.");
-                }
-                if (dto.getTasaInteres() == null) {
-                    throw new InvalidInstrumentoDataException("El campo 'tasaInteres' es requerido para un bono.");
-                }
-                return new BonoModel(dto.getTipo(), dto.getNombre(), dto.getPrecio(), dto.getTasaInteres());
+                validarCamposBono(dto);
+                instrumento = BonoModel.builder()
+                        .fechaCreacion(dto.getFechaCreacion())
+                        .nombre(dto.getNombre())
+                        .precio(dto.getPrecio())
+                        .tasaInteres(dto.getTasaInteres())
+                        .tipo(dto.getTipo())
+                        .build();
+                break;
+
             default:
-                throw new IllegalArgumentException("Tipo de instrumento no válido");
+                throw new InvalidInstrumentoDataException("Tipo de instrumento no válido.");
+        }
+
+        // Asignar el tipo de instrumento
+        instrumento.setTipo(dto.getTipo());
+        return instrumento;
+    }
+
+    // Validaciones para los campos prohibidos
+    private static void validarCamposProhibidos(InstrumentoDTO dto) throws InvalidInstrumentoDataException {
+        if (dto.getFinDelParking() != null || dto.getFechaCreacion() != null || dto.getId() != null) {
+            throw new InvalidInstrumentoDataException("Los campos 'finDelParking', 'fechaCreacion' y 'id' no son válidos para la creación.");
         }
     }
 
-    // Paso de modelo a dto
+    // Validaciones específicas para Accion
+    private static void validarCamposAccion(InstrumentoDTO dto) throws InvalidInstrumentoDataException {
+        if (dto.getDividendo() == null) {
+            throw new InvalidInstrumentoDataException("El campo 'dividendo' es requerido para una acción.");
+        }
+        if (dto.getTasaInteres() != null) {
+            throw new InvalidInstrumentoDataException("El campo 'tasaInteres' no debe enviarse para una acción.");
+        }
+    }
+
+    // Validaciones específicas para Bono
+    private static void validarCamposBono(InstrumentoDTO dto) throws InvalidInstrumentoDataException {
+        if (dto.getTasaInteres() == null) {
+            throw new InvalidInstrumentoDataException("El campo 'tasaInteres' es requerido para un bono.");
+        }
+        if (dto.getDividendo() != null) {
+            throw new InvalidInstrumentoDataException("El campo 'dividendo' no debe enviarse para un bono.");
+        }
+    }
+
+    // Mapea de Model a DTO
     public static InstrumentoDTO mapToDTO(InstrumentoFinancieroModel model) {
         InstrumentoDTO dto = new InstrumentoDTO();
-        TipoInstrumento tipo = model.getTipo();
-        dto.setTipo(tipo);
+        dto.setId(model.getId());
         dto.setNombre(model.getNombre());
         dto.setPrecio(model.getPrecio());
+        dto.setTipo(model.getTipo());
 
-        if (tipo == TipoInstrumento.ACCION) {
+        if (model.getTipo() == TipoInstrumento.ACCION) {
             dto.setDividendo(((AccionModel) model).getDividendo());
-        } else if (tipo == TipoInstrumento.BONO) {
+        } else if (model.getTipo() == TipoInstrumento.BONO) {
             dto.setTasaInteres(((BonoModel) model).getTasaInteres());
         }
 
-        dto.setId(model.getId());
+        // Calcular el fin del parking
         dto.calcularFinDelParking();
-
         return dto;
     }
 }

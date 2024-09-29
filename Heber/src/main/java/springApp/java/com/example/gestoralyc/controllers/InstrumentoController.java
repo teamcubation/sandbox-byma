@@ -61,17 +61,14 @@ public class InstrumentoController {
 
 
     @GetMapping("/")
-    public ResponseEntity<List<InstrumentoDTO>> obtenerInstrumentos() {
+    public ResponseEntity<List<InstrumentoFinancieroModel>> obtenerInstrumentos() {
         log.info("Obteniendo instrumentos");
         List<InstrumentoFinancieroModel> instrumentosFinancieroList = instrumentoService.obtenerInstrumentos();
-        List<InstrumentoDTO> instrumentoFinancieroDTOList = instrumentosFinancieroList.stream()
-                .map(InstrumentoMapper::mapToDTO)
-                .collect(Collectors.toList());
-        log.info("Instrumentos obtenidos: {}", instrumentoFinancieroDTOList);
-        return ResponseEntity.ok(instrumentoFinancieroDTOList);
+        log.info("Instrumentos obtenidos: {}", instrumentosFinancieroList);
+        return ResponseEntity.ok(instrumentosFinancieroList);
     }
 
-    @GetMapping("/{id}")
+   /* @GetMapping("/{id}")
     public ResponseEntity<InstrumentoDTO> obtenerInstrumento(@PathVariable("id") Long id) throws InvalidInstrumentoDataException {
         InstrumentoFinancieroModel instrumentoModel = instrumentoService.obtenerInstrumento(id);
         InstrumentoDTO instrumentoDTO = InstrumentoMapper.mapToDTO(instrumentoModel);
@@ -90,5 +87,5 @@ public class InstrumentoController {
         InstrumentoFinancieroModel instrumentoEditado = instrumentoService.editarInstrumento(id, instrumentoFinancieroModel);
         InstrumentoDTO instrumentoNuevoADto = InstrumentoMapper.mapToDTO(instrumentoEditado);
         return ResponseEntity.status(HttpStatus.CREATED).body(instrumentoNuevoADto);
-    }
+    }*/
 }

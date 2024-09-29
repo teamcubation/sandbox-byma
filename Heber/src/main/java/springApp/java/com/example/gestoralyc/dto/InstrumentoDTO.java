@@ -3,6 +3,7 @@ package springApp.java.com.example.gestoralyc.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import springApp.java.com.example.gestoralyc.models.TipoInstrumento;
+
 import java.time.DayOfWeek;
 
 import java.time.LocalDate;
@@ -76,7 +77,6 @@ public class InstrumentoDTO {
     public void setId(Long id) {
         this.id = id;
     }
-
 
 
     public void calcularFinDelParking() {
