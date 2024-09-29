@@ -1,6 +1,6 @@
-package springBootProject.java.com.example.proyectoSpringBoot.service.observer;
+package com.example.proyectoSpringBoot.service.observer;
 
-import springBootProject.java.com.example.proyectoSpringBoot.model.InstrumentoFinanciero;
+import com.example.proyectoSpringBoot.model.InstrumentoFinanciero;
 
 public class Inversor implements Observer {
     @Override

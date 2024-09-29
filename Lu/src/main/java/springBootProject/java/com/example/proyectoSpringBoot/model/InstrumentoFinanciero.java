@@ -1,34 +1,21 @@
-package springBootProject.java.com.example.proyectoSpringBoot.model;
+package com.example.proyectoSpringBoot.model;
 
-import springBootProject.java.com.example.proyectoSpringBoot.service.observer.Notificador;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import com.example.proyectoSpringBoot.service.observer.Notificador;
 
-public abstract class InstrumentoFinanciero extends Notificador{
+@Getter
+@Setter
+@Entity
+public class InstrumentoFinanciero extends Notificador{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true, nullable = false)
     private String nombre;
+    @Column(nullable = false)
     private Double precio;
+    @Column(nullable = false)
     private Integer tipo;
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(Double precio) {
-        this.precio = precio;
-        setEstado(this.precio, this);
-    }
-
-    public Integer getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Integer tipo) {
-        this.tipo = tipo;
-    }
 }

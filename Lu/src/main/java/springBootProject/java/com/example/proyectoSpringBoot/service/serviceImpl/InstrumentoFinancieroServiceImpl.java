@@ -1,106 +1,96 @@
-package springBootProject.java.com.example.proyectoSpringBoot.service.serviceImpl;
+package com.example.proyectoSpringBoot.service.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import springBootProject.java.com.example.proyectoSpringBoot.dto.InstrumentoFinancieroDTO;
-import springBootProject.java.com.example.proyectoSpringBoot.excepciones.customExcepcions.InstrumentoDuplicadoException;
-import springBootProject.java.com.example.proyectoSpringBoot.excepciones.customExcepcions.InstrumentoNoEncontradoException;
-import springBootProject.java.com.example.proyectoSpringBoot.excepciones.customExcepcions.OpcionInvalidaException;
-import springBootProject.java.com.example.proyectoSpringBoot.model.InstrumentoFinanciero;
-import springBootProject.java.com.example.proyectoSpringBoot.repository.InstrumentoFinancieroRepository;
-import springBootProject.java.com.example.proyectoSpringBoot.service.InstrumentoFinancieroService;
-import springBootProject.java.com.example.proyectoSpringBoot.service.factory.InstrumentoFinancieroFactory;
-import springBootProject.java.com.example.proyectoSpringBoot.utils.Validaciones;
+import com.example.proyectoSpringBoot.dto.InstrumentoFinancieroDTO;
+import com.example.proyectoSpringBoot.excepciones.customExcepcions.InstrumentoDuplicadoException;
+import com.example.proyectoSpringBoot.excepciones.customExcepcions.InstrumentoNoEncontradoException;
+import com.example.proyectoSpringBoot.excepciones.customExcepcions.OpcionInvalidaException;
+import com.example.proyectoSpringBoot.model.InstrumentoFinanciero;
+import com.example.proyectoSpringBoot.repository.InstrumentoFinancieroRepository;
+import com.example.proyectoSpringBoot.service.InstrumentoFinancieroServiceInterface;
+import com.example.proyectoSpringBoot.utils.Validaciones;
+import com.example.proyectoSpringBoot.dto.InstrumentoFinancieroMapper;
 
 import java.util.List;
 import java.util.Optional;
 
 
 @Service
-public class InstrumentoFinancieroServiceImpl implements InstrumentoFinancieroService {
+public class InstrumentoFinancieroServiceImpl implements InstrumentoFinancieroServiceInterface {
 
     @Autowired
     InstrumentoFinancieroRepository instrumentoFinancieroRepository;
 
     public List<InstrumentoFinanciero> consultarTodos() {
-        return this.instrumentoFinancieroRepository.consultarTodos();
+        return this.instrumentoFinancieroRepository.findAll();
     }
 
-    public InstrumentoFinanciero consultar(String nombre) throws InstrumentoNoEncontradoException {
-        Optional<InstrumentoFinanciero> instrumentoFinanciero = this.instrumentoFinancieroRepository.consultar(nombre);
+    public InstrumentoFinancieroDTO consultar(Long id) throws Exception {
+        Optional<InstrumentoFinanciero> instrumentoFinanciero = this.instrumentoFinancieroRepository.findById(id);
 
         if (instrumentoFinanciero.isEmpty()) {
-            throw new InstrumentoNoEncontradoException("El instrumento financiero con ese nombre no existe.");
+            throw new InstrumentoNoEncontradoException("El instrumento financiero a consultar no existe.");
         }
 
-        return instrumentoFinanciero.get();
+        return InstrumentoFinancieroMapper.toDTO(instrumentoFinanciero.get());
     }
 
-    public InstrumentoFinanciero registrar(InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws InstrumentoDuplicadoException, OpcionInvalidaException {
+    public InstrumentoFinancieroDTO registrar(InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws Exception {
+        if(existeNombreInstrumentoFinanciero(instrumentoFinancieroDTO.getNombre())) {
+            throw new InstrumentoDuplicadoException("El instrumento financiero a registrar con ese nombre ya existe.");
+        }
+
         validarDatos(instrumentoFinancieroDTO);
 
-        Optional<InstrumentoFinanciero> instrumentoFinanciero = this.instrumentoFinancieroRepository.buscar(instrumentoFinancieroDTO.getNombre());
-
-        if (instrumentoFinanciero.isPresent()) {
-            throw new InstrumentoDuplicadoException("El instrumento financiero a registrar ya existe, no se permiten instrumentos duplicados.");
-        }
-
-        InstrumentoFinanciero instrumentoFinancieroNuevo = InstrumentoFinancieroFactory.crearInstrumentoFinanciero(instrumentoFinancieroDTO.getTipo());
-        instrumentoFinancieroNuevo.setPrecio(instrumentoFinancieroDTO.getPrecio());
-        instrumentoFinancieroNuevo.setNombre(instrumentoFinancieroDTO.getNombre());
-        instrumentoFinancieroNuevo.setTipo(instrumentoFinancieroDTO.getTipo());
-
-        return this.instrumentoFinancieroRepository.registrar(instrumentoFinancieroNuevo);
+        InstrumentoFinanciero instrumentoFinanciero = InstrumentoFinancieroMapper.toModel(instrumentoFinancieroDTO);
+        return InstrumentoFinancieroMapper.toDTO(this.instrumentoFinancieroRepository.save(instrumentoFinanciero));
     }
 
-    public void eliminar(String nombre) throws InstrumentoNoEncontradoException {
-        Optional<InstrumentoFinanciero> instrumentoFinanciero = this.instrumentoFinancieroRepository.buscar(nombre);
-
-        if (instrumentoFinanciero.isEmpty()) {
-            throw new InstrumentoNoEncontradoException("El instrumento financiero a eliminar no existe.");
-        }
-
-        this.instrumentoFinancieroRepository.eliminar(instrumentoFinanciero.get());
+    public void eliminar(Long id) {
+        this.instrumentoFinancieroRepository.deleteById(id);
     }
 
-    public InstrumentoFinanciero editar(String instrumentoAEditar, InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws InstrumentoNoEncontradoException, OpcionInvalidaException {
-        validarNombre(instrumentoAEditar);
+    public InstrumentoFinancieroDTO editar(Long id, InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws Exception {
         validarDatos(instrumentoFinancieroDTO);
 
-        Optional<InstrumentoFinanciero> instrumentoFinanciero = this.instrumentoFinancieroRepository.buscar(instrumentoAEditar);
-
-        if (instrumentoFinanciero.isEmpty()) {
-            throw new InstrumentoNoEncontradoException("El instrumento financiero a editar no existe.");
+        if (existeInstrumentoFinanciero(id)) {
+            InstrumentoFinanciero instrumentoFinancieroModel = InstrumentoFinancieroMapper.toModel(instrumentoFinancieroDTO);
+            instrumentoFinancieroModel.setId(id);
+            return InstrumentoFinancieroMapper.toDTO(this.instrumentoFinancieroRepository.save(instrumentoFinancieroModel));
         }
-
-        InstrumentoFinanciero instrumentoFinancieroAEditar = instrumentoFinanciero.get();
-        instrumentoFinancieroAEditar.setNombre(instrumentoFinancieroDTO.getNombre());
-        instrumentoFinancieroAEditar.setPrecio(instrumentoFinancieroDTO.getPrecio());
-
-        return instrumentoFinancieroAEditar;
+        throw new InstrumentoNoEncontradoException("El instrumento financiero a editar no existe");
     }
 
-    private void validarNombre(String nombreAValidar) throws OpcionInvalidaException {
+    private void validarNombre(String nombreAValidar) throws Exception {
         if (!Validaciones.esNombreValido(nombreAValidar)) {
             throw new OpcionInvalidaException("Por favor ingrese un nombre valido");
         }
     }
 
-    private void validarPrecio(Double precioAValidar) throws OpcionInvalidaException {
+    private void validarPrecio(Double precioAValidar) throws Exception {
         if (!Validaciones.esPrecioValido(precioAValidar)) {
             throw new OpcionInvalidaException("Por favor ingrese un precio valido.");
         }
     }
 
-    private void validarTipo(Integer tipoAValidar) throws OpcionInvalidaException {
+    private void validarTipo(Integer tipoAValidar) throws Exception {
         if (!Validaciones.esTipoValido(tipoAValidar)) {
             throw new OpcionInvalidaException("Por favor ingrese un instrumento financieron valido.");
         }
     }
 
-    private void validarDatos(InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws OpcionInvalidaException {
+    private void validarDatos(InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws Exception {
         validarNombre(instrumentoFinancieroDTO.getNombre());
         validarPrecio(instrumentoFinancieroDTO.getPrecio());
         validarTipo(instrumentoFinancieroDTO.getTipo());
+    }
+
+    private boolean existeNombreInstrumentoFinanciero(String nombre) {
+        return this.instrumentoFinancieroRepository.existsByNombre(nombre);
+    }
+
+    private boolean existeInstrumentoFinanciero(Long id) {
+        return this.instrumentoFinancieroRepository.existsById(id);
     }
 }

@@ -1,4 +1,4 @@
-package springBootProject.java.com.example.proyectoSpringBoot.utils;
+package com.example.proyectoSpringBoot.utils;
 
 public class Validaciones {
     private static final String NOMBRE_REGEX = "^[0-9]+.*";

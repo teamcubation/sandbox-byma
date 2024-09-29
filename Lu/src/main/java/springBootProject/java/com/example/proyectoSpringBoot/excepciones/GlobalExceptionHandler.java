@@ -1,4 +1,4 @@
-package springBootProject.java.com.example.proyectoSpringBoot.excepciones;
+package com.example.proyectoSpringBoot.excepciones;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import springBootProject.java.com.example.proyectoSpringBoot.excepciones.customExcepcions.InstrumentoDuplicadoException;
-import springBootProject.java.com.example.proyectoSpringBoot.excepciones.customExcepcions.InstrumentoNoEncontradoException;
-import springBootProject.java.com.example.proyectoSpringBoot.excepciones.customExcepcions.OpcionInvalidaException;
+import com.example.proyectoSpringBoot.excepciones.customExcepcions.InstrumentoDuplicadoException;
+import com.example.proyectoSpringBoot.excepciones.customExcepcions.InstrumentoNoEncontradoException;
+import com.example.proyectoSpringBoot.excepciones.customExcepcions.OpcionInvalidaException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

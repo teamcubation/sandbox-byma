@@ -1,4 +1,4 @@
-package springBootProject.java.com.example.proyectoSpringBoot.excepciones;
+package com.example.proyectoSpringBoot.excepciones;
 
 import lombok.Data;
 

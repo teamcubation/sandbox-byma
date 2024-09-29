@@ -1,4 +1,4 @@
-package springBootProject.java.com.example.proyectoSpringBoot.model;
+package com.example.proyectoSpringBoot.model;
 
 public class Bono extends InstrumentoFinanciero {
 }
