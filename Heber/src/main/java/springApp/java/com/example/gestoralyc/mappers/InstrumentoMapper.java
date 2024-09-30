@@ -1,4 +1,4 @@
-package springApp.java.com.example.gestoralyc.mappers;
+/*package springApp.java.com.example.gestoralyc.mappers;
 
 import springApp.java.com.example.gestoralyc.dto.InstrumentoDTO;
 import springApp.java.com.example.gestoralyc.exceptions.InvalidInstrumentoDataException;
@@ -24,7 +24,6 @@ public class InstrumentoMapper {
                         .nombre(dto.getNombre())
                         .precio(dto.getPrecio())
                         .dividendo(dto.getDividendo())
-                        .tipo(dto.getTipo())
                         .build();
                 break;
 
@@ -35,7 +34,6 @@ public class InstrumentoMapper {
                         .nombre(dto.getNombre())
                         .precio(dto.getPrecio())
                         .tasaInteres(dto.getTasaInteres())
-                        .tipo(dto.getTipo())
                         .build();
                 break;
 
@@ -43,8 +41,6 @@ public class InstrumentoMapper {
                 throw new InvalidInstrumentoDataException("Tipo de instrumento no válido.");
         }
 
-        // Asignar el tipo de instrumento
-        instrumento.setTipo(dto.getTipo());
         return instrumento;
     }
 
@@ -81,7 +77,6 @@ public class InstrumentoMapper {
         dto.setId(model.getId());
         dto.setNombre(model.getNombre());
         dto.setPrecio(model.getPrecio());
-        dto.setTipo(model.getTipo());
 
         if (model.getTipo() == TipoInstrumento.ACCION) {
             dto.setDividendo(((AccionModel) model).getDividendo());
@@ -93,4 +88,4 @@ public class InstrumentoMapper {
         dto.calcularFinDelParking();
         return dto;
     }
-}
+}*/

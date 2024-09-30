@@ -1,4 +1,4 @@
-package springApp.java.com.example.gestoralyc.controllers;
+/*package springApp.java.com.example.gestoralyc.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import springApp.java.com.example.gestoralyc.exceptions.InvalidInstrumentoDataEx
 import springApp.java.com.example.gestoralyc.mappers.InstrumentoMapper;
 import springApp.java.com.example.gestoralyc.models.InstrumentoFinancieroModel;
 import springApp.java.com.example.gestoralyc.services.InstrumentoService;
-import springApp.java.com.example.gestoralyc.utils.GeneradorCurl;
+
 import java.util.List;
 
 @RestController
@@ -59,5 +59,5 @@ public class InstrumentoController {
         InstrumentoFinancieroModel instrumentoEditado = instrumentoService.editarInstrumento(id, instrumentoFinancieroModel);
         InstrumentoDTO instrumentoNuevoADto = InstrumentoMapper.mapToDTO(instrumentoEditado);
         return ResponseEntity.status(HttpStatus.CREATED).body(instrumentoNuevoADto);
-    }*/
-}
+    }
+}*/

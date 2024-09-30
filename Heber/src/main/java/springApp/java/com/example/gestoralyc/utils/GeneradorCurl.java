@@ -1,36 +1,48 @@
 package springApp.java.com.example.gestoralyc.utils;
 
-import springApp.java.com.example.gestoralyc.dto.InstrumentoDTO;
+import springApp.java.com.example.gestoralyc.dto.AccionDTO;
+import springApp.java.com.example.gestoralyc.dto.BonoDTO;
 
 public class GeneradorCurl {
 
-    public static String generarCurlComando(InstrumentoDTO instrumentoDTO) {
-        String tipo = instrumentoDTO.getTipo().toString();
-        String nombre = instrumentoDTO.getNombre();
-        double precio = instrumentoDTO.getPrecio();
-        Double tasaInteres = instrumentoDTO.getTasaInteres();
-        Double dividendo = instrumentoDTO.getDividendo();
+    public static String generarCurlAccion(AccionDTO accionDTO) {
+        StringBuilder curl = new StringBuilder();
 
-        StringBuilder curlCommand = new StringBuilder();
-        curlCommand.append("curl --location 'http://localhost:5000/api/instrumentos/' \\").append("\n");
-        curlCommand.append("--header 'Content-Type: application/json' \\").append("\n");
-        curlCommand.append("--data '{").append("\n");
-        curlCommand.append("    \"tipo\": \"").append(tipo).append("\",").append("\n");
-        curlCommand.append("    \"nombre\": \"").append(nombre).append("\",").append("\n");
-        curlCommand.append("    \"precio\": ").append(precio).append(",").append("\n");
+        // Agregar el comando base de cURL
+        curl.append("curl -X POST ");
+        curl.append("\"http://localhost:5000/api/acciones/\" ");
+        curl.append("-H \"Content-Type: application/json\" ");
+        curl.append("-d '{");
 
-        // Añadir sólo los atributos que correspondan
-        if (tasaInteres != null) {
-            curlCommand.append("    \"tasaInteres\": ").append(tasaInteres).append("\n");
+        // Añadir los campos del DTO en formato JSON
+        curl.append("\"nombre\":\"").append(accionDTO.getNombre()).append("\", ");
+        curl.append("\"precio\":").append(accionDTO.getPrecio()).append(", ");
+        curl.append("\"dividendo\":").append(accionDTO.getDividendo());
+
+        // Si hay una fecha de creación, añadirla
+        if (accionDTO.getFechaCreacion() != null) {
+            curl.append(", \"fechaCreacion\":\"").append(accionDTO.getFechaCreacion().toString()).append("\"");
         }
-        if (dividendo != null) {
-            curlCommand.append("    \"dividendo\": ").append(dividendo).append("\n");
-        }
+
+        // Cerrar el objeto JSON
+        curl.append("}'");
+
+        return curl.toString();
+    }
+
+    public static String generarCurlBono(BonoDTO bonoDTO) {
+        StringBuilder curlCommand = new StringBuilder("curl -X POST ");
+        curlCommand.append("http://localhost:5000/api/bonos/ ")
+                .append("-H \"Content-Type: application/json\" ")
+                .append("-d '{");
+
+        curlCommand.append("\"nombre\":\"").append(bonoDTO.getNombre()).append("\",");
+        curlCommand.append("\"precio\":").append(bonoDTO.getPrecio()).append(",");
+        curlCommand.append("\"tasaInteres\":").append(bonoDTO.getTasaInteres());
 
         curlCommand.append("}'");
         return curlCommand.toString();
     }
-
-
-
 }
+
+

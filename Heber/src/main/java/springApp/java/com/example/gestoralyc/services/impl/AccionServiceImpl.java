@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import springApp.java.com.example.gestoralyc.exceptions.InstrumentoDuplicadoException;
 import springApp.java.com.example.gestoralyc.models.AccionModel;
 import springApp.java.com.example.gestoralyc.repositories.AccionRepository;
+import springApp.java.com.example.gestoralyc.repositories.BonoRepository;
 import springApp.java.com.example.gestoralyc.services.AccionService;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public class AccionServiceImpl implements AccionService {
 
     @Autowired
     AccionRepository accionRepository;
+    @Autowired
+    private BonoRepository bonoRepository;
 
     @Override
     public List<AccionModel> obtenerAcciones() {
@@ -24,8 +27,11 @@ public class AccionServiceImpl implements AccionService {
     public AccionModel agregarAccion(AccionModel accion) throws InstrumentoDuplicadoException {
         //TODO: Validar que los datos de la acción sean correctos
         //el nombre de la accion es unico
-        if (accionRepository.existsByNombre(accion.getNombre())) {
+        if (accionRepository.existsByNombreIgnoreCase(accion.getNombre())) {
             throw new InstrumentoDuplicadoException("La acción con nombre " + accion.getNombre() + " ya existe");
+        }
+        if(bonoRepository.existsByNombreIgnoreCase(accion.getNombre())){
+            throw new InstrumentoDuplicadoException("El bono con nombre " + accion.getNombre() + " ya existe");
         }
         return accionRepository.save(accion);
     }

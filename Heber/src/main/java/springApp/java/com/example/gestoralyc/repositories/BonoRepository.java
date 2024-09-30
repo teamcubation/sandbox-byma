@@ -7,4 +7,5 @@ public interface BonoRepository extends JpaRepository<BonoModel, Long> {
 
 
     boolean existsByNombre(String nombre);
+    boolean existsByNombreIgnoreCase(String nombre);
 }

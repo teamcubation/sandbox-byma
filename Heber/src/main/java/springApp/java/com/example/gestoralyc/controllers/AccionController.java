@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springApp.java.com.example.gestoralyc.dto.InstrumentoDTO;
+import springApp.java.com.example.gestoralyc.dto.AccionDTO;
 import springApp.java.com.example.gestoralyc.exceptions.InstrumentoDuplicadoException;
 import springApp.java.com.example.gestoralyc.exceptions.InvalidInstrumentoDataException;
-import springApp.java.com.example.gestoralyc.mappers.InstrumentoMapper;
+import springApp.java.com.example.gestoralyc.mappers.AccionMapper;
 import springApp.java.com.example.gestoralyc.models.AccionModel;
 import springApp.java.com.example.gestoralyc.services.impl.AccionServiceImpl;
 import springApp.java.com.example.gestoralyc.utils.GeneradorCurl;
@@ -24,21 +24,26 @@ public class AccionController {
 
     @PostMapping("/")
 
-    public ResponseEntity<InstrumentoDTO> agregarInstrumento(@RequestBody InstrumentoDTO instrumentoDTO) throws InstrumentoDuplicadoException, InvalidInstrumentoDataException {
-        log.info("Instrumento recibido en formato cURL: \n{}", GeneradorCurl.generarCurlComando(instrumentoDTO));
-        InstrumentoDTO instrumentoCreadoDTO = InstrumentoMapper
-                .mapToDTO(accionService.agregarAccion((AccionModel) InstrumentoMapper.mapToModel(instrumentoDTO)));
-        log.info("Instrumento creado en formato cURL: \n{}", GeneradorCurl.generarCurlComando(instrumentoCreadoDTO));
-        return ResponseEntity.status(HttpStatus.CREATED).body(instrumentoCreadoDTO);
+    public ResponseEntity<AccionDTO> agregarAccion(@RequestBody AccionDTO accionDTO) throws InstrumentoDuplicadoException, InvalidInstrumentoDataException {
+        log.info("Instrumento recibido en formato cURL: \n{}", GeneradorCurl.generarCurlAccion(accionDTO));
+        AccionDTO accionCreadaDTO = AccionMapper
+                .mapToDTO(accionService.agregarAccion((AccionModel) AccionMapper.mapToModel(accionDTO)));
+        log.info("Instrumento creado en formato cURL: \n{}", GeneradorCurl.generarCurlAccion(accionCreadaDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(accionCreadaDTO);
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<AccionModel>> obtenerInstrumentos() {
+    public ResponseEntity<List<AccionDTO>> obtenerInstrumentos() {
         log.info("Obteniendo instrumentos");
         List<AccionModel> accionesList = accionService.obtenerAcciones();
-        log.info("Instrumentos obtenidos: {}", accionesList);
-        return ResponseEntity.ok(accionesList);
+
+        List<AccionDTO> accionesDTOList = accionesList.stream()
+                .map(AccionMapper::mapToDTO)
+                .toList();  // Convertir el Stream a una lista
+        log.info("Instrumentos obtenidos: {}", accionesDTOList);
+        return ResponseEntity.ok(accionesDTOList);
     }
+
 
 
 

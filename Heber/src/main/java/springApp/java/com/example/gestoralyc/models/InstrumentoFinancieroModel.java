@@ -22,8 +22,6 @@ public abstract class InstrumentoFinancieroModel {
     private double precio;
     private LocalDate fechaCreacion;
 
-    @Enumerated(EnumType.STRING)
-    private TipoInstrumento tipo;
 }
 
 

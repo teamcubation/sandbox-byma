@@ -7,4 +7,5 @@ public interface AccionRepository extends JpaRepository<AccionModel, Long> {
 
 
     boolean existsByNombre(String nombre);
+    boolean existsByNombreIgnoreCase(String nombre);
 }
