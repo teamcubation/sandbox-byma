@@ -65,9 +65,9 @@ public class BonoController {
 
         ValidatorBonoDTO.validarBonoDTO(bonoDTO);
 
-        Bono bonoPorActualizado = BonoMapper.toBono(bonoDTO);
-
-        Bono bonoActualizado = this.bonoService.updateBono(bonoPorActualizado);
+        Bono bonoPorActualizar = BonoMapper.toBono(bonoDTO);
+        bonoPorActualizar.setId(id);
+        Bono bonoActualizado = this.bonoService.updateBono(bonoPorActualizar);
         log.info("Instrumento actualizado: " + bonoActualizado.toString());
         return new ResponseEntity<>(bonoActualizado, null, HttpStatus.OK);
     }

@@ -68,9 +68,11 @@ public class AccionController {
         log.info("PathVariable id=  " + id);
         log.info(accionDTO.toString());
 
-        Accion accionPorActualizada = AccionMapper.toAccion(accionDTO);
+        Accion accionPorActualizar = AccionMapper.toAccion(accionDTO);
+        accionPorActualizar.setId(id);
+        
 
-        Accion accionActualizada = this.accionService.updateAccion(accionPorActualizada);
+        Accion accionActualizada = this.accionService.updateAccion(accionPorActualizar);
 
         log.info("Instrumento actualizado: " + accionActualizada.toString());
         return new ResponseEntity<>(accionActualizada, null, HttpStatus.OK);
