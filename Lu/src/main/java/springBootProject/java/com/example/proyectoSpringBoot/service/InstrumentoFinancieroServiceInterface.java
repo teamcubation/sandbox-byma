@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface InstrumentoFinancieroServiceInterface {
 
-    List<InstrumentoFinanciero> consultarTodos();
+    List<InstrumentoFinancieroDTO> consultarTodos();
 
     InstrumentoFinancieroDTO consultar(Long id) throws Exception;
 

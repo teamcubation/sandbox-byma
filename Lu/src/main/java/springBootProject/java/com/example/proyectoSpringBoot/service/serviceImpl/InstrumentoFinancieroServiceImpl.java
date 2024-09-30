@@ -14,6 +14,7 @@ import com.example.proyectoSpringBoot.dto.InstrumentoFinancieroMapper;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -22,8 +23,8 @@ public class InstrumentoFinancieroServiceImpl implements InstrumentoFinancieroSe
     @Autowired
     InstrumentoFinancieroRepository instrumentoFinancieroRepository;
 
-    public List<InstrumentoFinanciero> consultarTodos() {
-        return this.instrumentoFinancieroRepository.findAll();
+    public List<InstrumentoFinancieroDTO> consultarTodos() {
+        return this.instrumentoFinancieroRepository.findAll().stream().map(InstrumentoFinancieroMapper::toDTO).collect(Collectors.toList());
     }
 
     public InstrumentoFinancieroDTO consultar(Long id) throws Exception {

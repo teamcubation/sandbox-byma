@@ -3,20 +3,19 @@ package com.example.proyectoSpringBoot.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import com.example.proyectoSpringBoot.service.observer.Notificador;
 
 @Getter
 @Setter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class InstrumentoFinanciero extends Notificador{
+public abstract class InstrumentoFinanciero{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     @Column(unique = true, nullable = false)
     private String nombre;
     @Column(nullable = false)
-    private Double precio;
+    private double precio;
     @Column(nullable = false)
-    private Integer tipo;
+    private int tipo;
 }

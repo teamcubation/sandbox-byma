@@ -20,9 +20,9 @@ public class InstrumentoFinancieroController {
     private InstrumentoFinancieroServiceImpl instrumentoFinancieroService;
 
     @RequestMapping("")
-    private List<InstrumentoFinanciero> consultarTodos() {
+    private List<InstrumentoFinancieroDTO> consultarTodos() {
         log.info("Consultando instrumentos financieros");
-        List<InstrumentoFinanciero> instrumentosFinancieros = this.instrumentoFinancieroService.consultarTodos();
+        List<InstrumentoFinancieroDTO> instrumentosFinancieros = this.instrumentoFinancieroService.consultarTodos();
         log.info("Instrumentos financieros consultados: {}", instrumentosFinancieros.size());
         return instrumentosFinancieros;
     }
