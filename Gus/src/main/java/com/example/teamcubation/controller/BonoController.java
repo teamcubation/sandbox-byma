@@ -6,6 +6,7 @@ import com.example.teamcubation.exceptions.ModeloInvalidoException;
 import com.example.teamcubation.model.Bono;
 import com.example.teamcubation.model.InstrumentoDTO.BonoDTO;
 import com.example.teamcubation.service.BonoService;
+import com.example.teamcubation.util.mappers.BonoMapper;
 import com.example.teamcubation.util.validaciones.ValidatorBonoDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,12 +33,7 @@ public class BonoController {
 
         ValidatorBonoDTO.validarBonoDTO(nuevoBono);
 
-        Bono nuevo = Bono
-                .builder()
-                .nombre(nuevoBono.getNombre())
-                .precio(nuevoBono.getPrecio())
-                .tasaInteres(nuevoBono.getTasaInteres())
-                .build();
+        Bono nuevo = BonoMapper.toBono(nuevoBono);
 
         Bono bonoCreado = this.bonoService.createBono(nuevo);
 
@@ -51,9 +47,14 @@ public class BonoController {
 
         List<Bono> listaDeBonos = bonoService.getAllBonos();
 
-        log.info(listaDeBonos.toString());
+        List<BonoDTO> res = listaDeBonos
+                .stream()
+                .map(BonoMapper::toBonoDTO)
+                .toList();
 
-        return new ResponseEntity<>(listaDeBonos, null, HttpStatus.OK);
+        log.info(res.toString());
+
+        return new ResponseEntity<>(res, null, HttpStatus.OK);
     }
 
     @PutMapping("/bono/{id}")
@@ -64,13 +65,7 @@ public class BonoController {
 
         ValidatorBonoDTO.validarBonoDTO(bonoDTO);
 
-        Bono bonoPorActualizado = Bono
-                .builder()
-                .id(id)
-                .nombre(bonoDTO.getNombre())
-                .precio(bonoDTO.getPrecio())
-                .tasaInteres(bonoDTO.getTasaInteres())
-                .build();
+        Bono bonoPorActualizado = BonoMapper.toBono(bonoDTO);
 
         Bono bonoActualizado = this.bonoService.updateBono(bonoPorActualizado);
         log.info("Instrumento actualizado: " + bonoActualizado.toString());

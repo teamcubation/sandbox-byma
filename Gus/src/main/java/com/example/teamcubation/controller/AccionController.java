@@ -6,6 +6,7 @@ import com.example.teamcubation.exceptions.ModeloInvalidoException;
 import com.example.teamcubation.model.Accion;
 import com.example.teamcubation.model.InstrumentoDTO.AccionDTO;
 import com.example.teamcubation.service.AccionService;
+import com.example.teamcubation.util.mappers.AccionMapper;
 import com.example.teamcubation.util.validaciones.ValidatorAccionDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,13 +33,7 @@ public class AccionController {
 
         ValidatorAccionDTO.validarAccionDTO(nuevaAccion);
 
-        //TODO extraer la logica del mapeo a una clase util
-        Accion nuevo = Accion
-                .builder()
-                .nombre(nuevaAccion.getNombre())
-                .precio(nuevaAccion.getPrecio())
-                .dividendo(nuevaAccion.getDividendo())
-                .build();
+        Accion nuevo = AccionMapper.toAccion(nuevaAccion);
         Accion accionCreada = this.accionService.createAccion(nuevo);
 
         log.info("Instrumento creado: " + nuevo);
@@ -54,8 +49,13 @@ public class AccionController {
 
         List<Accion> listaDeAcciones = accionService.getAllAcciones();
 
-        log.info(listaDeAcciones.toString());
-        return new ResponseEntity<>(listaDeAcciones, null, HttpStatus.OK);
+        List<AccionDTO> res = listaDeAcciones
+                .stream()
+                .map(AccionMapper::toAccionDTO)
+                .toList();
+
+        log.info(res.toString());
+        return new ResponseEntity<>(res, null, HttpStatus.OK);
     }
 
     //update
@@ -68,14 +68,7 @@ public class AccionController {
         log.info("PathVariable id=  " + id);
         log.info(accionDTO.toString());
 
-        Accion accionPorActualizada = Accion
-                .builder()
-                .id(id)
-                .nombre(accionDTO.getNombre())
-                .precio(accionDTO.getPrecio())
-                .dividendo(accionDTO.getDividendo())
-                .build();
-
+        Accion accionPorActualizada = AccionMapper.toAccion(accionDTO);
 
         Accion accionActualizada = this.accionService.updateAccion(accionPorActualizada);
 
