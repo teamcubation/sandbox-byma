@@ -7,13 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springApp.java.com.example.gestoralyc.dto.InstrumentoDTO;
 import springApp.java.com.example.gestoralyc.exceptions.InstrumentoDuplicadoException;
-import springApp.java.com.example.gestoralyc.exceptions.InstrumentoNoEncontradoException;
 import springApp.java.com.example.gestoralyc.exceptions.InvalidInstrumentoDataException;
 import springApp.java.com.example.gestoralyc.mappers.InstrumentoMapper;
 import springApp.java.com.example.gestoralyc.models.InstrumentoFinancieroModel;
 import springApp.java.com.example.gestoralyc.services.InstrumentoService;
+import springApp.java.com.example.gestoralyc.utils.GeneradorCurl;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/instrumentos") // Este es el path base del controller
@@ -25,38 +24,11 @@ public class InstrumentoController {
 
     @PostMapping("/")
     public ResponseEntity<InstrumentoDTO> agregarInstrumento(@RequestBody InstrumentoDTO instrumentoDTO) throws InstrumentoDuplicadoException, InvalidInstrumentoDataException {
-        log.info("Instrumento recibido en formato cURL: \n{}", generarCurlComando(instrumentoDTO));
+        log.info("Instrumento recibido en formato cURL: \n{}", GeneradorCurl.generarCurlComando(instrumentoDTO));
         InstrumentoDTO instrumentoCreadoDTO = InstrumentoMapper
                 .mapToDTO(instrumentoService.agregarInstrumento(InstrumentoMapper.mapToModel(instrumentoDTO)));
-        log.info("Instrumento creado en formato cURL: \n{}", generarCurlComando(instrumentoCreadoDTO));
+        log.info("Instrumento creado en formato cURL: \n{}", GeneradorCurl.generarCurlComando(instrumentoCreadoDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(instrumentoCreadoDTO);
-    }
-
-    private String generarCurlComando(InstrumentoDTO instrumentoDTO) {
-        String tipo = instrumentoDTO.getTipo().toString();
-        String nombre = instrumentoDTO.getNombre();
-        double precio = instrumentoDTO.getPrecio();
-        Double tasaInteres = instrumentoDTO.getTasaInteres();
-        Double dividendo = instrumentoDTO.getDividendo();
-
-        StringBuilder curlCommand = new StringBuilder();
-        curlCommand.append("curl --location 'http://localhost:5000/api/instrumentos/' \\").append("\n");
-        curlCommand.append("--header 'Content-Type: application/json' \\").append("\n");
-        curlCommand.append("--data '{").append("\n");
-        curlCommand.append("    \"tipo\": \"").append(tipo).append("\",").append("\n");
-        curlCommand.append("    \"nombre\": \"").append(nombre).append("\",").append("\n");
-        curlCommand.append("    \"precio\": ").append(precio).append(",").append("\n");
-
-        // Añadir sólo los atributos que correspondan
-        if (tasaInteres != null) {
-            curlCommand.append("    \"tasaInteres\": ").append(tasaInteres).append("\n");
-        }
-        if (dividendo != null) {
-            curlCommand.append("    \"dividendo\": ").append(dividendo).append("\n");
-        }
-
-        curlCommand.append("}'");
-        return curlCommand.toString();
     }
 
 

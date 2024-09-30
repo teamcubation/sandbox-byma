@@ -1,11 +1,11 @@
 package springApp.java.com.example.gestoralyc.models;
 
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@Entity(name="Bono")
+@Entity(name = "Bono")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -13,6 +13,11 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Data
 public class BonoModel extends InstrumentoFinancieroModel {
-    private double tasaInteres;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bono_seq")
+    @SequenceGenerator(name = "bono_seq", sequenceName = "bono_sequence", allocationSize = 1)
+    private long id; // El ID se generará con su propia secuencia
+
+    private double tasaInteres;
 }
