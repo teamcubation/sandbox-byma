@@ -1,22 +1,24 @@
 package com.example.proyectoSpringBoot.dto;
 
+import com.example.proyectoSpringBoot.excepciones.customExcepcions.OpcionInvalidaException;
 import com.example.proyectoSpringBoot.model.InstrumentoFinanciero;
+import com.example.proyectoSpringBoot.service.factory.InstrumentoFinancieroFactory;
 
 public class InstrumentoFinancieroMapper {
 
-    public static InstrumentoFinanciero toModel(InstrumentoFinancieroDTO dto) {
-        InstrumentoFinanciero usuario = new InstrumentoFinanciero();
-        usuario.setNombre(dto.getNombre());
-        usuario.setPrecio(dto.getPrecio());
-        usuario.setTipo(dto.getTipo());
-        return usuario;
+    public static InstrumentoFinanciero toModel(InstrumentoFinancieroDTO dto) throws OpcionInvalidaException {
+        InstrumentoFinanciero instrumentoFinancieroModel = InstrumentoFinancieroFactory.crearInstrumentoFinanciero(dto.getTipo());
+        instrumentoFinancieroModel.setNombre(dto.getNombre());
+        instrumentoFinancieroModel.setPrecio(dto.getPrecio());
+        instrumentoFinancieroModel.setTipo(dto.getTipo());
+        return instrumentoFinancieroModel;
     }
 
-    public static InstrumentoFinancieroDTO toDTO(InstrumentoFinanciero usuario) {
+    public static InstrumentoFinancieroDTO toDTO(InstrumentoFinanciero instrumentoFinancieroModel) {
         InstrumentoFinancieroDTO dto = new InstrumentoFinancieroDTO();
-        dto.setNombre(usuario.getNombre());
-        dto.setPrecio(usuario.getPrecio());
-        dto.setTipo(usuario.getTipo());
+        dto.setNombre(instrumentoFinancieroModel.getNombre());
+        dto.setPrecio(instrumentoFinancieroModel.getPrecio());
+        dto.setTipo(instrumentoFinancieroModel.getTipo());
         return dto;
     }
 }

@@ -8,7 +8,8 @@ import com.example.proyectoSpringBoot.service.observer.Notificador;
 @Getter
 @Setter
 @Entity
-public class InstrumentoFinanciero extends Notificador{
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class InstrumentoFinanciero extends Notificador{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
