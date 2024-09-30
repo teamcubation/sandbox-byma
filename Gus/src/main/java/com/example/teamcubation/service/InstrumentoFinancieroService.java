@@ -5,41 +5,31 @@ import com.example.teamcubation.exceptions.InstrumentoDuplicadoException;
 import com.example.teamcubation.exceptions.InstrumentoNoEncontradoException;
 import com.example.teamcubation.model.Accion;
 import com.example.teamcubation.model.Bono;
-import com.example.teamcubation.model.InstrumentoFinanciero;
 import com.example.teamcubation.repository.interfaces.AccionRepository;
 import com.example.teamcubation.repository.interfaces.BonoRepository;
-import com.example.teamcubation.repository.interfaces.InstrumentoFinancieroRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
 public class InstrumentoFinancieroService {
-    private final InstrumentoFinancieroRepository instrumentoFinancieroRepository;
     private final AccionRepository accionRepository;
     private final BonoRepository bonoRepository;
 
 
     @Autowired
-    public InstrumentoFinancieroService(InstrumentoFinancieroRepository instrumentoFinancieroRepository, AccionRepository accionRepository, BonoRepository bonoRepository) {
-        this.instrumentoFinancieroRepository = instrumentoFinancieroRepository;
+    public InstrumentoFinancieroService(AccionRepository accionRepository, BonoRepository bonoRepository) {
         this.accionRepository = accionRepository;
         this.bonoRepository = bonoRepository;
     }
 
 
-    public void crear(InstrumentoFinanciero nuevoInstrumento) {
-
-        this.instrumentoFinancieroRepository.save(nuevoInstrumento);
-    }
-
     public void createAccion(Accion nuevaAccion) throws InstrumentoDuplicadoException {
 
-        if (this.instrumentoDuplicado(nuevaAccion.getNombre())) {
+        if (this.accionEsDuplicado(nuevaAccion.getNombre())) {
             throw new InstrumentoDuplicadoException("Error: Ya existe un instrumento con el mismo nombre");
         }
 
@@ -48,16 +38,12 @@ public class InstrumentoFinancieroService {
 
     public void createBono(Bono nuevoBono) throws InstrumentoDuplicadoException {
 
-        if (this.instrumentoDuplicado(nuevoBono.getNombre())) {
+        if (this.bonoEsDuplicado(nuevoBono.getNombre())) {
             throw new InstrumentoDuplicadoException("Error: Ya existe un instrumento con el mismo nombre");
         }
         this.bonoRepository.save(nuevoBono);
     }
 
-
-    public List<InstrumentoFinanciero> getAll() {
-        return instrumentoFinancieroRepository.findAll();
-    }
 
     public List<Accion> listarAcciones() {
         return accionRepository.findAll();
@@ -67,16 +53,10 @@ public class InstrumentoFinancieroService {
         return this.bonoRepository.findAll();
     }
 
-    public Optional<InstrumentoFinanciero> getById(long id) {
-
-        return this.instrumentoFinancieroRepository.findById(id);
-
-    }
-
 
     public void updateAccion(Accion accion) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
 
-        if (this.instrumentoDuplicado(accion.getNombre())) {
+        if (this.accionEsDuplicado(accion.getNombre())) {
 
             throw new InstrumentoDuplicadoException("Error: Ya existe un instrumento con el mismo nombre");
         }
@@ -90,7 +70,7 @@ public class InstrumentoFinancieroService {
 
     public void updateBono(Bono bono) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
 
-        if (this.instrumentoDuplicado(bono.getNombre())) {
+        if (this.accionEsDuplicado(bono.getNombre())) {
 
             throw new InstrumentoDuplicadoException("Error: Ya existe un instrumento con el mismo nombre");
         }
@@ -103,40 +83,52 @@ public class InstrumentoFinancieroService {
     }
 
 
-    public void delete(long id) throws InstrumentoNoEncontradoException {
+    public void deleteAccion(long id) throws InstrumentoNoEncontradoException {
 
 
-        if (this.instrumentoEsInexistente(id)) {
+        if (this.accionEsInexistente(id)) {
             throw new InstrumentoNoEncontradoException("Error: El instrumento no se encuentra en la base de datos");
         }
 
-        this.instrumentoFinancieroRepository.deleteById(id);
+        this.accionRepository.deleteById(id);
     }
 
+    public void deleteBono(long id) throws InstrumentoNoEncontradoException {
 
-    private boolean instrumentoEsInexistente(long id) {
-        return this.instrumentoFinancieroRepository
-                .findById(id).isEmpty();
+
+        if (this.bonoEsInexistente(id)) {
+            throw new InstrumentoNoEncontradoException("Error: El instrumento no se encuentra en la base de datos");
+        }
+
+        this.bonoRepository.deleteById(id);
     }
+
+    //validaciones
 
     private boolean bonoEsInexistente(long id) {
 
-
         return !this.bonoRepository
                 .existsById(id);
-
     }
+
 
     private boolean accionEsInexistente(long id) {
         return !this.accionRepository
                 .existsById(id);
     }
 
-    private boolean instrumentoDuplicado(String nombre) {
-        return this.instrumentoFinancieroRepository
+    private boolean accionEsDuplicado(String nombre) {
+        return this.accionRepository
                 .findAll()
                 .stream()
-                .anyMatch(instrumentoFinanciero -> instrumentoFinanciero.getNombre().equalsIgnoreCase(nombre));
+                .anyMatch(accion -> accion.getNombre().equalsIgnoreCase(nombre));
+    }
+
+    private boolean bonoEsDuplicado(String nombre) {
+        return this.bonoRepository
+                .findAll()
+                .stream()
+                .anyMatch(bono -> bono.getNombre().equalsIgnoreCase(nombre));
     }
 
 

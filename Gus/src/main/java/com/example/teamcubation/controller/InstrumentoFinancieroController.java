@@ -8,7 +8,6 @@ import com.example.teamcubation.model.Accion;
 import com.example.teamcubation.model.Bono;
 import com.example.teamcubation.model.InstrumentoDTO.AccionDTO;
 import com.example.teamcubation.model.InstrumentoDTO.BonoDTO;
-import com.example.teamcubation.model.InstrumentoFinanciero;
 import com.example.teamcubation.service.InstrumentoFinancieroService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,13 +92,6 @@ public class InstrumentoFinancieroController {
         return new ResponseEntity<>(listaDeBonos, null, HttpStatus.OK);
     }
 
-    @RequestMapping("/instrumentos")
-    public ResponseEntity<?> listarTodos() {
-        List<InstrumentoFinanciero> listaDeInstrumentos = instrumentoFinancieroService.getAll();
-
-        return new ResponseEntity<>(listaDeInstrumentos, null, HttpStatus.OK);
-    }
-
 
     //update
     @PutMapping("/accion/{id}")
@@ -148,17 +140,28 @@ public class InstrumentoFinancieroController {
 
 
     //delete
-    @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<?> eliminarInstrumento(@PathVariable long id) throws InstrumentoNoEncontradoException {
+    @DeleteMapping("/accion/{id}")
+    public ResponseEntity<?> deleteAccion(@PathVariable long id) throws InstrumentoNoEncontradoException {
 
         log.info("PathVariable id=  " + id);
-        instrumentoFinancieroService.delete(id);
+        instrumentoFinancieroService.deleteAccion(id);
 
         log.info("Instrumento eliminado: " + id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
 
+    @DeleteMapping("/bono/{id}")
+    public ResponseEntity<?> deleteBono(@PathVariable long id) throws InstrumentoNoEncontradoException {
+
+        log.info("PathVariable id=  " + id);
+        instrumentoFinancieroService.deleteBono(id);
+
+        log.info("Instrumento eliminado: " + id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    //validaciones
     private void validarAccionDTO(AccionDTO nuevaAccion) throws ModeloInvalidoException {
         if (nuevaAccion.getNombre().isBlank() || nuevaAccion.getNombre().isEmpty()) {
 

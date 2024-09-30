@@ -1,13 +1,15 @@
 package com.example.teamcubation.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@MappedSuperclass
 @SuperBuilder
 @NoArgsConstructor
 @Data
@@ -18,6 +20,7 @@ public abstract class InstrumentoFinanciero {
     private long id;
     private String nombre;
     private double precio;
-
+//    private Instant fecheDeCreacion = Instant.now();
+    
 
 }
