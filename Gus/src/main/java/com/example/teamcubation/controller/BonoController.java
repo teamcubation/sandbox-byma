@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/instrumentos-financieros")
+@RequestMapping("/instrumentos-financieros/bono")
 @Slf4j
 public class BonoController {
 
@@ -26,7 +26,7 @@ public class BonoController {
         this.bonoService = bonoService;
     }
 
-    @PostMapping("/bono")
+    @PostMapping("")
     public ResponseEntity<?> createBono(@RequestBody BonoDTO nuevoBono) throws ModeloInvalidoException, InstrumentoDuplicadoException {
 
         log.info("Instrumento a crear: " + nuevoBono.toString());
@@ -42,7 +42,8 @@ public class BonoController {
 
     }
 
-    @RequestMapping("/bono")
+
+    @RequestMapping("")
     public ResponseEntity<?> listarBonos() {
 
         List<Bono> listaDeBonos = bonoService.getAllBonos();
@@ -57,7 +58,7 @@ public class BonoController {
         return new ResponseEntity<>(res, null, HttpStatus.OK);
     }
 
-    @PutMapping("/bono/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateBono(@PathVariable Long id, @RequestBody BonoDTO bonoDTO) throws InstrumentoNoEncontradoException, ModeloInvalidoException, InstrumentoDuplicadoException {
 
         log.info("PathVariable id=  " + id);
@@ -72,7 +73,7 @@ public class BonoController {
         return new ResponseEntity<>(bonoActualizado, null, HttpStatus.OK);
     }
 
-    @DeleteMapping("/bono/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBono(@PathVariable long id) throws InstrumentoNoEncontradoException {
 
         log.info("PathVariable id=  " + id);

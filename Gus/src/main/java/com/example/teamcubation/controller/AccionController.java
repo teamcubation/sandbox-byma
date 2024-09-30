@@ -8,6 +8,7 @@ import com.example.teamcubation.model.InstrumentoDTO.AccionDTO;
 import com.example.teamcubation.service.AccionService;
 import com.example.teamcubation.util.mappers.AccionMapper;
 import com.example.teamcubation.util.validaciones.ValidatorAccionDTO;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,35 +17,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/instrumentos-financieros")
+@RequestMapping("/instrumentos-financieros/accion")
 @Slf4j
+@AllArgsConstructor
 public class AccionController {
 
     private final AccionService accionService;
 
-    public AccionController(AccionService accionService) {
-        this.accionService = accionService;
-    }
 
-
-    @PostMapping("/accion")
+    //create
+    @PostMapping("")
     public ResponseEntity<?> createAccion(@RequestBody AccionDTO nuevaAccion) throws ModeloInvalidoException, InstrumentoDuplicadoException {
         log.info("Instrumento a crear: " + nuevaAccion.toString());
 
         ValidatorAccionDTO.validarAccionDTO(nuevaAccion);
 
-        Accion nuevo = AccionMapper.toAccion(nuevaAccion);
-        Accion accionCreada = this.accionService.createAccion(nuevo);
+        Accion accionCreada = this.accionService.createAccion(AccionMapper.toAccion(nuevaAccion));
 
-        log.info("Instrumento creado: " + nuevo);
+        log.info("Instrumento creado: " + accionCreada);
 
-        return new ResponseEntity<>(accionCreada, null, HttpStatus.CREATED);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(accionCreada);
 
     }
 
 
     //Read
-    @RequestMapping("/accion")
+    @RequestMapping("")
     public ResponseEntity<?> listarAcciones() {
 
         List<Accion> listaDeAcciones = accionService.getAllAcciones();
@@ -59,7 +58,7 @@ public class AccionController {
     }
 
     //update
-    @PutMapping("/accion/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateAccion(@PathVariable Long id, @RequestBody AccionDTO accionDTO) throws InstrumentoNoEncontradoException, ModeloInvalidoException, InstrumentoDuplicadoException {
 
 
@@ -70,7 +69,7 @@ public class AccionController {
 
         Accion accionPorActualizar = AccionMapper.toAccion(accionDTO);
         accionPorActualizar.setId(id);
-        
+
 
         Accion accionActualizada = this.accionService.updateAccion(accionPorActualizar);
 
@@ -81,7 +80,7 @@ public class AccionController {
 
 
     //delete
-    @DeleteMapping("/accion/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAccion(@PathVariable long id) throws InstrumentoNoEncontradoException {
 
         log.info("PathVariable id=  " + id);

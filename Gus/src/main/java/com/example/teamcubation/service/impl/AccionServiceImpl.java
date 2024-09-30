@@ -60,6 +60,7 @@ public class AccionServiceImpl implements AccionService {
     }
 
 
+    //Validaciones
     private boolean accionEsInexistente(long id) {
         return !this.accionRepository
                 .existsById(id);
