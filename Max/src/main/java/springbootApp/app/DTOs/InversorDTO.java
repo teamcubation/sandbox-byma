@@ -1,5 +1,10 @@
 package  springbootApp.app.DTOs;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class InversorDTO {
 
     private String nombre;
@@ -10,19 +15,4 @@ public class InversorDTO {
         this.dni = dni;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDni() {
-        return dni;
-    }
-
-    public void setDni(String dni) {
-        this.dni = dni;
-    }
 }

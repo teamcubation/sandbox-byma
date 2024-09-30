@@ -12,7 +12,7 @@ public class InstrumentoMapper {
 
         InstrumentoDTO instrumentoDTO = new InstrumentoDTO();
         instrumentoDTO.setNombre(instrumento.getNombre());
-        instrumentoDTO.setTipo(instrumento.getTipo());
+        instrumentoDTO.setTipo(String.valueOf(instrumento.getTipo()));
         instrumentoDTO.setPrecio(instrumento.getPrecio());
         return instrumentoDTO;
     }

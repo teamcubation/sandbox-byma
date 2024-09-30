@@ -63,7 +63,7 @@ public class InstrumentoFinancieroService {
             instrumentoEncontrado.setTipo(instrumento.getTipo());
             if (instrumento.getPrecio() != instrumentoEncontrado.getPrecio()) {
                 instrumentoEncontrado.setPrecio(instrumento.getPrecio());
-                 springbootApp.app.services.ObserverService.notificarCambioDePrecio(instrumentoEncontrado);
+                 ObserverService.notificarCambioDePrecio(instrumentoEncontrado);
             }
             instrumentoFinancieroRepository.save(instrumentoEncontrado);
         }

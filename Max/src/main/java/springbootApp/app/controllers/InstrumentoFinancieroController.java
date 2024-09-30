@@ -1,6 +1,5 @@
 package  springbootApp.app.controllers;
 
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import  springbootApp.app.DTOs.InstrumentoDTO;
 import  springbootApp.app.models.InstrumentoFinanciero;
 import  springbootApp.app.services.InstrumentoFinancieroService;
 
-@Slf4j
 @RestController
 @RequestMapping("/instrumento-Financiero")
 public class InstrumentoFinancieroController {
