@@ -1,4 +1,4 @@
-package com.example.project.controller;
+package com.example.project.controller.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,8 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.project.controller.dto.InversorDTO;
-import com.example.project.exceptions.InversorNoEncontradoException;
-import com.example.project.exceptions.InversorYaRegistradoException;
 import com.example.project.model.Inversor;
 import com.example.project.service.InversorService;
 
@@ -16,11 +14,11 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/inversores")
-public class InversorController {
+public class InversorControllerImpl {
     private final InversorService inversorService;
 
     @Autowired
-    public InversorController(InversorService inversorService) {
+    public InversorControllerImpl(InversorService inversorService) {
         this.inversorService = inversorService;
     }
 

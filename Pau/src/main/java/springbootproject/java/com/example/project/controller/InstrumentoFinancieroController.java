@@ -1,62 +1,40 @@
 package com.example.project.controller;
 
-import com.example.project.controller.dto.InstrumentoFinancieroDTO;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import com.example.project.controller.dto.EditarInstrumentoDTO;
-import com.example.project.exceptions.InstrumentoDuplicadoException;
-import com.example.project.exceptions.InstrumentoNoEncontradoException;
-import com.example.project.exceptions.NoExisteEseTipoDeInstrumentoException;
-import com.example.project.service.InstrumentoFinancieroService;
+import com.example.project.controller.dto.InstrumentoFinancieroDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
-@Slf4j
-@RestController
-@RequestMapping("/instrumentos-financieros")
-public class InstrumentoFinancieroController {
-    private final InstrumentoFinancieroService instrumentoFinancieroService;
+@Tag(name = "InstrumentoFinanciero", description = " InstrumentoFinanciero Api")
+public interface InstrumentoFinancieroController {
 
-    @Autowired
-    public InstrumentoFinancieroController(InstrumentoFinancieroService instrumentoFinancieroService) {
-        this.instrumentoFinancieroService = instrumentoFinancieroService;
-    }
+    @Operation(summary = "Obtener instrumentos financieros", description = "Obtener todos instrumentos financieros que han sido guardados en la base de datos.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Operacion exitosa")})
+    ResponseEntity<?> consultarTodosLosInstrumentosConocidos();
 
-    @RequestMapping("/home")
-    public String home() {
-        return "Hello World";
-    }
+    @Operation(summary = "Obtener instrumento financiero por nombre", description = "Obtener todos instrumentos financieros que han sido guardados en la base de datos.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Operacion exitosa")})
+    ResponseEntity<?> consultarUnInstrumentoFinanciero(@PathVariable String nombre);
+    // TODO: que responda un 404 si no lo encuentra
 
-    @RequestMapping("/")
-    public ResponseEntity<?> consultarTodosLosInstrumentosConocidos() {
-        log.info("Consultando instrumentos financieros");
-        return ResponseEntity.ok(instrumentoFinancieroService.consultarInstrumentosFinancieros());
-    }
+    @Operation(summary = "Crear un instrumento financiero", description = "Crear un instrumento financiero y persistirlo en la base de datos.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Instrumento creado"),
+    @ApiResponse(responseCode = "404", description = "Instrumento no creado, el tipo ingresado no existe"),
+    @ApiResponse(responseCode = "409", description = "Instrumento no creado, ya fue registrado anteriormente")})
+    ResponseEntity<?> crearInstrumento(@RequestBody InstrumentoFinancieroDTO instrumentoFinancieroDTO);
 
-    @RequestMapping("/{nombre}")
-    public ResponseEntity<?> consultarUnInstrumentoFinanciero(@PathVariable("nombre") String nombre) {
-        log.info("Consultando instrumento financiero de nombre {}", nombre);
-        return ResponseEntity.ok(this.instrumentoFinancieroService.buscarInstrumentoPorNombre(nombre));
-    }
+    @Operation(summary = "Eliminar instrumento financiero por nombre", description = "Eliminar instrumento financiero previamente guardado en la base de datos.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "404", description = "Instrumento no eliminado, no existe en el sistema"),
+    @ApiResponse(responseCode = "204", description = "Instrumento eliminado de manera exitosa")})
+    ResponseEntity<?> deleteInstrumento(@PathVariable String nombre);
 
-    @PostMapping("/")
-    public ResponseEntity<?> crearInstrumento(@RequestBody InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws Exception {
-        log.info("Creando instrumento financiero ", instrumentoFinancieroDTO);
-        return ResponseEntity.ok(this.instrumentoFinancieroService.registrarInstrumentoFinanciero(instrumentoFinancieroDTO));
-    }
-
-    @DeleteMapping("/{nombre}")
-    public ResponseEntity<?> deleteInstrumento(@PathVariable("nombre") String nombre) throws Exception{
-        this.instrumentoFinancieroService.eliminarInstrumentoFinanciero(nombre);
-        log.info("Eliminando instrumento financiero " + nombre);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    @PutMapping("/{nombre}")
-    public ResponseEntity<?> editarInstrumento(@RequestBody EditarInstrumentoDTO editarInstrumentoDTO, @PathVariable("nombre") String nombre) throws InstrumentoNoEncontradoException {
-        log.info("Editando instrumento financiero " + nombre);
-        return ResponseEntity.ok(this.instrumentoFinancieroService.editarInstrumentoFinanciero(nombre, editarInstrumentoDTO));
-
-    }
+    @Operation(summary = "Editar instrumento financiero por nombre", description = "Editar instrumento financiero por nombre que previamente fue guardado en la base de datos. Es posible modificar los atributos nombre, precio y fecha de emision")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Instrumento editado exitosamente"),
+    @ApiResponse(responseCode = "404", description = "El instrumento financiero no fue editado, no existe en el sistema")})
+    ResponseEntity<?> editarInstrumento(@RequestBody EditarInstrumentoDTO editarInstrumentoDTO, @PathVariable String nombre);
 }
