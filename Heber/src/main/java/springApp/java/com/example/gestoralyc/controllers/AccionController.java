@@ -1,5 +1,6 @@
 package springApp.java.com.example.gestoralyc.controllers;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,7 @@ import springApp.java.com.example.gestoralyc.exceptions.InstrumentoDuplicadoExce
 import springApp.java.com.example.gestoralyc.exceptions.InvalidInstrumentoDataException;
 import springApp.java.com.example.gestoralyc.mappers.AccionMapper;
 import springApp.java.com.example.gestoralyc.models.AccionModel;
-import springApp.java.com.example.gestoralyc.services.impl.AccionServiceImpl;
+import springApp.java.com.example.gestoralyc.services.AccionService;
 import springApp.java.com.example.gestoralyc.utils.GeneradorCurl;
 
 import java.util.List;
@@ -18,9 +19,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/acciones") // Este es el path base del controller
 @Slf4j
+@AllArgsConstructor
 public class AccionController {
-    @Autowired
-    AccionServiceImpl accionService;
+
+    private final AccionService accionService;
 
     @PostMapping("/")
 
