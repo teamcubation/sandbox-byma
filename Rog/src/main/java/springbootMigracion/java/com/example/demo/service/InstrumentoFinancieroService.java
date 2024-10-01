@@ -7,7 +7,6 @@ import springbootMigracion.java.com.example.demo.dto.InstrumentoDTO;
 import springbootMigracion.java.com.example.demo.exception.InstrumentoDuplicadoException;
 import springbootMigracion.java.com.example.demo.exception.InstrumentoNoEncontradoException;
 import springbootMigracion.java.com.example.demo.exception.InversorNoEncontradoException;
-import springbootMigracion.java.com.example.demo.factory.InstrumentoFinancieroFactory;
 import springbootMigracion.java.com.example.demo.model.InstrumentoFinanciero;
 import springbootMigracion.java.com.example.demo.model.Inversor;
 import springbootMigracion.java.com.example.demo.repository.IInstrumentoFinancieroRepository;
@@ -29,7 +28,7 @@ public class InstrumentoFinancieroService implements IInstrumentoFinancieroServi
     private IInversorRepository inversorRepository;
 
     @Autowired
-    private InstrumentoFinancieroFactory instrumentoFinancieroFactory;
+    private InstrumentoFinancieroFactoryService instrumentoFinancieroFactory;
 
     @Override
     public InstrumentoFinanciero registrarInstrumento(InstrumentoDTO instrumentoDTO) throws Exception {

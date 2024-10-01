@@ -1,4 +1,4 @@
-package springbootMigracion.java.com.example.demo.factory;
+package springbootMigracion.java.com.example.demo.service;
 
 import org.springframework.stereotype.Service;
 import springbootMigracion.java.com.example.demo.dto.InstrumentoDTO;
@@ -7,7 +7,7 @@ import springbootMigracion.java.com.example.demo.model.Bono;
 import springbootMigracion.java.com.example.demo.model.InstrumentoFinanciero;
 
 @Service
-public class InstrumentoFinancieroFactory {
+public class InstrumentoFinancieroFactoryService {
     public InstrumentoFinanciero crearInstrumento(InstrumentoDTO instrumentoDTO) {
         if (instrumentoDTO == null) {
             throw new IllegalArgumentException("El InstrumentoDTO no puede ser nulo.");
