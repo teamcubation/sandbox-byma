@@ -5,6 +5,7 @@ import com.example.teamcubation.exceptions.InstrumentoNoEncontradoException;
 import com.example.teamcubation.model.Bono;
 import com.example.teamcubation.repository.interfaces.BonoRepository;
 import com.example.teamcubation.service.BonoService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,14 +16,20 @@ public class BonoServiceImpl implements BonoService {
 
     private final BonoRepository bonoRepository;
 
-    public BonoServiceImpl(BonoRepository bonoRepository) {
+
+    private final AccionServiceImpl accionService;
+
+
+    public BonoServiceImpl(BonoRepository bonoRepository, @Lazy AccionServiceImpl accionService) {
         this.bonoRepository = bonoRepository;
+        this.accionService = accionService;
     }
+
 
     @Override
     public Bono createBono(Bono nuevoBono) throws InstrumentoDuplicadoException {
 
-        if (this.bonoEsDuplicado(nuevoBono.getNombre())) {
+        if (this.instrumentoEsDuplicado(nuevoBono.getNombre())) {
             throw new InstrumentoDuplicadoException("Error: Ya existe un bono con ese nombre!!!");
         }
         return this.bonoRepository.save(nuevoBono);
@@ -40,7 +47,7 @@ public class BonoServiceImpl implements BonoService {
             throw new InstrumentoNoEncontradoException("Error: El bono no existe");
         }
 
-        if (this.bonoEsDuplicado(bonoActualizado.getNombre())) {
+        if (this.instrumentoEsDuplicado(bonoActualizado.getNombre())) {
             throw new InstrumentoDuplicadoException("Error: Ya existe un bono con ese nombre");
         }
 
@@ -64,10 +71,20 @@ public class BonoServiceImpl implements BonoService {
                 .existsById(id);
     }
 
-    private boolean bonoEsDuplicado(String nombre) {
+    private boolean instrumentoEsDuplicado(String nombre) {
+        return bonoEsDuplicado(nombre) || accionEsDuplicado(nombre);
+    }
+
+    public boolean bonoEsDuplicado(String nombre) {
         return this.bonoRepository
                 .findAll()
                 .stream()
-                .anyMatch(bono -> bono.getNombre().equalsIgnoreCase(nombre));
+                .anyMatch(bono -> bono.getNombre().equalsIgnoreCase(nombre)) || this.accionService.accionEsDuplicado(nombre);
+    }
+
+    private boolean accionEsDuplicado(String nombre) {
+        return accionService.getAllAcciones()
+                .stream()
+                .anyMatch(accion -> accion.getNombre().equalsIgnoreCase(nombre));
     }
 }

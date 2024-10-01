@@ -3,84 +3,55 @@ package com.example.teamcubation.controller;
 import com.example.teamcubation.exceptions.InstrumentoDuplicadoException;
 import com.example.teamcubation.exceptions.InstrumentoNoEncontradoException;
 import com.example.teamcubation.exceptions.ModeloInvalidoException;
-import com.example.teamcubation.model.Bono;
 import com.example.teamcubation.model.InstrumentoDTO.BonoDTO;
-import com.example.teamcubation.service.BonoService;
-import com.example.teamcubation.util.mappers.BonoMapper;
-import com.example.teamcubation.util.validaciones.ValidatorBonoDTO;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-@RestController
-@RequestMapping("/instrumentos-financieros/bono")
-@Slf4j
-public class BonoController {
-
-    private final BonoService bonoService;
-
-    public BonoController(BonoService bonoService) {
-        this.bonoService = bonoService;
-    }
-
-    @PostMapping("")
-    public ResponseEntity<?> createBono(@RequestBody BonoDTO nuevoBono) throws ModeloInvalidoException, InstrumentoDuplicadoException {
-
-        log.info("Instrumento a crear: " + nuevoBono.toString());
-
-        ValidatorBonoDTO.validarBonoDTO(nuevoBono);
-
-        Bono nuevo = BonoMapper.toBono(nuevoBono);
-
-        Bono bonoCreado = this.bonoService.createBono(nuevo);
-
-        log.info("Instrumento creado: " + bonoCreado);
-        return new ResponseEntity<>(bonoCreado, null, HttpStatus.CREATED);
-
-    }
 
 
-    @RequestMapping("")
-    public ResponseEntity<?> listarBonos() {
+@Tag(name = BonoController.TAG_BONOS, description = BonoController.TAG_BONOS_DESC)
+public interface BonoController {
 
-        List<Bono> listaDeBonos = bonoService.getAllBonos();
 
-        List<BonoDTO> res = listaDeBonos
-                .stream()
-                .map(BonoMapper::toBonoDTO)
-                .toList();
+    // Constantes para las descripciones
+    String TAG_BONOS = "Bonos";
+    String TAG_BONOS_DESC = "Operaciones relacionadas con los bonos financieros";
 
-        log.info(res.toString());
 
-        return new ResponseEntity<>(res, null, HttpStatus.OK);
-    }
+    String CREAR_BONO_SUMMARY = "Crear un nuevo Bono";
+    String CREAR_BONO_DESC = "Este endpoint permite crear un nuevo bono en el sistema.";
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateBono(@PathVariable Long id, @RequestBody BonoDTO bonoDTO) throws InstrumentoNoEncontradoException, ModeloInvalidoException, InstrumentoDuplicadoException {
+    String LISTAR_BONOS_SUMMARY = "Listar todos los Bonos";
+    String LISTAR_BONOS_DESC = "Este endpoint devuelve una lista de todos los bonos registrados en el sistema.";
 
-        log.info("PathVariable id=  " + id);
-        log.info(bonoDTO.toString());
+    String ACTUALIZAR_BONO_SUMMARY = "Actualizar un Bono existente";
+    String ACTUALIZAR_BONO_DESC = "Este endpoint permite actualizar la información de un bono existente dado su ID.";
 
-        ValidatorBonoDTO.validarBonoDTO(bonoDTO);
+    String ELIMINAR_BONO_SUMMARY = "Eliminar un Bono";
+    String ELIMINAR_BONO_DESC = "Este endpoint permite eliminar un bono del sistema dado su ID.";
 
-        Bono bonoPorActualizar = BonoMapper.toBono(bonoDTO);
-        bonoPorActualizar.setId(id);
-        Bono bonoActualizado = this.bonoService.updateBono(bonoPorActualizar);
-        log.info("Instrumento actualizado: " + bonoActualizado.toString());
-        return new ResponseEntity<>(bonoActualizado, null, HttpStatus.OK);
-    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBono(@PathVariable long id) throws InstrumentoNoEncontradoException {
+    @Operation(
+            summary = CREAR_BONO_SUMMARY,
+            description = CREAR_BONO_DESC
+    )
+    ResponseEntity<?> createBono(BonoDTO nuevoBono) throws ModeloInvalidoException, InstrumentoDuplicadoException;
 
-        log.info("PathVariable id=  " + id);
-        this.bonoService.deleteBono(id);
+    @Operation(
+            summary = LISTAR_BONOS_SUMMARY,
+            description = LISTAR_BONOS_DESC
+    )
+    ResponseEntity<?> listarBonos();
 
-        log.info("Instrumento eliminado: " + id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+    @Operation(
+            summary = ACTUALIZAR_BONO_SUMMARY,
+            description = ACTUALIZAR_BONO_DESC
+    )
+    ResponseEntity<?> updateBono(Long id, BonoDTO bonoDTO) throws InstrumentoNoEncontradoException, ModeloInvalidoException, InstrumentoDuplicadoException;
 
+    @Operation(
+            summary = ELIMINAR_BONO_SUMMARY,
+            description = ELIMINAR_BONO_DESC
+    )
+    ResponseEntity<?> deleteBono(long id) throws InstrumentoNoEncontradoException;
 }

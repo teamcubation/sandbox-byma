@@ -3,92 +3,54 @@ package com.example.teamcubation.controller;
 import com.example.teamcubation.exceptions.InstrumentoDuplicadoException;
 import com.example.teamcubation.exceptions.InstrumentoNoEncontradoException;
 import com.example.teamcubation.exceptions.ModeloInvalidoException;
-import com.example.teamcubation.model.Accion;
 import com.example.teamcubation.model.InstrumentoDTO.AccionDTO;
-import com.example.teamcubation.service.AccionService;
-import com.example.teamcubation.util.mappers.AccionMapper;
-import com.example.teamcubation.util.validaciones.ValidatorAccionDTO;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-@RestController
-@RequestMapping("/instrumentos-financieros/accion")
-@Slf4j
-@AllArgsConstructor
-public class AccionController {
-
-    private final AccionService accionService;
 
 
-    //create
-    @PostMapping("")
-    public ResponseEntity<?> createAccion(@RequestBody AccionDTO nuevaAccion) throws ModeloInvalidoException, InstrumentoDuplicadoException {
-        log.info("Instrumento a crear: " + nuevaAccion.toString());
+@Tag(name = AccionController.TAG_ACCIONES, description = "Operaciones relacionadas con las acciones financieras")
+public interface AccionController {
+    // Constantes
+    String TAG_ACCIONES = "Acciones";
+    String CREAR_ACCION_SUMMARY = "Crear una nueva acción";
+    String CREAR_ACCION_DESC = "Crea una nueva acción y la almacena en el sistema.";
+    String LISTAR_ACCIONES_SUMMARY = "Listar todas las acciones";
+    String LISTAR_ACCIONES_DESC = "Obtiene una lista de todas las acciones disponibles en el sistema.";
+    String ACTUALIZAR_ACCION_SUMMARY = "Actualizar una acción por ID";
+    String ACTUALIZAR_ACCION_DESC = "Actualiza los detalles de una acción existente.";
+    String ELIMINAR_ACCION_SUMMARY = "Eliminar una acción por ID";
+    String ELIMINAR_ACCION_DESC = "Elimina una acción existente del sistema.";
+    String DATOS_NUEVA_ACCION_DESC = "Datos de la nueva acción";
+    String DATOS_ACTUALIZADOS_DESC = "Datos actualizados de la acción";
 
-        ValidatorAccionDTO.validarAccionDTO(nuevaAccion);
-
-        Accion accionCreada = this.accionService.createAccion(AccionMapper.toAccion(nuevaAccion));
-
-        log.info("Instrumento creado: " + accionCreada);
-
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(accionCreada);
-
-    }
-
-
-    //Read
-    @RequestMapping("")
-    public ResponseEntity<?> listarAcciones() {
-
-        List<Accion> listaDeAcciones = accionService.getAllAcciones();
-
-        List<AccionDTO> res = listaDeAcciones
-                .stream()
-                .map(AccionMapper::toAccionDTO)
-                .toList();
-
-        log.info(res.toString());
-        return new ResponseEntity<>(res, null, HttpStatus.OK);
-    }
-
-    //update
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateAccion(@PathVariable Long id, @RequestBody AccionDTO accionDTO) throws InstrumentoNoEncontradoException, ModeloInvalidoException, InstrumentoDuplicadoException {
+    // Media types
+    String MEDIA_TYPE_JSON = "application/json";
 
 
-        ValidatorAccionDTO.validarAccionDTO(accionDTO);
-
-        log.info("PathVariable id=  " + id);
-        log.info(accionDTO.toString());
-
-        Accion accionPorActualizar = AccionMapper.toAccion(accionDTO);
-        accionPorActualizar.setId(id);
+    @Operation(
+            summary = CREAR_ACCION_SUMMARY,
+            description = CREAR_ACCION_DESC
+    )
+    ResponseEntity<?> createAccion(AccionDTO nuevaAccion) throws ModeloInvalidoException, InstrumentoDuplicadoException;
 
 
-        Accion accionActualizada = this.accionService.updateAccion(accionPorActualizar);
+    @Operation(
+            summary = LISTAR_ACCIONES_SUMMARY,
+            description = LISTAR_ACCIONES_DESC
+    )
+    ResponseEntity<?> listarAcciones();
 
-        log.info("Instrumento actualizado: " + accionActualizada.toString());
-        return new ResponseEntity<>(accionActualizada, null, HttpStatus.OK);
+    @Operation(
+            summary = ACTUALIZAR_ACCION_SUMMARY,
+            description = ACTUALIZAR_ACCION_DESC
+    )
+    ResponseEntity<?> updateAccion(Long id, AccionDTO accionDTO) throws InstrumentoNoEncontradoException, ModeloInvalidoException, InstrumentoDuplicadoException;
 
-    }
 
-
-    //delete
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAccion(@PathVariable long id) throws InstrumentoNoEncontradoException {
-
-        log.info("PathVariable id=  " + id);
-        this.accionService.deleteAccion(id);
-
-        log.info("Instrumento eliminado: " + id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
-    }
-
+    @Operation(
+            summary = ELIMINAR_ACCION_SUMMARY,
+            description = ELIMINAR_ACCION_DESC
+    )
+    ResponseEntity<?> deleteAccion(long id) throws InstrumentoNoEncontradoException;
 }
