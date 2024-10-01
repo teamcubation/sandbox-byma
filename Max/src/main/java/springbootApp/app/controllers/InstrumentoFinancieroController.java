@@ -24,6 +24,8 @@ public class InstrumentoFinancieroController {
     public ResponseEntity<?> registrar(@RequestBody InstrumentoDTO instrumentoDTO) throws Exception{
             log.info("registrando instrumento...");
             InstrumentoFinanciero instrumento = InstrumentoMapper.instrumentoDTOToInstrumento(instrumentoDTO);
+            if (instrumento == null)
+                throw new NullPointerException("Error. El instrumento no puede ser nulo");
             instrumentoFinancieroService.registrarInstrumentoFinanciero(instrumento);
             log.info("nuevo instrumento creado, de tipo: " + instrumentoDTO.getTipo() + " con nombre: " + instrumentoDTO.getNombre() + " y precio: " + instrumentoDTO.getPrecio());
             return new ResponseEntity<InstrumentoDTO>(instrumentoDTO, HttpStatus.CREATED);

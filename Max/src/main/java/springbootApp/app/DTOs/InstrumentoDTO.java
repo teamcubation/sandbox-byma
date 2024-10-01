@@ -16,6 +16,7 @@ public class InstrumentoDTO {
         if (tipo == null) {
             throw new NullPointerException("Error. El tipo no puede ser nulo");
         }
+        tipo = tipo.toUpperCase();
         switch (tipo) {
             case "ACCION":
                 this.tipo = Tipo.ACCION;
