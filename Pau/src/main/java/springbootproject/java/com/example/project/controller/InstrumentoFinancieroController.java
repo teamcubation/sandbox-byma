@@ -41,42 +41,22 @@ public class InstrumentoFinancieroController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> crearInstrumento(@RequestBody InstrumentoFinancieroDTO instrumentoFinancieroDTO) {
-        try {
-            log.info("Creando instrumento financiero ",instrumentoFinancieroDTO);
-            return ResponseEntity.ok(this.instrumentoFinancieroService.registrarInstrumentoFinanciero(instrumentoFinancieroDTO));
-        } catch (NoExisteEseTipoDeInstrumentoException | InstrumentoNoEncontradoException e) {
-            log.error(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (InstrumentoDuplicadoException e) {
-            log.error(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<?> crearInstrumento(@RequestBody InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws Exception {
+        log.info("Creando instrumento financiero ", instrumentoFinancieroDTO);
+        return ResponseEntity.ok(this.instrumentoFinancieroService.registrarInstrumentoFinanciero(instrumentoFinancieroDTO));
     }
 
     @DeleteMapping("/{nombre}")
-    public ResponseEntity<?> deleteInstrumento(@PathVariable("nombre") String nombre) {
-        try {
-            this.instrumentoFinancieroService.eliminarInstrumentoFinanciero(nombre);
-            log.info("Eliminando instrumento financiero " + nombre);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch (InstrumentoNoEncontradoException e) {
-            log.error(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> deleteInstrumento(@PathVariable("nombre") String nombre) throws Exception{
+        this.instrumentoFinancieroService.eliminarInstrumentoFinanciero(nombre);
+        log.info("Eliminando instrumento financiero " + nombre);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/{nombre}")
-    public ResponseEntity<?> editarInstrumento(@RequestBody EditarInstrumentoDTO editarInstrumentoDTO, @PathVariable("nombre") String nombre) {
-        try {
-            log.info("Editando instrumento financiero " + nombre);
-            return ResponseEntity.ok(this.instrumentoFinancieroService.editarInstrumentoFinanciero(nombre, editarInstrumentoDTO));
-        } catch (InstrumentoNoEncontradoException e) {
-            log.error(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> editarInstrumento(@RequestBody EditarInstrumentoDTO editarInstrumentoDTO, @PathVariable("nombre") String nombre) throws InstrumentoNoEncontradoException {
+        log.info("Editando instrumento financiero " + nombre);
+        return ResponseEntity.ok(this.instrumentoFinancieroService.editarInstrumentoFinanciero(nombre, editarInstrumentoDTO));
+
     }
 }

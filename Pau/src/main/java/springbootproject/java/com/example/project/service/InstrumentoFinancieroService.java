@@ -24,7 +24,7 @@ public class InstrumentoFinancieroService {
         this.instrumentosFinancierosRepository = instrumentosFinancierosRepository;
     }
 
-    public InstrumentoFinanciero registrarInstrumentoFinanciero(InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws InstrumentoDuplicadoException, NoExisteEseTipoDeInstrumentoException, InstrumentoNoEncontradoException {
+    public InstrumentoFinanciero registrarInstrumentoFinanciero(InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws InstrumentoDuplicadoException, NoExisteEseTipoDeInstrumentoException{
         InstrumentoFinanciero instrumentoFinanciero = this.buscarInstrumentoPorNombre(instrumentoFinancieroDTO.getNombre());
         if (instrumentoFinanciero != null) {
             throw new InstrumentoDuplicadoException("No se puede registrar el instrumento debido a que este ya fue registrado en el sistema con anterioridad.");
@@ -76,50 +76,4 @@ public class InstrumentoFinancieroService {
         }
         return this.instrumentosFinancierosRepository.save(instrumentoFinanciero);
     }
-
-
-//    public List<InstrumentoFinanciero> consultarInstrumentosFinancieros() {
-//        return instrumentosFinancierosRepository.consultarInstrumentosFinancieros();
-//    }
-//
-//    public InstrumentoFinanciero consultarPorUnInstrumentoFinanciero(String nombre) throws InstrumentoNoEncontradoException {
-//        InstrumentoFinanciero instrumentoFinanciero = this.instrumentosFinancierosRepository.consultarPorUnInstrumentoFinanciero(nombre);
-//        if (instrumentoFinanciero == null) {
-//            throw new InstrumentoNoEncontradoException("El instrumento con nombre " + nombre + " no fue encontrado.");
-//        }
-//        return instrumentoFinanciero;
-//    }
-//
-//    public void eliminarInstrumentoFinanciero(String nombre) throws InstrumentoNoEncontradoException {
-//        this.instrumentosFinancierosRepository.eliminarInstrumentoFinanciero(nombre);
-//    }
-//
-//    public InstrumentoFinanciero registrarInstrumentoFinanciero(InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws InstrumentoDuplicadoException, NoExisteEseTipoDeInstrumentoException, InstrumentoNoEncontradoException {
-//        InstrumentoFinanciero instrumentoFinanciero = this.instrumentosFinancierosRepository.consultarPorUnInstrumentoFinanciero(instrumentoFinancieroDTO.getNombre());
-//        if(instrumentoFinanciero != null) {
-//            throw new InstrumentoDuplicadoException("No se puede registrar el instrumento debido a que este ya fue registrado en el sistema con anterioridad.");
-//        }
-//
-//        switch (instrumentoFinancieroDTO.getTipoInstrumentoFinanciero()) {
-//            case BONO:
-//                BonoFactory bonoFactory = new BonoFactory();
-//                instrumentoFinanciero = bonoFactory.createInstrumentoFinanciero(instrumentoFinancieroDTO.getNombre(), instrumentoFinancieroDTO.getPrecio(), instrumentoFinancieroDTO.getFechaDeEmision());
-//                break;
-//            case ACCION:
-//                AccionFactory accionFactory = new AccionFactory();
-//                instrumentoFinanciero = accionFactory.createInstrumentoFinanciero(instrumentoFinancieroDTO.getNombre(), instrumentoFinancieroDTO.getPrecio(), instrumentoFinancieroDTO.getFechaDeEmision());
-//                break;
-//            default:
-//                throw new NoExisteEseTipoDeInstrumentoException("El tipo ingresado no corresponde a un tipo de instrumento conocido.");
-//        }
-//        return this.instrumentosFinancierosRepository.crearInstrumentoFinanciero(instrumentoFinanciero);
-//    }
-//
-//    public InstrumentoFinanciero editarInstrumentoFinanciero(String nombreActual, EditarInstrumentoDTO editarInstrumentoDTO) throws InstrumentoNoEncontradoException {
-//        InstrumentoFinanciero instrumentoFinanciero = this.instrumentosFinancierosRepository.consultarPorUnInstrumentoFinanciero(nombreActual);
-//        if (instrumentoFinanciero == null) {
-//            throw new InstrumentoNoEncontradoException("El instrumento con nombre " + nombreActual + " no fue encontrado.");
-//        }
-//        return this.instrumentosFinancierosRepository.editarInstrumentoFinanciero(nombreActual, editarInstrumentoDTO.getNuevoNombre(), editarInstrumentoDTO.getNuevoPrecio(),editarInstrumentoDTO.getNuevaFechaDeEmision());
-//    }
 }
