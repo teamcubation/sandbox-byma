@@ -1,6 +1,6 @@
 package  springbootApp.app.controllers.mappers;
 
-import  springbootApp.app.DTOs.InversorDTO;
+import springbootApp.app.controllers.DTOs.InversorDTO;
 import  springbootApp.app.models.Inversor;
 
 public class InversorMapper {

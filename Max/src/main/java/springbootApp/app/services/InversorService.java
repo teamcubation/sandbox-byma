@@ -4,7 +4,6 @@ package  springbootApp.app.services;
 import springbootApp.app.utils.Validaciones;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import  springbootApp.app.exceptions.InstrumentoDuplicadoException;
 import  springbootApp.app.exceptions.InversorExistenteException;
 import  springbootApp.app.exceptions.InversorNoEncontradoException;
 import  springbootApp.app.models.InstrumentoFinanciero;

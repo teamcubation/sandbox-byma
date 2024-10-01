@@ -1,6 +1,6 @@
 package  springbootApp.app.controllers.mappers;
 
-import  springbootApp.app.DTOs.InstrumentoDTO;
+import springbootApp.app.controllers.DTOs.InstrumentoDTO;
 import  springbootApp.app.models.Accion;
 import  springbootApp.app.models.Bono;
 import  springbootApp.app.models.InstrumentoFinanciero;

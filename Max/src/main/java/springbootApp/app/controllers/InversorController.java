@@ -5,8 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springbootApp.app.apis.InversorApi;
 import springbootApp.app.controllers.mappers.InversorMapper;
-import springbootApp.app.DTOs.InversorDTO;
+import springbootApp.app.controllers.DTOs.InversorDTO;
 import springbootApp.app.models.Inversor;
 import springbootApp.app.services.InversorService;
 import springbootApp.app.services.ObserverService;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/inversor")
-public class InversorController {
+public class InversorController implements InversorApi {
 
     private static final Logger log = LoggerFactory.getLogger(InversorController.class);
     @Autowired
@@ -32,7 +33,7 @@ public class InversorController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<?>> obtenerTodos() throws Exception {
+    public ResponseEntity<List<?>> obtenerTodos() {
         log.info("intentando obtener inversores...");
         return ResponseEntity.ok(inversorService.consultarTodosLosInversores());
     }
@@ -66,7 +67,7 @@ public class InversorController {
     }
 
     @PutMapping("/subscribirse/{id}/{idInstrumento}")
-    public ResponseEntity<?> suscribirse(@PathVariable Long id, @PathVariable Long idInstrumento) throws Exception {
+    public ResponseEntity<?> suscribir(@PathVariable Long id, @PathVariable Long idInstrumento) throws Exception {
         log.info("intentando suscribirse...");
         observerService.metodoParaSuscribirse(id, idInstrumento);
         log.info("Suscripción exitosa");
@@ -74,7 +75,7 @@ public class InversorController {
     }
 
     @PutMapping("/desubscribirse/{id}/{idInstrumento}")
-    public ResponseEntity<?> desubscribirse(@PathVariable Long id, @PathVariable Long idInstrumento) throws Exception {
+    public ResponseEntity<?> desuscribir(@PathVariable Long id, @PathVariable Long idInstrumento) throws Exception {
         log.info("intentando desuscribirse...");
         observerService.metodoParaDesuscribirse(id, idInstrumento);
         log.info("Desubscripción exitosa");

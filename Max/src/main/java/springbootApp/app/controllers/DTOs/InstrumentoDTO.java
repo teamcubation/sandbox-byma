@@ -1,4 +1,4 @@
-package  springbootApp.app.DTOs;
+package springbootApp.app.controllers.DTOs;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -6,14 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springbootApp.app.apis.InstrumentoFinancieroApi;
 import  springbootApp.app.controllers.mappers.InstrumentoMapper;
-import  springbootApp.app.DTOs.InstrumentoDTO;
+import springbootApp.app.controllers.DTOs.InstrumentoDTO;
 import  springbootApp.app.models.InstrumentoFinanciero;
 import  springbootApp.app.services.InstrumentoFinancieroService;
 
 @RestController
 @RequestMapping("/instrumento-Financiero")
-public class InstrumentoFinancieroController {
+public class InstrumentoFinancieroController implements InstrumentoFinancieroApi {
 
     private static final Logger log = LoggerFactory.getLogger(InstrumentoFinancieroController.class);
     @Autowired

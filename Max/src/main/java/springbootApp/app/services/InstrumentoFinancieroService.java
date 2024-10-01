@@ -1,7 +1,5 @@
 package springbootApp.app.services;
 
-
-import springbootApp.app.utils.Validaciones;
 import org.springframework.beans.factory.annotation.Autowired;
 import  springbootApp.app.exceptions.InstrumentoNoEncontradoException;
 import  springbootApp.app.models.InstrumentoFinanciero;
