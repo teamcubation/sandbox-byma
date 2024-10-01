@@ -4,7 +4,6 @@ import com.example.proyectoSpringBoot.dto.InstrumentoFinancieroDTO;
 import com.example.proyectoSpringBoot.excepciones.customExcepcions.InstrumentoDuplicadoException;
 import com.example.proyectoSpringBoot.excepciones.customExcepcions.InstrumentoNoEncontradoException;
 import com.example.proyectoSpringBoot.excepciones.customExcepcions.OpcionInvalidaException;
-import com.example.proyectoSpringBoot.model.InstrumentoFinanciero;
 
 import java.util.List;
 

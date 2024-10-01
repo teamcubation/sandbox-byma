@@ -4,7 +4,7 @@ import com.example.proyectoSpringBoot.excepciones.customExcepcions.OpcionInvalid
 import com.example.proyectoSpringBoot.model.Accion;
 import com.example.proyectoSpringBoot.model.Bono;
 import com.example.proyectoSpringBoot.model.InstrumentoFinanciero;
-import com.example.proyectoSpringBoot.model.factory.enums.TiposInstrumentosFinancieros;
+import com.example.proyectoSpringBoot.dto.enums.TiposInstrumentosFinancieros;
 
 public class InstrumentoFinancieroMapper {
 
