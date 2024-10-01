@@ -1,10 +1,9 @@
 package com.example.project.exceptions;
 
 public class InstrumentoDuplicadoException extends Exception {
-    public InstrumentoDuplicadoException() {
-        super();
-    }
+    private static final String DESCRIPTION = "Instrumento duplicado exception. ";
+
     public InstrumentoDuplicadoException(String message) {
-        super(message);
+        super(DESCRIPTION + message);
     }
 }
