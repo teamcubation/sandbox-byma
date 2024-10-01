@@ -50,11 +50,23 @@ public class BonoServiceImpl implements BonoService {
 
     @Override
     public BonoModel editarBono(Long id, BonoModel bonoModel) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
-        BonoModel bono = bonoRepository.findById(id).orElseThrow(() -> new InstrumentoNoEncontradoException("El bono con id " + id + " no fue encontrado"));
-        if (bonoRepository.existsByNombreIgnoreCase(bonoModel.getNombre()) && !bono.getNombre().equalsIgnoreCase(bonoModel.getNombre())) {
+        // Busca el bono existente por el ID
+        BonoModel bonoExistente = bonoRepository.findById(id)
+                .orElseThrow(() -> new InstrumentoNoEncontradoException("El bono con id " + id + " no fue encontrado"));
+
+        // Verifica si hay un bono con el mismo nombre, pero que no sea el bono actual
+        if (bonoRepository.existsByNombreIgnoreCase(bonoModel.getNombre()) &&
+                !bonoModel.getNombre().equalsIgnoreCase(bonoExistente.getNombre())) {
             throw new InstrumentoDuplicadoException("El bono con nombre " + bonoModel.getNombre() + " ya existe");
         }
-        return bonoRepository.save(bono);
+
+        // Actualiza los campos del bono existente con los nuevos valores
+        bonoExistente.setNombre(bonoModel.getNombre());
+        bonoExistente.setPrecio(bonoModel.getPrecio());
+        bonoExistente.setTasaInteres(bonoModel.getTasaInteres());
+
+        // Guarda el bono actualizado
+        return bonoRepository.save(bonoExistente);
     }
 
 

@@ -52,11 +52,24 @@ public class AccionServiceImpl implements AccionService {
 
     @Override
     public AccionModel editarAccion(Long id, AccionModel accionModel) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
-        AccionModel accion = accionRepository.findById(id).orElseThrow(() -> new InstrumentoNoEncontradoException("La acción con id " + id + " no fue encontrada"));
-        if (accionRepository.existsByNombreIgnoreCase(accionModel.getNombre()) && !accion.getNombre().equalsIgnoreCase(accionModel.getNombre())) {
+        // Busca la acción existente por el ID
+        AccionModel accionExistente = accionRepository.findById(id)
+                .orElseThrow(() -> new InstrumentoNoEncontradoException("La acción con id " + id + " no fue encontrada"));
+
+        // Verifica si hay una acción con el mismo nombre, pero que no sea la actual
+        if (accionRepository.existsByNombreIgnoreCase(accionModel.getNombre()) &&
+                !accionModel.getNombre().equalsIgnoreCase(accionExistente.getNombre())) {
             throw new InstrumentoDuplicadoException("La acción con nombre " + accionModel.getNombre() + " ya existe");
         }
-        return accionRepository.save(accion);
+
+        // Actualiza los campos de la acción existente con los nuevos valores
+        accionExistente.setNombre(accionModel.getNombre());
+        accionExistente.setPrecio(accionModel.getPrecio());
+        accionExistente.setDividendo(accionModel.getDividendo());  // Actualiza cualquier campo específico de la acción
+
+        // Guarda la acción actualizada
+        return accionRepository.save(accionExistente);
     }
+
 
 }
