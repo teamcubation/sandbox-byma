@@ -4,8 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import springApp.java.com.example.gestoralyc.models.BonoModel;
 
 public interface BonoRepository extends JpaRepository<BonoModel, Long> {
-
-
-    boolean existsByNombre(String nombre);
     boolean existsByNombreIgnoreCase(String nombre);
 }

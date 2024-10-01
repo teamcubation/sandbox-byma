@@ -45,10 +45,10 @@ public class BonoMapper {
         if (dto.getTasaInteres() == null) {
             throw new InvalidInstrumentoDataException("El campo 'tasaInteres' es requerido para un bono.");
         }
-        if(dto.getNombre() == null || dto.getNombre().isEmpty()) {
+        if (dto.getNombre() == null || dto.getNombre().isEmpty()) {
             throw new InvalidInstrumentoDataException("El campo 'nombre' es requerido para un bono.");
         }
-        if(dto.getPrecio() == 0 || dto.getPrecio() == null) {
+        if (dto.getPrecio() == 0 || dto.getPrecio() == null) {
             throw new InvalidInstrumentoDataException("El campo 'precio' es requerido para un bono.");
         }
     }
