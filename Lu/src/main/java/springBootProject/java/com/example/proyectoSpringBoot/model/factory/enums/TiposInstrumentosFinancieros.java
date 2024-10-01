@@ -1,4 +1,4 @@
-package com.example.proyectoSpringBoot.service.factory.enums;
+package com.example.proyectoSpringBoot.model.factory.enums;
 
 
 import com.example.proyectoSpringBoot.excepciones.customExcepcions.OpcionInvalidaException;

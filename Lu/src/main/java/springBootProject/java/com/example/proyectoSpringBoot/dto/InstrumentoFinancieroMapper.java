@@ -1,24 +1,35 @@
 package com.example.proyectoSpringBoot.dto;
 
 import com.example.proyectoSpringBoot.excepciones.customExcepcions.OpcionInvalidaException;
+import com.example.proyectoSpringBoot.model.Accion;
+import com.example.proyectoSpringBoot.model.Bono;
 import com.example.proyectoSpringBoot.model.InstrumentoFinanciero;
-import com.example.proyectoSpringBoot.service.factory.InstrumentoFinancieroFactory;
+import com.example.proyectoSpringBoot.model.factory.enums.TiposInstrumentosFinancieros;
 
 public class InstrumentoFinancieroMapper {
 
     public static InstrumentoFinanciero toModel(InstrumentoFinancieroDTO dto) throws OpcionInvalidaException {
-        InstrumentoFinanciero instrumentoFinancieroModel = InstrumentoFinancieroFactory.crearInstrumentoFinanciero(dto.getTipo());
-        instrumentoFinancieroModel.setNombre(dto.getNombre());
-        instrumentoFinancieroModel.setPrecio(dto.getPrecio());
-        instrumentoFinancieroModel.setTipo(dto.getTipo());
-        return instrumentoFinancieroModel;
+        TiposInstrumentosFinancieros tipoInstrumentoFinanciero = TiposInstrumentosFinancieros.opcionSeleccionada(dto.getTipo());
+
+        return switch (tipoInstrumentoFinanciero) {
+            case BONO -> Bono.builder()
+                    .nombre(dto.getNombre())
+                    .precio(dto.getPrecio())
+                    .tipo(dto.getTipo())
+                    .build();
+            case ACCION -> Accion.builder()
+                    .nombre(dto.getNombre())
+                    .precio(dto.getPrecio())
+                    .tipo(dto.getTipo())
+                    .build();
+        };
     }
 
     public static InstrumentoFinancieroDTO toDTO(InstrumentoFinanciero instrumentoFinancieroModel) {
-        InstrumentoFinancieroDTO dto = new InstrumentoFinancieroDTO();
-        dto.setNombre(instrumentoFinancieroModel.getNombre());
-        dto.setPrecio(instrumentoFinancieroModel.getPrecio());
-        dto.setTipo(instrumentoFinancieroModel.getTipo());
-        return dto;
+        return InstrumentoFinancieroDTO.builder()
+                .nombre(instrumentoFinancieroModel.getNombre())
+                .precio(instrumentoFinancieroModel.getPrecio())
+                .tipo(instrumentoFinancieroModel.getTipo())
+                .build();
     }
 }

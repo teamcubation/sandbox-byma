@@ -26,4 +26,11 @@ public class GlobalExceptionHandler {
     public ExcepcionMessage notFoundExcepcion(HttpServletRequest request, Exception duplicateExcepcion) {
         return new ExcepcionMessage(request.getRequestURI(), duplicateExcepcion);
     }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler({ Exception.class  })
+    @ResponseBody
+    public ExcepcionMessage unexpectedHandler(HttpServletRequest request, Exception exception) {
+        return new ExcepcionMessage(request.getRequestURI(), exception);
+    }
 }

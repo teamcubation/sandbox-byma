@@ -1,4 +1,4 @@
-package com.example.proyectoSpringBoot.service.observer;
+package com.example.proyectoSpringBoot.observer;
 
 import com.example.proyectoSpringBoot.model.InstrumentoFinanciero;
 
