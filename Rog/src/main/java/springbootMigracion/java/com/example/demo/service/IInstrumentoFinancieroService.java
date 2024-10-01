@@ -1,15 +1,16 @@
 package springbootMigracion.java.com.example.demo.service;
 
+import springbootMigracion.java.com.example.demo.dto.InstrumentoDTO;
 import springbootMigracion.java.com.example.demo.model.InstrumentoFinanciero;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IInstrumentoFinancieroService {
-    void registrarInstrumento(InstrumentoFinanciero instrumento);
-    void eliminarInstrumento(String nombre);
+    InstrumentoFinanciero registrarInstrumento(InstrumentoDTO instrumentoDTO) throws Exception;
+    InstrumentoFinanciero buscarInstrumentoPorId(Long id) throws Exception;
     List<InstrumentoFinanciero> listarTodosLosInstrumentos();
-    Optional<InstrumentoFinanciero> buscarInstrumentoPorNombre(String nombre);
-    void editarInstrumento(String nombre, InstrumentoFinanciero nuevoInstrumento);
-    void suscribirInversor(String nombreInstrumento, String nombreInversor);
+    List<InstrumentoFinanciero> listarInstrumentosPorNombre(String nombre);
+    void eliminarInstrumento(Long id) throws Exception;
+    InstrumentoFinanciero editarInstrumento(Long id, InstrumentoDTO instrumentoDTO) throws Exception;
+    void suscribirInversor(String nombreInstrumento, String nombreInversor) throws Exception;
 }

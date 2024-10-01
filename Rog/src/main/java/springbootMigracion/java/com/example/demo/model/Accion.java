@@ -1,17 +1,16 @@
 package springbootMigracion.java.com.example.demo.model;
 
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Accion extends InstrumentoFinanciero {
-    public Accion(String nombre, Double precio) {
-        super(nombre, precio, "Acción");
+    private static final String TIPO_ACCION = "Accion";
+    public Accion(String nombre, double precio) {
+        super(nombre, precio, TIPO_ACCION);
     }
 
     @Override

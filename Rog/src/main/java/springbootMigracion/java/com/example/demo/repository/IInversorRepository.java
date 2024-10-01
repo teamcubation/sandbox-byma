@@ -4,14 +4,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import springbootMigracion.java.com.example.demo.model.Inversor;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface IInversorRepository extends JpaRepository<Inversor, Long> {
-//    void agregarInversor(Inversor inversor);
-//    List<Inversor> listarTodosLosInversores();
+
+    boolean existsByNombreIgnoreCase(String nombre);
+    List<Inversor> findAllByNombreContainingIgnoreCase(String nombre);
     Optional<Inversor> findByNombreIgnoreCase(String nombre);
-//    void eliminarInversor(String nombre);
-//    void editarInversor(String nombre, Inversor nuevoInversor);
 
 }

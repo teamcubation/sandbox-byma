@@ -1,27 +1,10 @@
 package springbootMigracion.java.com.example.demo.dto;
 
+import lombok.Data;
+
+@Data
 public class InversorDTO {
     private String nombre;
     private String email;
 
-    public InversorDTO(String nombre, String email) {
-        this.nombre = nombre;
-        this.email = email;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

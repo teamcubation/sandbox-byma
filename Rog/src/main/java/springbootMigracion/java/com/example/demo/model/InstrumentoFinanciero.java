@@ -11,8 +11,8 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
-@Setter
-@Getter
+//@Setter
+//@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class InstrumentoFinanciero {
@@ -31,54 +31,5 @@ public abstract class InstrumentoFinanciero {
         this.nombre = nombre;
         this.precio = precio;
         this.tipo = tipo;
-    }
-
-//    public InstrumentoFinanciero(Long id, String nombre, double precio, String tipo, List<Inversor> inversoresSuscritosList) {
-//        this.id = id;
-//        this.nombre = nombre;
-//        this.precio = precio;
-//        this.tipo = tipo;
-//        this.inversoresSuscritosList = inversoresSuscritosList;
-//    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public List<Inversor> getInversoresSuscritosList() {
-        return inversoresSuscritosList;
-    }
-
-    public void setInversoresSuscritosList(List<Inversor> inversoresSuscritosList) {
-        this.inversoresSuscritosList = inversoresSuscritosList;
     }
 }
