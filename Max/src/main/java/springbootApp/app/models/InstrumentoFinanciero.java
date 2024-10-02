@@ -21,13 +21,13 @@ public abstract class InstrumentoFinanciero {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-    private double precio;
+    private Double precio;
     private Tipo tipo;
     @ManyToMany(mappedBy = "instrumentosDelInversor", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
     private List <Inversor> inversoresList;
 
-    public InstrumentoFinanciero(String nombre, double precio, Tipo tipo) {
+    public InstrumentoFinanciero(String nombre, Double precio, Tipo tipo) {
         this.nombre = nombre;
         this.precio = precio;
         this.tipo = tipo;

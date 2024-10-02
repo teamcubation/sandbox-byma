@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface IInstrumentoFinancieroRepository extends JpaRepository<InstrumentoFinanciero, Long> {
 
-    public InstrumentoFinanciero findByNombre(String nombre);
+    InstrumentoFinanciero findByNombre(String nombre);
 
 }

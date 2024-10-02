@@ -49,10 +49,16 @@ public class Validaciones {
     }
 
     public static boolean validarNombreDuplicado(String nombre, Long id, IInstrumentoFinancieroRepository repository) {
+        if (nombre == null) {
+            return false;
+        }
         InstrumentoFinanciero instrumentoFinanciero = repository.findByNombre(nombre);
         return instrumentoFinanciero != null && !instrumentoFinanciero.getId().equals(id);
     }
     public static boolean validarDniDuplicado(String dni, Long id, IInversorRepository repository) {
+        if (dni == null) {
+            return false;
+        }
         Inversor inversor = repository.findByDni(dni);
         return inversor != null && !inversor.getId().equals(id);
     }

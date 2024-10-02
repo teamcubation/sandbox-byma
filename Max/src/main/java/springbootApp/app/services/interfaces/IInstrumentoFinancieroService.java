@@ -18,6 +18,6 @@ public interface IInstrumentoFinancieroService {
     InstrumentoFinanciero actualizarInstrumento(Long id, InstrumentoFinanciero instrumento) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException;
 
     void eliminarInstrumento(Long id) throws InstrumentoNoEncontradoException;
-    public void guardarInstrumento(InstrumentoFinanciero instrumento);
+    void guardarInstrumento(InstrumentoFinanciero instrumento);
 
 }

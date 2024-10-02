@@ -26,7 +26,10 @@ public class InversorService implements IInversorService {
         if (inversorNuevo != null)
             throw new InversorExistenteException(ERROR_INVERSOR_CON_DNI_EXISTENTE);
         if (Validaciones.validarDatosInversor(inversor.getNombre(), inversor.getDni())) {
-            inversorRepository.save(new Inversor(inversor.getNombre(), inversor.getDni()));
+            inversorRepository.save(Inversor.builder()
+                    .nombre(inversor.getNombre())
+                    .dni(inversor.getDni())
+                    .build());
         }
     }
 
@@ -58,11 +61,17 @@ public class InversorService implements IInversorService {
         if (Validaciones.validarDniDuplicado(inversor.getDni(), id, inversorRepository)) {
             throw new InversorExistenteException(ERROR_INVERSOR_CON_DNI_EXISTENTE);
         }
-        if (Validaciones.validarDatosInversor(inversor.getNombre(), inversor.getDni())) {
-            inversorEncontrado.setDni(inversor.getDni());
-            inversorEncontrado.setNombre(inversor.getNombre());
-            inversorRepository.save(inversorEncontrado);
+        if (inversor.getNombre() != null) {
+            if (Validaciones.validarNombre(inversor.getNombre())) {
+                inversorEncontrado.setNombre(inversor.getNombre());
+            }
         }
+        if (inversor.getDni() != null) {
+            if (Validaciones.validarDni(inversor.getDni())) {
+                inversorEncontrado.setDni(inversor.getDni());
+            }
+        }
+        inversorRepository.save(inversorEncontrado);
         return inversorEncontrado;
     }
 

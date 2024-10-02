@@ -7,5 +7,5 @@ import  springbootApp.app.models.Inversor;
 @Repository
 public interface IInversorRepository extends JpaRepository<Inversor, Long> {
 
-    public Inversor findByDni(String dni);
+    Inversor findByDni(String dni);
 }

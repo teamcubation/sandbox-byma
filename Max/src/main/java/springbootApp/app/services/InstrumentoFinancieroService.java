@@ -1,12 +1,12 @@
 package springbootApp.app.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import  springbootApp.app.exceptions.InstrumentoNoEncontradoException;
-import  springbootApp.app.models.InstrumentoFinanciero;
+import springbootApp.app.exceptions.InstrumentoNoEncontradoException;
+import springbootApp.app.models.InstrumentoFinanciero;
 import org.springframework.stereotype.Service;
-import  springbootApp.app.exceptions.InstrumentoDuplicadoException;
-import  springbootApp.app.models.InstrumentoFactory;
-import  springbootApp.app.repositories.IInstrumentoFinancieroRepository;
+import springbootApp.app.exceptions.InstrumentoDuplicadoException;
+import springbootApp.app.models.InstrumentoFactory;
+import springbootApp.app.repositories.IInstrumentoFinancieroRepository;
 import springbootApp.app.services.interfaces.IInstrumentoFinancieroService;
 
 import java.util.List;
@@ -59,15 +59,25 @@ public class InstrumentoFinancieroService implements IInstrumentoFinancieroServi
         if (validarNombreDuplicado(instrumento.getNombre(), id, instrumentoFinancieroRepository)) {
             throw new InstrumentoDuplicadoException(ERROR_INSTRUMENTO_CON_NOMBRE_EXISTENTE);
         }
-        if (validarDatosInstrumento(instrumento.getNombre(), instrumento.getPrecio(), instrumento.getTipo())) {
-            instrumentoEncontrado.setNombre(instrumento.getNombre());
-            instrumentoEncontrado.setTipo(instrumento.getTipo());
-            if (instrumento.getPrecio() != instrumentoEncontrado.getPrecio()) {
-                instrumentoEncontrado.setPrecio(instrumento.getPrecio());
-                 ObserverService.notificarCambioDePrecio(instrumentoEncontrado);
+        if (instrumento.getNombre() != null) {
+            if (validarNombre(instrumento.getNombre())) {
+                instrumentoEncontrado.setNombre(instrumento.getNombre());
             }
-            instrumentoFinancieroRepository.save(instrumentoEncontrado);
         }
+        if (instrumento.getTipo() != null) {
+            if (validarTipo(instrumento.getTipo())) {
+                instrumentoEncontrado.setTipo(instrumento.getTipo());
+            }
+        }
+        if (instrumento.getPrecio() != null) {
+            if (validarPrecio(instrumento.getPrecio())) {
+                if (!instrumento.getPrecio().equals(instrumentoEncontrado.getPrecio())) {
+                    instrumentoEncontrado.setPrecio(instrumento.getPrecio());
+                    ObserverService.notificarCambioDePrecio(instrumentoEncontrado);
+                }
+            }
+        }
+        instrumentoFinancieroRepository.save(instrumentoEncontrado);
         return instrumentoEncontrado;
     }
 
@@ -79,6 +89,7 @@ public class InstrumentoFinancieroService implements IInstrumentoFinancieroServi
         }
         return instrumento;
     }
+
     public void guardarInstrumento(InstrumentoFinanciero instrumento) {
         instrumentoFinancieroRepository.save(instrumento);
     }

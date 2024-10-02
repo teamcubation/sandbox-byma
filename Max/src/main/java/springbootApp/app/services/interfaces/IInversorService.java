@@ -9,16 +9,16 @@ import java.util.List;
 
 public interface IInversorService {
 
-    public void registrarInversor(Inversor inversor) throws InversorExistenteException;
+    void registrarInversor(Inversor inversor) throws InversorExistenteException;
 
-    public List<Inversor> consultarTodosLosInversores();
+    List<Inversor> consultarTodosLosInversores();
 
-    public Inversor actualizarInversor(Long id, Inversor inversor) throws InversorNoEncontradoException, InversorExistenteException;
+    Inversor actualizarInversor(Long id, Inversor inversor) throws InversorNoEncontradoException, InversorExistenteException;
 
-    public Inversor consultarInversor(Long id) throws InversorNoEncontradoException;
+    Inversor consultarInversor(Long id) throws InversorNoEncontradoException;
 
-    public void eliminarInversor(Long id) throws InversorNoEncontradoException;
+    void eliminarInversor(Long id) throws InversorNoEncontradoException;
 
-    public List<InstrumentoFinanciero> consultarInstrumentosDeInversor(Long id) throws InversorNoEncontradoException;
-    public void guardarInversor(Inversor inversor);
+    List<InstrumentoFinanciero> consultarInstrumentosDeInversor(Long id) throws InversorNoEncontradoException;
+    void guardarInversor(Inversor inversor);
 }
