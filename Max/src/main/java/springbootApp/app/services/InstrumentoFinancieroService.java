@@ -7,13 +7,14 @@ import org.springframework.stereotype.Service;
 import  springbootApp.app.exceptions.InstrumentoDuplicadoException;
 import  springbootApp.app.models.InstrumentoFactory;
 import  springbootApp.app.repositories.interfaces.IInstrumentoFinancieroRepository;
+import springbootApp.app.services.interfaces.IInstrumentoFinancieroService;
 
 import java.util.List;
 
 import static springbootApp.app.utils.Validaciones.*;
 
 @Service
-public class InstrumentoFinancieroService {
+public class InstrumentoFinancieroService implements IInstrumentoFinancieroService {
     @Autowired
     private IInstrumentoFinancieroRepository instrumentoFinancieroRepository;
 
@@ -25,7 +26,7 @@ public class InstrumentoFinancieroService {
         }
         if (validarDatosInstrumento(instrumento.getNombre(), instrumento.getPrecio(), instrumento.getTipo())) {
             this.instrumentoFinancieroRepository.save(
-                    InstrumentoFactory.nuevoInstrumento(instrumento.getNombre(), instrumento.getPrecio(), instrumento.getTipo()));
+                    InstrumentoFactory.nuevoInstrumento(instrumento.getNombre(), instrumento.getPrecio(), String.valueOf(instrumento.getTipo())));
         }
     }
 
@@ -75,5 +76,8 @@ public class InstrumentoFinancieroService {
             throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
         }
         return instrumento;
+    }
+    public void guardarInstrumento(InstrumentoFinanciero instrumento) {
+        instrumentoFinancieroRepository.save(instrumento);
     }
 }

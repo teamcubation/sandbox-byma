@@ -1,6 +1,7 @@
 package  springbootApp.app.services;
 
 
+import springbootApp.app.services.interfaces.IInversorService;
 import springbootApp.app.utils.Validaciones;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import  springbootApp.app.repositories.interfaces.IInversorRepository;
 import java.util.List;
 
 @Service
-public class InversorService {
+public class InversorService implements IInversorService {
 
     @Autowired
     private IInversorRepository inversorRepository;
@@ -68,5 +69,8 @@ public class InversorService {
         if (inversor == null)
             throw new InversorNoEncontradoException("Error. Inversor no encontrado");
         return inversor;
+    }
+    public void guardarInversor(Inversor inversor){
+        inversorRepository.save(inversor);
     }
 }

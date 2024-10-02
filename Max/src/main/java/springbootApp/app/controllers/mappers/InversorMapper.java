@@ -5,10 +5,16 @@ import  springbootApp.app.models.Inversor;
 
 public class InversorMapper {
     public static Inversor inversorDTOToInversor(InversorDTO inversorDTO) {
-        return new Inversor(inversorDTO.getNombre(), inversorDTO.getDni());
+        return Inversor.builder()
+                .nombre(inversorDTO.getNombre())
+                .dni(inversorDTO.getDni())
+                .build();
     }
 
     public static InversorDTO inversorToInversorDTO(Inversor inversor) {
-        return new InversorDTO(inversor.getNombre(), inversor.getDni());
+        return InversorDTO.builder()
+                .nombre(inversor.getNombre())
+                .dni(inversor.getDni())
+                .build();
     }
 }

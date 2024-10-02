@@ -16,14 +16,14 @@ public interface InstrumentoFinancieroApi {
             @ApiResponse(responseCode = "201", description = "Instrumento creado exitosamente"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    ResponseEntity<?> registrar(@RequestBody InstrumentoDTO instrumentoDTO) throws Exception;
+    ResponseEntity<?> registrar(@RequestBody InstrumentoDTO instrumentoDTO);
 
     @Operation(summary = "Obtener todos los instrumentos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Instrumentos encontrados"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    ResponseEntity<?> obtenerTodos() throws Exception;
+    ResponseEntity<?> obtenerTodos();
 
     @Operation(summary = "Obtener un instrumento por ID")
     @ApiResponses(value = {
@@ -31,14 +31,14 @@ public interface InstrumentoFinancieroApi {
             @ApiResponse(responseCode = "404", description = "Error: Instrumento no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    ResponseEntity<?> obtenerPorID(Long id) throws Exception;
+    ResponseEntity<?> obtenerPorID(Long id);
 
     @Operation(summary = "Actualizar un instrumento")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Instrumento actualizado exitosamente"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    ResponseEntity<?> actualizar(Long id, InstrumentoDTO instrumentoDTO) throws Exception;
+    ResponseEntity<?> actualizar(Long id, InstrumentoDTO instrumentoDTO);
 
     @Operation(summary = "Eliminar un instrumento")
     @ApiResponses(value = {
@@ -46,7 +46,7 @@ public interface InstrumentoFinancieroApi {
             @ApiResponse(responseCode = "404", description = "Error: Instrumento no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    ResponseEntity<?> eliminar(Long id) throws Exception;
+    ResponseEntity<?> eliminar(Long id);
 
     @Operation(summary = "Obtener un instrumento por nombre")
     @ApiResponses(value = {
@@ -54,5 +54,5 @@ public interface InstrumentoFinancieroApi {
             @ApiResponse(responseCode = "404", description = "Error: Instrumento no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    ResponseEntity<?> obtenerPorNombre(String nombre) throws Exception;
+    ResponseEntity<?> obtenerPorNombre(String nombre);
 }

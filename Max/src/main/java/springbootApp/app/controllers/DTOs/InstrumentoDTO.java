@@ -1,32 +1,16 @@
 package springbootApp.app.controllers.DTOs;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import  springbootApp.app.models.Tipo;
 
+@ToString
 @Getter
+@Setter
+@AllArgsConstructor
+@Builder
 public class InstrumentoDTO {
-    @Setter
     private String nombre;
-    @Setter
     private Double precio;
-    private Tipo tipo;
-
-    public void  setTipo(String tipo) {
-        if (tipo == null) {
-            throw new NullPointerException("Error. El tipo no puede ser nulo");
-        }
-        tipo = tipo.toUpperCase();
-        switch (tipo) {
-            case "ACCION":
-                this.tipo = Tipo.ACCION;
-                break;
-            case "BONO":
-                this.tipo = Tipo.BONO;
-                break;
-            default:
-                throw new IllegalArgumentException("Error. Tipo invalido");
-        }
-    }
+    private String tipo;
 
 }

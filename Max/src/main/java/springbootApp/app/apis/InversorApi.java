@@ -16,7 +16,7 @@ public interface InversorApi {
             @ApiResponse(responseCode = "200", description = "Inversor creado exitosamente"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    ResponseEntity<?> registrar(@RequestBody InversorDTO inversorDTO) throws Exception;
+    ResponseEntity<?> registrar(@RequestBody InversorDTO inversorDTO);
 
     @Operation(summary = "Obtener todos los inversores")
     @ApiResponses(value = {
@@ -31,7 +31,7 @@ public interface InversorApi {
             @ApiResponse(responseCode = "404", description = "Error: Inversor no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    ResponseEntity<?> obtenerPorID(Long id) throws Exception;
+    ResponseEntity<?> obtenerPorID(Long id);
 
     @Operation(summary = "Actualizar un inversor")
     @ApiResponses(value = {
@@ -39,7 +39,7 @@ public interface InversorApi {
             @ApiResponse(responseCode = "404", description = "Error: Inversor no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    ResponseEntity<?> actualizar(Long id, InversorDTO inversorDTO) throws Exception;
+    ResponseEntity<?> actualizar(Long id, InversorDTO inversorDTO);
 
     @Operation(summary = "Eliminar un inversor")
     @ApiResponses(value = {
@@ -47,7 +47,7 @@ public interface InversorApi {
             @ApiResponse(responseCode = "404", description = "Error: Inversor no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    ResponseEntity<?> eliminar(Long id) throws Exception;
+    ResponseEntity<?> eliminar(Long id);
 
     @Operation(summary = "Obtener los instrumentos de un inversor")
     @ApiResponses(value = {
@@ -55,7 +55,7 @@ public interface InversorApi {
             @ApiResponse(responseCode = "404", description = "Error: Inversor no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    ResponseEntity<?> obtenerInstrumentosDeInversor(Long id) throws Exception;
+    ResponseEntity<?> obtenerInstrumentosDeInversor(Long id);
 
     @Operation(summary = "Suscribir un inversor a un instrumento")
     @ApiResponses(value = {
@@ -63,7 +63,7 @@ public interface InversorApi {
             @ApiResponse(responseCode = "404", description = "Error: Inversor o instrumento no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    ResponseEntity<?>suscribir(Long id, Long idInstrumento) throws Exception;
+    ResponseEntity<?>suscribir(Long id, Long idInstrumento);
 
     @Operation(summary = "Desuscribir un inversor de un instrumento")
     @ApiResponses(value = {
@@ -71,5 +71,5 @@ public interface InversorApi {
             @ApiResponse(responseCode = "404", description = "Error: Inversor o instrumento no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    ResponseEntity<?>desuscribir(Long id, Long idInstrumento) throws Exception;
+    ResponseEntity<?>desuscribir(Long id, Long idInstrumento);
 }
