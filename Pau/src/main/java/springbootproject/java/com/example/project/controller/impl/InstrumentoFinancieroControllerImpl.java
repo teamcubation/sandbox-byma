@@ -1,5 +1,6 @@
 package com.example.project.controller.impl;
 
+import com.example.project.controller.InstrumentoFinancieroController;
 import com.example.project.controller.dto.InstrumentoFinancieroDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,24 +8,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.project.controller.dto.EditarInstrumentoDTO;
-import com.example.project.exceptions.InstrumentoNoEncontradoException;
 import com.example.project.service.InstrumentoFinancieroService;
 
 @Slf4j
 @RestController
 @RequestMapping("/instrumentos-financieros")
-public class InstrumentoFinancieroControllerImpl {
+public class InstrumentoFinancieroControllerImpl implements InstrumentoFinancieroController {
     private final InstrumentoFinancieroService instrumentoFinancieroService;
 
     @Autowired
     public InstrumentoFinancieroControllerImpl(InstrumentoFinancieroService instrumentoFinancieroService) {
         this.instrumentoFinancieroService = instrumentoFinancieroService;
     }
-
-//    @RequestMapping("/home")
-//    public String home() {
-//        return "Hello World";
-//    }
 
     @RequestMapping("/")
     public ResponseEntity<?> consultarTodosLosInstrumentosConocidos() {
@@ -39,6 +34,7 @@ public class InstrumentoFinancieroControllerImpl {
     }
 
     @PostMapping("/")
+    @Override
     public ResponseEntity<?> crearInstrumento(@RequestBody InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws Exception {
         log.info("Creando instrumento financiero ", instrumentoFinancieroDTO);
         return ResponseEntity.ok(this.instrumentoFinancieroService.registrarInstrumentoFinanciero(instrumentoFinancieroDTO));
@@ -52,7 +48,7 @@ public class InstrumentoFinancieroControllerImpl {
     }
 
     @PutMapping("/{nombre}")
-    public ResponseEntity<?> editarInstrumento(@RequestBody EditarInstrumentoDTO editarInstrumentoDTO, @PathVariable("nombre") String nombre) throws InstrumentoNoEncontradoException {
+    public ResponseEntity<?> editarInstrumento(@RequestBody EditarInstrumentoDTO editarInstrumentoDTO, @PathVariable("nombre") String nombre) throws Exception {
         log.info("Editando instrumento financiero " + nombre);
         return ResponseEntity.ok(this.instrumentoFinancieroService.editarInstrumentoFinanciero(nombre, editarInstrumentoDTO));
     }
