@@ -9,13 +9,23 @@ import java.time.LocalDate;
 
 @Data
 public class AccionDTO {
+
     @Schema(hidden = true)
     private Long id;
+
+    @Schema(description = "Nombre de la acción", example = "BYMA", required = true)
     private String nombre;
+
+    @Schema(description = "Precio de la acción", example = "150.0", required = true)
     private Double precio;
+
+    @Schema(description = "Dividendo de la acción", example = "1.5", required = true)
     private Double dividendo;
-    private LocalDate fechaCreacion;
+
     @JsonIgnore
+    private LocalDate fechaCreacion;
+
+    @Schema(hidden = true)
     private LocalDate finDelParking;
 
     public void calcularFinDelParking() {
