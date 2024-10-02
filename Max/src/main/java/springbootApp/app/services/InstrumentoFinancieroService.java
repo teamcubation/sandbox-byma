@@ -6,7 +6,7 @@ import  springbootApp.app.models.InstrumentoFinanciero;
 import org.springframework.stereotype.Service;
 import  springbootApp.app.exceptions.InstrumentoDuplicadoException;
 import  springbootApp.app.models.InstrumentoFactory;
-import  springbootApp.app.repositories.interfaces.IInstrumentoFinancieroRepository;
+import  springbootApp.app.repositories.IInstrumentoFinancieroRepository;
 import springbootApp.app.services.interfaces.IInstrumentoFinancieroService;
 
 import java.util.List;
@@ -15,6 +15,8 @@ import static springbootApp.app.utils.Validaciones.*;
 
 @Service
 public class InstrumentoFinancieroService implements IInstrumentoFinancieroService {
+    public static final String INSTRUMENTO_NO_ENCONTRADO = "Error. Instrumento no encontrado";
+    public static final String ERROR_INSTRUMENTO_CON_NOMBRE_EXISTENTE = "Error. Instrumento con nombre ya existente";
     @Autowired
     private IInstrumentoFinancieroRepository instrumentoFinancieroRepository;
 
@@ -22,7 +24,7 @@ public class InstrumentoFinancieroService implements IInstrumentoFinancieroServi
     public void registrarInstrumentoFinanciero(InstrumentoFinanciero instrumento) throws InstrumentoDuplicadoException {
         InstrumentoFinanciero instrumentoNuevo = instrumentoFinancieroRepository.findByNombre(instrumento.getNombre());
         if (instrumentoNuevo != null) {
-            throw new InstrumentoDuplicadoException("Error. Accion existente");
+            throw new InstrumentoDuplicadoException(ERROR_INSTRUMENTO_CON_NOMBRE_EXISTENTE);
         }
         if (validarDatosInstrumento(instrumento.getNombre(), instrumento.getPrecio(), instrumento.getTipo())) {
             this.instrumentoFinancieroRepository.save(
@@ -37,14 +39,14 @@ public class InstrumentoFinancieroService implements IInstrumentoFinancieroServi
     public void eliminarInstrumento(Long id) throws InstrumentoNoEncontradoException {
         InstrumentoFinanciero instrumento = instrumentoFinancieroRepository.findById(id).orElse(null);
         if (instrumento == null) {
-            throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
+            throw new InstrumentoNoEncontradoException(INSTRUMENTO_NO_ENCONTRADO);
         }
         instrumentoFinancieroRepository.delete(instrumento);
     }
 
     public InstrumentoFinanciero buscarInstrumentoPorNombre(String nombre) throws InstrumentoNoEncontradoException {
         if (instrumentoFinancieroRepository.findByNombre(nombre) == null) {
-            throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
+            throw new InstrumentoNoEncontradoException(INSTRUMENTO_NO_ENCONTRADO);
         }
         return instrumentoFinancieroRepository.findByNombre(nombre);
     }
@@ -52,10 +54,10 @@ public class InstrumentoFinancieroService implements IInstrumentoFinancieroServi
     public InstrumentoFinanciero actualizarInstrumento(Long id, InstrumentoFinanciero instrumento) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
         InstrumentoFinanciero instrumentoEncontrado = instrumentoFinancieroRepository.findById(id).orElse(null);
         if (instrumentoEncontrado == null) {
-            throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
+            throw new InstrumentoNoEncontradoException(INSTRUMENTO_NO_ENCONTRADO);
         }
         if (validarNombreDuplicado(instrumento.getNombre(), id, instrumentoFinancieroRepository)) {
-            throw new InstrumentoDuplicadoException("Error. Instrumento con nombre ya existente");
+            throw new InstrumentoDuplicadoException(ERROR_INSTRUMENTO_CON_NOMBRE_EXISTENTE);
         }
         if (validarDatosInstrumento(instrumento.getNombre(), instrumento.getPrecio(), instrumento.getTipo())) {
             instrumentoEncontrado.setNombre(instrumento.getNombre());
@@ -73,7 +75,7 @@ public class InstrumentoFinancieroService implements IInstrumentoFinancieroServi
     public InstrumentoFinanciero buscarInstrumentoPorID(Long id) throws InstrumentoNoEncontradoException {
         InstrumentoFinanciero instrumento = instrumentoFinancieroRepository.findById(id).orElse(null);
         if (instrumento == null) {
-            throw new InstrumentoNoEncontradoException("Error. Instrumento no encontrado");
+            throw new InstrumentoNoEncontradoException(INSTRUMENTO_NO_ENCONTRADO);
         }
         return instrumento;
     }

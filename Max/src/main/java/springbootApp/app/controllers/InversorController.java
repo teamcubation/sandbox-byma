@@ -20,6 +20,17 @@ import java.util.List;
 public class InversorController implements InversorApi {
 
     private static final Logger log = LoggerFactory.getLogger(InversorController.class);
+    public static final String REGISTRAR_INVERSOR = "intentando registrar inversor...";
+    public static final String OBTENER_INVERSORES = "intentando obtener inversores...";
+    public static final String OBTENER_INVERSOR = "intentando obtener inversor...";
+    public static final String INSTRUMENTOS_DE_INVERSOR = "intentando obtener instrumentos de inversor...";
+    public static final String ACTUALIZAR_INVERSOR = "intentando actualizar inversor...";
+    public static final String ELIMINAR_INVERSOR = "intentando eliminar inversor...";
+    public static final String INVERSOR_ELIMINADO = "Inversor eliminado";
+    public static final String INTENTANDO_SUSCRIBIRSE = "intentando suscribirse...";
+    public static final String SUSCRIPCION_EXITOSA = "Suscripción exitosa";
+    public static final String INTENTANDO_DESUSCRIBIRSE = "intentando desuscribirse...";
+    public static final String DESUBSCRIPCION_EXITOSA = "Desubscripción exitosa";
     @Autowired
     private IInversorService inversorService;
     @Autowired
@@ -27,7 +38,7 @@ public class InversorController implements InversorApi {
 
     @PostMapping("/")
     public ResponseEntity<?> registrar(@RequestBody InversorDTO inversorDTO) {
-        log.info("intentando registrar inversor...");
+        log.info(REGISTRAR_INVERSOR);
         Inversor inversor = InversorMapper.inversorDTOToInversor(inversorDTO);
         inversorService.registrarInversor(inversor);
         return ResponseEntity.ok(inversorDTO);
@@ -35,51 +46,51 @@ public class InversorController implements InversorApi {
 
     @GetMapping("/")
     public ResponseEntity<List<?>> obtenerTodos() {
-        log.info("intentando obtener inversores...");
+        log.info(OBTENER_INVERSORES);
         return ResponseEntity.ok(inversorService.consultarTodosLosInversores());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerPorID(@PathVariable Long id){
-        log.info("intentando obtener inversor...");
+        log.info(OBTENER_INVERSOR);
         return ResponseEntity.ok(inversorService.consultarInversor(id));
     }
 
     @GetMapping("/instrumentos/{id}")
     public ResponseEntity<?> obtenerInstrumentosDeInversor(@PathVariable Long id) {
-        log.info("intentando obtener instrumentos de inversor...");
+        log.info(INSTRUMENTOS_DE_INVERSOR);
         return ResponseEntity.ok(inversorService.consultarInstrumentosDeInversor(id));
     }
 
 
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody InversorDTO inversorDTO) {
-        log.info("intentando actualizar inversor...");
+        log.info(ACTUALIZAR_INVERSOR);
         Inversor inversor = InversorMapper.inversorDTOToInversor(inversorDTO);
         return ResponseEntity.ok(inversorService.actualizarInversor(id, inversor));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
-        log.info("intentando eliminar inversor...");
+        log.info(ELIMINAR_INVERSOR);
         inversorService.eliminarInversor(id);
-        log.info("Inversor eliminado");
+        log.info(INVERSOR_ELIMINADO);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/subscribirse/{id}/{idInstrumento}")
     public ResponseEntity<?> suscribir(@PathVariable Long id, @PathVariable Long idInstrumento) {
-        log.info("intentando suscribirse...");
+        log.info(INTENTANDO_SUSCRIBIRSE);
         observerService.metodoParaSuscribirse(id, idInstrumento);
-        log.info("Suscripción exitosa");
-        return ResponseEntity.ok("Suscripción exitosa");
+        log.info(SUSCRIPCION_EXITOSA);
+        return ResponseEntity.ok(SUSCRIPCION_EXITOSA);
     }
 
     @PutMapping("/desubscribirse/{id}/{idInstrumento}")
     public ResponseEntity<?> desuscribir(@PathVariable Long id, @PathVariable Long idInstrumento) {
-        log.info("intentando desuscribirse...");
+        log.info(INTENTANDO_DESUSCRIBIRSE);
         observerService.metodoParaDesuscribirse(id, idInstrumento);
-        log.info("Desubscripción exitosa");
-        return ResponseEntity.ok("Desubscripción exitosa");
+        log.info(DESUBSCRIPCION_EXITOSA);
+        return ResponseEntity.ok(DESUBSCRIPCION_EXITOSA);
     }
 }

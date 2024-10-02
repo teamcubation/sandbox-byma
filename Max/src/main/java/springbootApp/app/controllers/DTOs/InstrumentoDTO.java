@@ -12,5 +12,4 @@ public class InstrumentoDTO {
     private String nombre;
     private Double precio;
     private String tipo;
-
 }

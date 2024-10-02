@@ -11,9 +11,6 @@ import  springbootApp.app.models.Tipo;
 public class InstrumentoMapper {
 
     public static InstrumentoDTO instrumentoToInstrumentoDTO(InstrumentoFinanciero instrumento) {
-
-
-
         return InstrumentoDTO.builder()
                 .nombre(instrumento.getNombre())
                 .precio(instrumento.getPrecio())
@@ -22,11 +19,18 @@ public class InstrumentoMapper {
     }
 
     public static InstrumentoFinanciero instrumentoDTOToInstrumento(InstrumentoDTO instrumentoDTO) {
-
         if (instrumentoDTO.getTipo().toUpperCase().equals(String.valueOf(Tipo.ACCION))) {
-            return new Accion(instrumentoDTO.getNombre(), instrumentoDTO.getPrecio(), Tipo.ACCION);
+            return Accion.builder()
+                    .nombre(instrumentoDTO.getNombre())
+                    .precio(instrumentoDTO.getPrecio())
+                    .tipo(Tipo.ACCION)
+                    .build();
         } else if (instrumentoDTO.getTipo().toUpperCase().equals(String.valueOf(Tipo.BONO))) {
-            return new Bono(instrumentoDTO.getNombre(), instrumentoDTO.getPrecio(), Tipo.BONO);
+            return Bono.builder()
+                    .nombre(instrumentoDTO.getNombre())
+                    .precio(instrumentoDTO.getPrecio())
+                    .tipo(Tipo.BONO)
+                    .build();
         }
         return null;
     }

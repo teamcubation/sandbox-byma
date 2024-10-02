@@ -3,8 +3,8 @@ package springbootApp.app.utils;
 import  springbootApp.app.models.InstrumentoFinanciero;
 import  springbootApp.app.models.Inversor;
 import  springbootApp.app.models.Tipo;
-import  springbootApp.app.repositories.interfaces.IInstrumentoFinancieroRepository;
-import  springbootApp.app.repositories.interfaces.IInversorRepository;
+import  springbootApp.app.repositories.IInstrumentoFinancieroRepository;
+import  springbootApp.app.repositories.IInversorRepository;
 
 public class Validaciones {
 

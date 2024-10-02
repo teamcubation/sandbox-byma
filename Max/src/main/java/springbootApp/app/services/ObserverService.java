@@ -15,6 +15,8 @@ import springbootApp.app.services.interfaces.IObserverService;
 
 @Service
 public class ObserverService implements IObserverService {
+    public static final String INVERSOR_NO_SUSCRIPTO = "Error. no estas suscripto a este instrumento";
+    public static final String INVERSOR_YA_SUSCRIPTO = "Error. ya estas suscripto a este instrumento";
     @Autowired
     private IInstrumentoFinancieroService instrumentoFinancieroService;
     @Autowired
@@ -25,7 +27,7 @@ public class ObserverService implements IObserverService {
         InstrumentoFinanciero instrumento = instrumentoFinancieroService.buscarInstrumentoPorID(idInstrumento);
         Inversor inversor = inversorService.consultarInversor(idInversor);
         if (this.inversorTieneInstrumento(inversor, instrumento)) {
-            throw new InstrumentoDuplicadoException("Error. ya estas suscripto a este instrumento");
+            throw new InstrumentoDuplicadoException(INVERSOR_YA_SUSCRIPTO);
         }
         inversor.getInstrumentosDelInversor().add(instrumento);
         instrumento.getInversoresList().add(inversor);
@@ -38,7 +40,7 @@ public class ObserverService implements IObserverService {
         Inversor inversor = inversorService.consultarInversor(idInversor);
 
         if (!this.inversorTieneInstrumento(inversor, instrumento)) {
-            throw new InstrumentoNoEncontradoException("Error. no estas suscripto a este instrumento");
+            throw new InstrumentoNoEncontradoException(INVERSOR_NO_SUSCRIPTO);
         }
         inversor.getInstrumentosDelInversor().remove(instrumento);
         instrumento.getInversoresList().remove(inversor);
