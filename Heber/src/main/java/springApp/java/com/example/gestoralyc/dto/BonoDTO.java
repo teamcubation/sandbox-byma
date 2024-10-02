@@ -1,6 +1,7 @@
 package springApp.java.com.example.gestoralyc.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import springApp.java.com.example.gestoralyc.utils.FechaUtils;
 
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 
 @Data
 public class BonoDTO {
+    @Schema(hidden = true)
     private Long id;
     private String nombre;
     private Double precio;

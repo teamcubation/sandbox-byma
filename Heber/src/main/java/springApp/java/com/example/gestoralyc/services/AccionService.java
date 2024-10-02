@@ -17,4 +17,6 @@ public interface AccionService {
     void eliminarAccionPorId(Long id) throws InstrumentoNoEncontradoException;
 
     AccionModel editarAccion(Long id, AccionModel accionModel) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException;
+
+    AccionModel getAccionPorNombre(String nombre);
 }

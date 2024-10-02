@@ -28,4 +28,6 @@ public class GlobalException {
     public ResponseEntity<String> handleInstrumentoExceptions(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
+
+
 }

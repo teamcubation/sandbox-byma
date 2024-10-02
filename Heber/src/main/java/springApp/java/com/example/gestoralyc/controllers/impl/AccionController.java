@@ -1,14 +1,12 @@
-package springApp.java.com.example.gestoralyc.controllers;
+package springApp.java.com.example.gestoralyc.controllers.impl;
 
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springApp.java.com.example.gestoralyc.dto.AccionDTO;
-import springApp.java.com.example.gestoralyc.exceptions.InstrumentoDuplicadoException;
-import springApp.java.com.example.gestoralyc.exceptions.InstrumentoNoEncontradoException;
-import springApp.java.com.example.gestoralyc.exceptions.InvalidInstrumentoDataException;
 import springApp.java.com.example.gestoralyc.mappers.AccionMapper;
 import springApp.java.com.example.gestoralyc.models.AccionModel;
 import springApp.java.com.example.gestoralyc.services.AccionService;
@@ -24,9 +22,9 @@ public class AccionController {
 
     private final AccionService accionService;
 
-    @PostMapping("/")
 
-    public ResponseEntity<AccionDTO> agregarAccion(@RequestBody AccionDTO accionDTO) throws InstrumentoDuplicadoException, InvalidInstrumentoDataException {
+    @PostMapping("/")
+    public ResponseEntity<AccionDTO> agregarAccion(@RequestBody AccionDTO accionDTO) {
         log.info("Instrumento recibido en formato cURL: \n{}", GeneradorCurl.generarCurlAccion(accionDTO));
         AccionDTO accionCreadaDTO = AccionMapper
                 .mapToDTO(accionService.agregarAccion((AccionModel) AccionMapper.mapToModel(accionDTO)));
@@ -46,8 +44,9 @@ public class AccionController {
         return ResponseEntity.ok(accionesDTOList);
     }
 
+    @SneakyThrows
     @GetMapping("/{id}")
-    public ResponseEntity<AccionDTO> obtenerInstrumentoPorId(@PathVariable Long id) throws InstrumentoNoEncontradoException {
+    public ResponseEntity<AccionDTO> obtenerInstrumentoPorId(@PathVariable Long id) {
         log.info("Obteniendo instrumento con id: {}", id);
         AccionModel accion = accionService.obtenerAccionPorId(id);
         AccionDTO accionDTO = AccionMapper.mapToDTO(accion);
@@ -56,7 +55,7 @@ public class AccionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarInstrumentoPorId(@PathVariable Long id) throws InstrumentoNoEncontradoException {
+    public ResponseEntity<Void> eliminarInstrumentoPorId(@PathVariable Long id) {
         log.info("Eliminando instrumento con id: {}", id);
         accionService.eliminarAccionPorId(id);
         log.info("Instrumento eliminado con id: {}", id);
@@ -64,7 +63,7 @@ public class AccionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AccionDTO> editarInstrumento(@PathVariable Long id, @RequestBody AccionDTO accionDTO) throws InvalidInstrumentoDataException, InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
+    public ResponseEntity<AccionDTO> editarInstrumento(@PathVariable Long id, @RequestBody AccionDTO accionDTO) {
         log.info("Editando instrumento con id: {}", id);
         AccionModel accionModel = AccionMapper.mapToModel(accionDTO);
         AccionModel accionEditada = accionService.editarAccion(id, accionModel);

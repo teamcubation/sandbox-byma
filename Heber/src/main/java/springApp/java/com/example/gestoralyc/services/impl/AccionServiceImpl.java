@@ -1,22 +1,28 @@
 package springApp.java.com.example.gestoralyc.services.impl;
 
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import springApp.java.com.example.gestoralyc.exceptions.InstrumentoDuplicadoException;
 import springApp.java.com.example.gestoralyc.exceptions.InstrumentoNoEncontradoException;
 import springApp.java.com.example.gestoralyc.exceptions.InvalidInstrumentoDataException;
 import springApp.java.com.example.gestoralyc.models.AccionModel;
+import springApp.java.com.example.gestoralyc.models.BonoModel;
 import springApp.java.com.example.gestoralyc.repositories.AccionRepository;
 import springApp.java.com.example.gestoralyc.services.AccionService;
-
+import springApp.java.com.example.gestoralyc.services.BonoService;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class AccionServiceImpl implements AccionService {
 
-    private final AccionRepository accionRepository;
+    @Autowired
+    private AccionRepository accionRepository;
+
+    @Autowired
+    @Lazy
+    private BonoService bonoService;
 
     @Override
     public List<AccionModel> obtenerAcciones() {
@@ -33,6 +39,13 @@ public class AccionServiceImpl implements AccionService {
         if (accion.getNombre().isEmpty() || accion.getNombre().isBlank()) {
             throw new InvalidInstrumentoDataException("El nombre de la acción no puede estar vacío");
         }
+
+        BonoModel bonoObtenido = bonoService.getBonoPorNombre(accion.getNombre());
+
+        if (bonoObtenido != null) {
+            throw new InstrumentoDuplicadoException("El bono con nombre " + accion.getNombre() + " ya existe");
+        }
+
 
         return accionRepository.save(accion);
     }
@@ -69,6 +82,11 @@ public class AccionServiceImpl implements AccionService {
 
         // Guarda la acción actualizada
         return accionRepository.save(accionExistente);
+    }
+
+    @Override
+    public AccionModel getAccionPorNombre(String nombre) {
+        return accionRepository.findByNombre(nombre);
     }
 
 
