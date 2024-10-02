@@ -71,6 +71,12 @@ public class BonoServiceImpl implements BonoService {
             throw new InstrumentoDuplicadoException("El bono con nombre " + bonoModel.getNombre() + " ya existe");
         }
 
+        AccionModel accionObtenida = accionService.getAccionPorNombre(bonoModel.getNombre());
+
+        if (accionObtenida != null) {
+            throw new InstrumentoDuplicadoException("La acción con nombre " + bonoModel.getNombre() + " ya existe");
+        }
+
         // Actualiza los campos del bono existente con los nuevos valores
         bonoExistente.setNombre(bonoModel.getNombre());
         bonoExistente.setPrecio(bonoModel.getPrecio());

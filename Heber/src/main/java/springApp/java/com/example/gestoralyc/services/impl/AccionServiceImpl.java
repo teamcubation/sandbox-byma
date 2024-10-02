@@ -75,6 +75,12 @@ public class AccionServiceImpl implements AccionService {
             throw new InstrumentoDuplicadoException("La acción con nombre " + accionModel.getNombre() + " ya existe");
         }
 
+        BonoModel bonoObtenido = bonoService.getBonoPorNombre(accionModel.getNombre());
+
+        if (bonoObtenido != null) {
+            throw new InstrumentoDuplicadoException("El bono con nombre " + accionModel.getNombre() + " ya existe");
+        }
+
         // Actualiza los campos de la acción existente con los nuevos valores
         accionExistente.setNombre(accionModel.getNombre());
         accionExistente.setPrecio(accionModel.getPrecio());
