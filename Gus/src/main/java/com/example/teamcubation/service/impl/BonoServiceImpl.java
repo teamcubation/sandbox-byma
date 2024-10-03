@@ -26,6 +26,21 @@ public class BonoServiceImpl implements BonoService {
     }
 
 
+    /**
+     * Crea un nuevo instrumento bono y lo agrega a la lista de instrumentos financieros.
+     * <p>
+     * El instrumento bono se busca por su nombre, si ya existe uno con el mismo nombre
+     * se lanza una excepcion {@link InstrumentoDuplicadoException}.
+     * </p>
+     * <p>
+     * Si el instrumento bono se crea correctamente, se devuelve un objeto
+     * {@link Bono} con los nuevos valores.
+     * </p>
+     *
+     * @param nuevoBono El instrumento bono a crear
+     * @return El instrumento bono creado
+     * @throws InstrumentoDuplicadoException Si el instrumento ya existe
+     */
     @Override
     public Bono createBono(Bono nuevoBono) throws InstrumentoDuplicadoException {
 
@@ -40,6 +55,26 @@ public class BonoServiceImpl implements BonoService {
         return this.bonoRepository.findAll();
     }
 
+    /**
+     * Actualiza un instrumento bono existente.
+     * <p>
+     * El instrumento bono se busca por su id, si no se encuentra se lanza una excepcion
+     * {@link InstrumentoNoEncontradoException}.
+     * </p>
+     * <p>
+     * Si el instrumento bono se actualiza correctamente, se devuelve un objeto
+     * {@link Bono} con los nuevos valores.
+     * </p>
+     * <p>
+     * Si el nombre del instrumento bono ya existe en la base de datos, se lanza una excepcion
+     * {@link InstrumentoDuplicadoException}.
+     * </p>
+     *
+     * @param bonoActualizado El instrumento bono a actualizar
+     * @return El instrumento bono actualizado
+     * @throws InstrumentoNoEncontradoException Si no se encuentra el instrumento bono
+     * @throws InstrumentoDuplicadoException    Si el nombre del instrumento bono ya existe
+     */
     @Override
     public Bono updateBono(Bono bonoActualizado) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
 

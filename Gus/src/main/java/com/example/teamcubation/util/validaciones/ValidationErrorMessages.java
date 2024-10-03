@@ -1,6 +1,9 @@
 package com.example.teamcubation.util.validaciones;
 
 public class ValidationErrorMessages {
+    public static final String REGEX_LETRAS_NUMEROS = "^[a-zA-Z0-9\\s]+$";
+
+
     public static final String ERROR_EL_NOMBRE_DEL_INSTRUMENTO_NO_PUEDE_SER_NULO = "Error: El nombre del instrumento no puede ser nulo";
     public static final String EL_NOMBRE_DEL_INSTRUMENTO_NO_PUEDE_SER_NULO = "El nombre del instrumento no puede ser nulo";
     public static final String ERROR_EL_DIVIDENDO_INGRESADO_ES_INVALIDO = "Error: El dividendo ingresado es invalido";
