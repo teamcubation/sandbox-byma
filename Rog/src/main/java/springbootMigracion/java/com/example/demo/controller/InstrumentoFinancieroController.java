@@ -73,9 +73,9 @@ public class InstrumentoFinancieroController implements IInstrumentoFinancieroAp
         try {
             instrumentoFinancieroService.suscribirInversor(nombreInstrumento, nombreInversor);
             log.info(LogMessages.INVERSOR_SUSCRITO.getMessage(), nombreInversor, nombreInstrumento);
-            return ResponseEntity.ok("Inversor suscrito al instrumento correctamente.");
+            return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
-            log.error("Error al suscribir el inversor: {}", e.getMessage());
+            log.error(LogMessages.ERROR_SUSCRIBIR_INVERSOR.getMessage(), e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }

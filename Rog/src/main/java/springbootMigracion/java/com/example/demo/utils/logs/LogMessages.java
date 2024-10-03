@@ -46,11 +46,13 @@ public enum LogMessages {
     EDITANDO_INVERSOR("Editando inversor con ID: {}"),
     INVERSOR_ACTUALIZADO("Inversor actualizado: {}"),
     INVERSOR_NO_ENCONTRADO_AL_EDITAR("Inversor no encontrado al intentar editar: {}"),
+    ERROR_SUSCRIBIR_INVERSOR("Error al suscribir el inversor: {}"),
     INSTRUMENTO_NO_ENCONTRADO_URI("Instrumento no encontrado: {}, URI: {}"),
     INSTRUMENTO_DUPLICADO_URI("Instrumento duplicado: {}, URI: {}"),
     INVERSOR_NO_ENCONTRADO_URI("Inversor no encontrado: {}, URI: {}"),
     INVERSOR_DUPLICADO_URI("Inversor duplicado: {}, URI: {}"),
     ERROR_VALIDACION_URI("Error de validación: {}, URI: {}");
+
     private final String message;
 
     LogMessages(String message) {
