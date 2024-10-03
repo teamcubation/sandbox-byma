@@ -1,6 +1,5 @@
 package springbootMigracion.java.com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,8 +23,7 @@ public class Inversor {
             joinColumns = @JoinColumn(name = "inversor_id"),
             inverseJoinColumns = @JoinColumn(name = "instrumento_id")
     )
-//    @JsonManagedReference
-    private List<InstrumentoFinanciero> instrumentosSuscritosList = new ArrayList<>();
+    private List<InstrumentoFinanciero> instrumentosSuscritos = new ArrayList<>();
 
     public Inversor(String nombre, String email) {
         this.nombre = nombre;

@@ -1,5 +1,6 @@
 package springbootMigracion.java.com.example.demo.controller;
 
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import springbootMigracion.java.com.example.demo.dto.InstrumentoDTO;
 import springbootMigracion.java.com.example.demo.model.InstrumentoFinanciero;
 import springbootMigracion.java.com.example.demo.service.IInstrumentoFinancieroService;
+import springbootMigracion.java.com.example.demo.utils.logs.LogMessages;
 
 import java.util.List;
 
@@ -19,65 +21,62 @@ public class InstrumentoFinancieroController implements IInstrumentoFinancieroAp
     @Autowired
     private IInstrumentoFinancieroService instrumentoFinancieroService;
 
-    @PostMapping("/registrar")
+    @PostMapping()
     public ResponseEntity<?> registrarInstrumento(@RequestBody InstrumentoDTO instrumentoDTO) throws Exception {
-        log.info("Solicitud para agregar instrumento: {}", instrumentoDTO);
+        log.info(LogMessages.SOLICITUD_REGISTRAR_INSTRUMENTO.getMessage(), instrumentoDTO);
         InstrumentoFinanciero instrumento = instrumentoFinancieroService.registrarInstrumento(instrumentoDTO);
-        log.info("Instrumento agregado exitosamente: {}", instrumento);
+        log.info(LogMessages.INSTRUMENTO_AGREGADO.getMessage(), instrumento);
         return ResponseEntity.status(HttpStatus.CREATED).body(instrumento);
     }
 
-    @GetMapping
-    public ResponseEntity<List<InstrumentoFinanciero>> listarInstrumentos() {
-        List<InstrumentoFinanciero> instrumentos = instrumentoFinancieroService.listarTodosLosInstrumentos();
-        log.info("Instrumentos listados: {}", instrumentos.size());
+    @GetMapping()
+    public ResponseEntity<List<InstrumentoFinanciero>> obtenerTodosLosInstrumentosOFiltrarPorNombre(@RequestParam(value = "nombre", required = false) String nombre) {
+        List<InstrumentoFinanciero> instrumentos;
+        if (nombre != null && !nombre.isEmpty()) {
+            instrumentos = instrumentoFinancieroService.listarInstrumentosPorNombre(nombre);
+            log.info(LogMessages.INSTRUMENTOS_ENCONTRADOS_POR_NOMBRE.getMessage(), nombre, instrumentos.size());
+        } else {
+            instrumentos = instrumentoFinancieroService.listarTodosLosInstrumentos();
+            log.info(LogMessages.TODOS_LOS_INSTRUMENTOS_ENCONTRADOS.getMessage(), instrumentos.size());
+        }
         return ResponseEntity.ok(instrumentos);
-    }
-
-    @GetMapping("/buscar/{nombre}")
-    public ResponseEntity<List<InstrumentoFinanciero>> listarInstrumentosPorNombre(@PathVariable String nombre) {
-        List<InstrumentoFinanciero> instrumentosPorNombre = instrumentoFinancieroService.listarInstrumentosPorNombre(nombre);
-        log.info("Instrumentos encontrados por nombre: {}", instrumentosPorNombre.size());
-        return ResponseEntity.ok(instrumentosPorNombre);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarInstrumentoPorId(@PathVariable Long id) throws Exception {
-        log.info("Solicitud para buscar instrumento por ID: {}", id);
+        log.info(LogMessages.SOLICITUD_BUSCAR_INSTRUMENTO_POR_ID.getMessage(), id);
         InstrumentoFinanciero instrumento = instrumentoFinancieroService.buscarInstrumentoPorId(id);
-        log.info("Instrumento encontrado: {}", instrumento);
+        log.info(LogMessages.INSTRUMENTO_ENCONTRADO.getMessage(), instrumento);
         return ResponseEntity.ok(instrumento);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarInstrumento(@PathVariable Long id) throws Exception {
-        log.info("Solicitud para eliminar instrumento con ID: {}", id);
+        log.info(LogMessages.SOLICITUD_ELIMINAR_INSTRUMENTO.getMessage(), id);
         instrumentoFinancieroService.eliminarInstrumento(id);
-        log.info("Instrumento con ID {} eliminado", id);
+        log.info(LogMessages.INSTRUMENTO_ELIMINADO.getMessage(), id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editarInstrumento(@PathVariable Long id, @RequestBody InstrumentoDTO nuevoInstrumentoDTO) throws Exception {
-        log.info("Solicitud para editar instrumento con ID: {}", id);
+        log.info(LogMessages.SOLICITUD_EDITAR_INSTRUMENTO.getMessage(), id);
         InstrumentoFinanciero instrumentoFinancieroActualizado = instrumentoFinancieroService.editarInstrumento(id, nuevoInstrumentoDTO);
-        log.info("Instrumento con ID {} actualizado exitosamente", id);
+        log.info(LogMessages.INSTRUMENTO_EDITADO.getMessage(), id);
         return ResponseEntity.ok(instrumentoFinancieroActualizado);
     }
 
-    @PostMapping("/suscribir/{nombreInstrumento}/{nombreInversor}")
+    @PostMapping("/suscribir/{nombreInstrumento}/inversor/{nombreInversor}")
     public ResponseEntity<?> suscribirInversor(@PathVariable String nombreInstrumento, @PathVariable String nombreInversor) throws Exception {
-        log.info("Solicitud para suscribir inversor {} al instrumento {}", nombreInversor, nombreInstrumento);
+        log.info(LogMessages.SOLICITUD_SUSCRIBIR_INVERSOR.getMessage(), nombreInversor, nombreInstrumento);
         try {
             instrumentoFinancieroService.suscribirInversor(nombreInstrumento, nombreInversor);
-            log.info("Inversor {} suscrito al instrumento {}", nombreInversor, nombreInstrumento);
+            log.info(LogMessages.INVERSOR_SUSCRITO.getMessage(), nombreInversor, nombreInstrumento);
             return ResponseEntity.ok("Inversor suscrito al instrumento correctamente.");
         } catch (IllegalArgumentException e) {
             log.error("Error al suscribir el inversor: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-
     }
-
 }

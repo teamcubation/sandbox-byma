@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import springbootMigracion.java.com.example.demo.dto.InversorDTO;
 import springbootMigracion.java.com.example.demo.model.Inversor;
 import springbootMigracion.java.com.example.demo.service.IInversorService;
+import springbootMigracion.java.com.example.demo.utils.logs.LogMessages;
 
 import java.util.List;
 
@@ -21,47 +22,46 @@ public class InversorController implements IInversorApi {
 
     @PostMapping("/registrar")
     public ResponseEntity<?> registrarInversor(@RequestBody InversorDTO inversoroDTO) throws Exception {
-        log.info("Solicitud para agregar inversor: {}", inversoroDTO);
+        log.info(LogMessages.SOLICITUD_REGISTRAR_INVERSOR.getMessage(), inversoroDTO);
         Inversor inversor = inversorService.registrarInversor(inversoroDTO);
-        log.info("Inversor agregado exitosamente: {}", inversor);
+        log.info(LogMessages.INVERSOR_REGISTRADO.getMessage(), inversor);
         return ResponseEntity.status(HttpStatus.CREATED).body(inversor);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Inversor>> listarInversores() {
-        List<Inversor> inversorList = inversorService.listarTodosLosInversores();
-        log.info("Inversores listados: {}", inversorList.size());
-        return ResponseEntity.ok(inversorList);
-    }
-
-    @GetMapping("/buscar/{nombre}")
-    public ResponseEntity<List<Inversor>> listarInversoresPorNombre(@PathVariable String nombre) {
-        List<Inversor> inversoresPorNombre = inversorService.listarInversoresPorNombre(nombre);
-        log.info("Instrumentos encontrados por nombre: {}", inversoresPorNombre.size());
-        return ResponseEntity.ok(inversoresPorNombre);
+    @GetMapping()
+    public ResponseEntity<List<Inversor>> obtenerTodosLosInversoresOFiltrarPorNombre(@RequestParam(value = "nombre", required = false) String nombre) {
+        List<Inversor> inversores;
+        if (nombre != null && !nombre.isEmpty()) {
+            inversores = inversorService.listarInversoresPorNombre(nombre);
+            log.info(LogMessages.INVERSORES_ENCONTRADOS_POR_NOMBRE.getMessage(), nombre, inversores.size());
+        } else {
+            inversores = inversorService.listarTodosLosInversores();
+            log.info(LogMessages.TODOS_LOS_INVERSORES_ENCONTRADOS.getMessage(), inversores.size());
+        }
+        return ResponseEntity.ok(inversores);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarInversorPorId(@PathVariable Long id) throws Exception{
-        log.info("Solicitud para buscar inversor por ID: {}", id);
+        log.info(LogMessages.SOLICITUD_BUSCAR_INVERSOR_POR_ID.getMessage(), id);
         Inversor inversor = inversorService.buscarInversorPorId(id);
-        log.info("Inversor encontrado: {}", inversor);
+        log.info(LogMessages.INVERSOR_ENCONTRADO.getMessage(), inversor);
         return ResponseEntity.ok(inversor);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarInversor(@PathVariable Long id) throws Exception {
-        log.info("Solicitud para eliminar inversor con ID: {}", id);
+        log.info(LogMessages.SOLICITUD_ELIMINAR_INVERSOR.getMessage(), id);
         inversorService.eliminarInversor(id);
-        log.info("Inversor con ID {} eliminado", id);
+        log.info(LogMessages.INVERSOR_ELIMINADO.getMessage(), id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editarInversor(@PathVariable Long id, @RequestBody InversorDTO nuevoInversorDTO) throws Exception {
-        log.info("Solicitud para editar inversor con ID: {}", id);
+        log.info(LogMessages.SOLICITUD_EDITAR_INVERSOR.getMessage(), id);
         Inversor inversor = inversorService.editarInversor(id, nuevoInversorDTO);
-        log.info("Inversor con ID {} actualizado exitosamente", id);
+        log.info(LogMessages.INVERSOR_ACTUALIZADO.getMessage(), id);
         return ResponseEntity.ok(inversor);
     }
 }

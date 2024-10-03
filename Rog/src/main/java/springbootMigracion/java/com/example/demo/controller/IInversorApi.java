@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import springbootMigracion.java.com.example.demo.dto.InversorDTO;
 import springbootMigracion.java.com.example.demo.model.Inversor;
 
@@ -26,22 +27,15 @@ public interface IInversorApi {
     ResponseEntity<?> registrarInversor(@RequestBody InversorDTO inversoroDTO) throws Exception;
 
     @Operation(
-            summary = "Listar inversores",
-            description = "Lista todos los inversores"
+            summary = "Listar todos los inversores o filtrar por nombre",
+            description = "En caso de que se ingrese como parametro un nombre, lista todos " +
+                    "los inversores que coinciden con el nombre ingresado, de lo contrario, " +
+                    "lista todos los inversores"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Inversores listados correctamente")
     })
-    ResponseEntity<List<Inversor>> listarInversores();
-
-    @Operation(
-            summary = "Listar inversores por nombre",
-            description = "Lista todos los inversores que coinciden con el nombre ingresado"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Inversores listados correctamente")
-    })
-    ResponseEntity<List<Inversor>> listarInversoresPorNombre(@PathVariable String nombre);
+    ResponseEntity<List<Inversor>> obtenerTodosLosInversoresOFiltrarPorNombre(@RequestParam(value = "nombre", required = false) String nombre);
 
     @Operation(
             summary = "Obtener inversor por id",

@@ -3,6 +3,7 @@ package springbootMigracion.java.com.example.demo.configuration;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.annotations.servers.ServerVariable;
 
 @OpenAPIDefinition(
         info = @Info(
@@ -13,10 +14,12 @@ import io.swagger.v3.oas.annotations.servers.Server;
         servers = {
                 @Server(
                         description = "DEV SERVER",
-                        url = "http://localhost:8080"
+                        url = "http://localhost:8080",
+                        variables = {
+                        @ServerVariable(name = "puerto", defaultValue = "${swagger.port}")
+                }
                 )
         }
-
 )
 public class SwaggerConfig {
 }

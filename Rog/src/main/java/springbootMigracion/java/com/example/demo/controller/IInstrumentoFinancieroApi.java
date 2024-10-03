@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import springbootMigracion.java.com.example.demo.dto.InstrumentoDTO;
 import springbootMigracion.java.com.example.demo.model.InstrumentoFinanciero;
 
@@ -25,22 +26,15 @@ public interface IInstrumentoFinancieroApi {
     ResponseEntity<?> registrarInstrumento(@RequestBody InstrumentoDTO instrumentoDTO) throws Exception;
 
     @Operation(
-            summary = "Listar instrumentos financieros",
-            description = "Lista todos los instrumentos financieros"
+            summary = "Listar todos los instrumentos financieros o filtrar por nombre",
+            description = "En caso de que se ingrese como parametro un nombre, lista todos " +
+                    "los instrumentos que coinciden con el nombre ingresado, de lo contrario, " +
+                    "lista todos los instrumentos financieros"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Instrumentos listados correctamente")
     })
-    ResponseEntity<List<InstrumentoFinanciero>> listarInstrumentos();
-
-    @Operation(
-            summary = "Listar instrumentos financieros por nombre",
-            description = "Lista todos los instrumentos financieros que coinciden con el nombre ingresado"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Instrumentos listados correctamente")
-    })
-    ResponseEntity<List<InstrumentoFinanciero>> listarInstrumentosPorNombre(@PathVariable String nombre);
+    ResponseEntity<List<InstrumentoFinanciero>> obtenerTodosLosInstrumentosOFiltrarPorNombre(@RequestParam(value = "nombre", required = false) String nombre);
 
     @Operation(
             summary = "Obtener instrumento financiero por id",

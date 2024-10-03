@@ -1,7 +1,6 @@
 package springbootMigracion.java.com.example.demo.model;
 
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,5 +15,4 @@ public class Bono extends InstrumentoFinanciero {
         super(nombre, precio, TIPO_BONO);
         this.tasaDeInteres = tasaDeInteres;
     }
-
 }

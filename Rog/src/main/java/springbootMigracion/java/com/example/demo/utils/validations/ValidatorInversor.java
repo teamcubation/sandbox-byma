@@ -6,17 +6,22 @@ import springbootMigracion.java.com.example.demo.exception.ValidationException;
 public class ValidatorInversor {
 
     public static void validarInversor(InversorDTO inversorDTO) throws ValidationException {
+        String mensajeError = "";
         if (inversorDTO == null) {
-            throw new ValidationException(ErrorMessages.INVERSOR_NO_NULO);
+            mensajeError += ErrorMessagesInversor.INVERSOR_NO_NULO + "-";
         }
         if (inversorDTO.getNombre() == null || inversorDTO.getNombre().isEmpty()) {
-            throw new ValidationException(ErrorMessages.NOMBRE_INVERSOR_NO_NULO);
+            mensajeError += ErrorMessagesInversor.NOMBRE_INVERSOR_NO_NULO + "-";
         }
         if (inversorDTO.getEmail() == null || inversorDTO.getEmail().isEmpty()) {
-            throw new ValidationException(ErrorMessages.EMAIL_INVERSOR_VALIDO);
+            mensajeError += ErrorMessagesInversor.EMAIL_INVERSOR_VALIDO + "-";
         }
         if (!esEmailValido(inversorDTO.getEmail())) {
-            throw new ValidationException(ErrorMessages.EMAIL_INVERSOR_FORMATO_INVALIDO);
+            mensajeError += ErrorMessagesInversor.EMAIL_INVERSOR_FORMATO_INVALIDO + "-";
+        }
+
+        if (!mensajeError.isEmpty()){
+            throw new ValidationException(mensajeError);
         }
     }
 

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import springbootMigracion.java.com.example.demo.utils.logs.LogMessages;
 
 @ControllerAdvice
 @Slf4j
@@ -16,7 +17,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public ErrorMessage instrumentoNoEncontradoException(HttpServletRequest req, Exception e) {
-        log.error("Instrumento no encontrado: {}, URI: {}", e.getMessage(), req.getRequestURI());
+        log.error(LogMessages.INSTRUMENTO_NO_ENCONTRADO_URI.getMessage(), e.getMessage(), req.getRequestURI());
         return new ErrorMessage(e, req.getRequestURI());
     }
 
@@ -24,7 +25,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ResponseBody
     public ErrorMessage instrumentoDuplicadoException(HttpServletRequest req, Exception e) {
-        log.error("Instrumento duplicado: {}, URI: {}", e.getMessage(), req.getRequestURI());
+        log.error(LogMessages.INSTRUMENTO_DUPLICADO_URI.getMessage(), e.getMessage(), req.getRequestURI());
         return new ErrorMessage(e, req.getRequestURI());
     }
 
@@ -32,7 +33,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public ErrorMessage inversorNoEncontradoException(HttpServletRequest req, Exception e) {
-        log.error("Inversor no encontrado: {}, URI: {}", e.getMessage(), req.getRequestURI());
+        log.error(LogMessages.INVERSOR_NO_ENCONTRADO_URI.getMessage(), e.getMessage(), req.getRequestURI());
         return new ErrorMessage(e, req.getRequestURI());
     }
 
@@ -40,7 +41,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ResponseBody
     public ErrorMessage inversorDuplicadoException(HttpServletRequest req, Exception e) {
-        log.error("Inversor duplicado: {}, URI: {}", e.getMessage(), req.getRequestURI());
+        log.error(LogMessages.INVERSOR_DUPLICADO_URI.getMessage(), e.getMessage(), req.getRequestURI());
         return new ErrorMessage(e, req.getRequestURI());
     }
 
@@ -48,8 +49,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
     public ErrorMessage validationException(HttpServletRequest req, Exception e) {
-        log.error("Error de validacion: {}, URI: {}", e.getMessage(), req.getRequestURI());
+        log.error(LogMessages.ERROR_VALIDACION_URI.getMessage(), e.getMessage(), req.getRequestURI());
         return new ErrorMessage(e, req.getRequestURI());
     }
-
 }

@@ -4,26 +4,28 @@ import springbootMigracion.java.com.example.demo.dto.InstrumentoDTO;
 import springbootMigracion.java.com.example.demo.exception.ValidationException;
 
 public class ValidatorInstrumentoFinanciero {
-
+    private static final String TIPO_BONO = "bono";
     public static void validarInstrumento(InstrumentoDTO instrumentoDTO) throws ValidationException {
+        String mensajeError ="";
         if (instrumentoDTO == null) {
-            throw new ValidationException(ErrorMessages.INSTRUMENTO_NO_NULO);
+            mensajeError += ErrorMessagesInstrumento.INSTRUMENTO_NO_NULO + "-";
         }
         if (instrumentoDTO.getNombre() == null || instrumentoDTO.getNombre().isEmpty()) {
-            throw new ValidationException(ErrorMessages.NOMBRE_INSTRUMENTO_NO_NULO);
+            mensajeError += ErrorMessagesInstrumento.NOMBRE_INSTRUMENTO_NO_NULO + "-";
         }
         if (instrumentoDTO.getPrecio() == null) {
-            throw new ValidationException(ErrorMessages.PRECIO_INSTRUMENTO_NO_NULO);
+            mensajeError += ErrorMessagesInstrumento.PRECIO_INSTRUMENTO_NO_NULO + "-";
+        } else if (instrumentoDTO.getPrecio() <= 0) {
+            mensajeError += ErrorMessagesInstrumento.PRECIO_INSTRUMENTO_VALIDO + "-";
         }
-        if (instrumentoDTO.getPrecio() <= 0) {
-            throw new ValidationException(ErrorMessages.PRECIO_INSTRUMENTO_VALIDO);
-        }
-
         if (instrumentoDTO.getTipo() == null || instrumentoDTO.getTipo().isEmpty()) {
-            throw new ValidationException(ErrorMessages.TIPO_INSTRUMENTO_NO_NULO);
+            mensajeError += ErrorMessagesInstrumento.TIPO_INSTRUMENTO_NO_NULO + "-";
         }
-        if ("bono".equalsIgnoreCase(instrumentoDTO.getTipo()) && instrumentoDTO.getTasaDeInteres() == null) {
-            throw new ValidationException(ErrorMessages.TASA_INTERES_BONO_NO_NULO);
+        if (TIPO_BONO.equalsIgnoreCase(instrumentoDTO.getTipo()) && instrumentoDTO.getTasaDeInteres() == null) {
+            mensajeError += ErrorMessagesInstrumento.TASA_INTERES_BONO_NO_NULO + "-";
+        }
+        if (!mensajeError.isEmpty()){
+            throw new ValidationException(mensajeError);
         }
     }
 }

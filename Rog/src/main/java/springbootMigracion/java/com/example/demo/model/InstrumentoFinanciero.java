@@ -1,6 +1,5 @@
 package springbootMigracion.java.com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,8 +10,6 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
-//@Setter
-//@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class InstrumentoFinanciero {
@@ -22,10 +19,9 @@ public abstract class InstrumentoFinanciero {
     private String nombre;
     private double precio;
     private String tipo;
-    @ManyToMany(mappedBy = "instrumentosSuscritosList", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "instrumentosSuscritos", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
-//    @JsonBackReference
-    private List<Inversor> inversoresSuscritosList = new ArrayList<>();;
+    private List<Inversor> inversoresSuscritos = new ArrayList<>();;
 
     public InstrumentoFinanciero(String nombre, double precio, String tipo) {
         this.nombre = nombre;
