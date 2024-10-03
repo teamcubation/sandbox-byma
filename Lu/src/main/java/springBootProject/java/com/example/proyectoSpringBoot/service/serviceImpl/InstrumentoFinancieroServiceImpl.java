@@ -33,20 +33,15 @@ public class InstrumentoFinancieroServiceImpl implements InstrumentoFinancieroSe
         Optional<InstrumentoFinanciero> instrumentoFinanciero = this.instrumentoFinancieroRepository.findById(id);
 
         if (instrumentoFinanciero.isEmpty()) {
-            throw new InstrumentoNoEncontradoException(MSJ_ELEMENTO_NO_ENCONTRADO);
+            throw new InstrumentoNoEncontradoException(ELEMENTO_NO_ENCONTRADO);
         }
 
         return InstrumentoFinancieroMapper.toDTO(instrumentoFinanciero.get());
     }
 
     public InstrumentoFinancieroDTO registrar(InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws InstrumentoDuplicadoException, OpcionInvalidaException {
-        if(existeNombreInstrumentoFinanciero(instrumentoFinancieroDTO.getNombre())) {
-            throw new InstrumentoDuplicadoException(MSJ_ELEMENTO_DUPLICADO);
-        }
-
-        validarDatos(instrumentoFinancieroDTO);
-
         InstrumentoFinanciero instrumentoFinanciero = InstrumentoFinancieroMapper.toModel(instrumentoFinancieroDTO);
+        validarInstrumentoFinanciero(instrumentoFinanciero);
         return InstrumentoFinancieroMapper.toDTO(this.instrumentoFinancieroRepository.save(instrumentoFinanciero));
     }
 
@@ -55,52 +50,44 @@ public class InstrumentoFinancieroServiceImpl implements InstrumentoFinancieroSe
     }
 
     public InstrumentoFinancieroDTO editar(Long id, InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws OpcionInvalidaException, InstrumentoNoEncontradoException {
-        //validarDatos(instrumentoFinancieroDTO);
-
-        //hacer el if en el caso de que no exista el instrumento financiero
         Optional<InstrumentoFinanciero> instrumentoFinancieroAEditar = this.instrumentoFinancieroRepository.findById(id);
 
         if (instrumentoFinancieroAEditar.isEmpty()) {
-            throw new InstrumentoNoEncontradoException(MSJ_ELEMENTO_NO_ENCONTRADO);
+            throw new InstrumentoNoEncontradoException(ELEMENTO_NO_ENCONTRADO);
         }
 
-        if (existeInstrumentoFinanciero(id)) {
-            InstrumentoFinanciero instrumentoFinancieroModel = InstrumentoFinancieroMapper.toModel(instrumentoFinancieroDTO);
-            instrumentoFinancieroModel.setId(id);
-            return InstrumentoFinancieroMapper.toDTO(this.instrumentoFinancieroRepository.save(instrumentoFinancieroModel));
-        }
-        throw new InstrumentoNoEncontradoException(MSJ_ELEMENTO_NO_ENCONTRADO);
+        InstrumentoFinanciero instrumentoFinancieroEditado = editarInstrumentoFinanciero(instrumentoFinancieroAEditar.get(), instrumentoFinancieroDTO);
+
+        return InstrumentoFinancieroMapper.toDTO(this.instrumentoFinancieroRepository.save(instrumentoFinancieroEditado));
     }
 
-    private void validarNombre(String nombreAValidar) throws OpcionInvalidaException {
-        if (!Validaciones.esNombreValido(nombreAValidar)) {
-            throw new OpcionInvalidaException(MSJ_OPCION_INVALIDA);
+    private InstrumentoFinanciero editarInstrumentoFinanciero(InstrumentoFinanciero instrumentoFinancieroAEditar, InstrumentoFinancieroDTO instrumentoFinancieroDTO) {
+        if (instrumentoFinancieroDTO.getTipo() != null) {
+            instrumentoFinancieroAEditar.setTipo(instrumentoFinancieroDTO.getTipo());
         }
-    }
 
-    private void validarPrecio(Double precioAValidar) throws OpcionInvalidaException {
-        if (!Validaciones.esPrecioValido(precioAValidar)) {
-            throw new OpcionInvalidaException(MSJ_OPCION_INVALIDA);
+        if (instrumentoFinancieroDTO.getNombre() != null) {
+            instrumentoFinancieroAEditar.setNombre(instrumentoFinancieroDTO.getNombre());
         }
-    }
 
-    private void validarTipo(Integer tipoAValidar) throws OpcionInvalidaException {
-        if (!Validaciones.esTipoValido(tipoAValidar)) {
-            throw new OpcionInvalidaException(MSJ_OPCION_INVALIDA);
+        if (instrumentoFinancieroDTO.getPrecio() != null) {
+            instrumentoFinancieroAEditar.setPrecio(instrumentoFinancieroDTO.getPrecio());
         }
-    }
 
-    private void validarDatos(InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws OpcionInvalidaException  {
-        validarNombre(instrumentoFinancieroDTO.getNombre());
-        validarPrecio(instrumentoFinancieroDTO.getPrecio());
-        validarTipo(instrumentoFinancieroDTO.getTipo());
+        validarInstrumentoFinanciero(instrumentoFinancieroAEditar);
+
+        return instrumentoFinancieroAEditar;
     }
 
     private boolean existeNombreInstrumentoFinanciero(String nombre) {
         return this.instrumentoFinancieroRepository.existsByNombre(nombre);
     }
 
-    private boolean existeInstrumentoFinanciero(Long id) {
-        return this.instrumentoFinancieroRepository.existsById(id);
+    private void validarInstrumentoFinanciero(InstrumentoFinanciero instrumentoFinanciero) {
+        if(existeNombreInstrumentoFinanciero(instrumentoFinanciero.getNombre())) {
+            throw new InstrumentoDuplicadoException(ELEMENTO_DUPLICADO);
+        }
+
+        Validaciones.validarInstrumentoFinanciero(instrumentoFinanciero);
     }
 }
