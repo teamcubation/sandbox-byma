@@ -22,7 +22,7 @@ public class InversorControllerImpl {
         this.inversorService = inversorService;
     }
 
-    @RequestMapping("/")
+    @GetMapping("/")
     public List<Inversor> obtenerInversores() {
         log.info("Consultando inversores.");
         return inversorService.obtenerInversores();
@@ -32,11 +32,11 @@ public class InversorControllerImpl {
     public ResponseEntity<?> registrarInversor(@RequestBody InversorDTO inversorDTO) throws Exception {
 
         log.info("Registrando inversor: {}", inversorDTO);
-        return ResponseEntity.ok(this.inversorService.registrarInversor(inversorDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(inversorService.registrarInversor(inversorDTO));
 
     }
 
-    @RequestMapping("/{nombre}")
+    @GetMapping("/{nombre}")
     public ResponseEntity<?> obtenerInversorPorNombre(@PathVariable String nombre) throws Exception {
         log.info("Buscando inversor por nombre: {}", nombre);
         return ResponseEntity.ok(this.inversorService.consultarPorUnInversor(nombre));

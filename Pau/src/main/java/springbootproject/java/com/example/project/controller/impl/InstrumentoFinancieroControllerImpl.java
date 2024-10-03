@@ -21,13 +21,13 @@ public class InstrumentoFinancieroControllerImpl implements InstrumentoFinancier
         this.instrumentoFinancieroService = instrumentoFinancieroService;
     }
 
-    @RequestMapping("/")
+    @GetMapping("/")
     public ResponseEntity<?> consultarTodosLosInstrumentosConocidos() {
         log.info("Consultando instrumentos financieros");
         return ResponseEntity.ok(instrumentoFinancieroService.consultarInstrumentosFinancieros());
     }
 
-    @RequestMapping("/{nombre}")
+    @GetMapping("/{nombre}")
     public ResponseEntity<?> consultarUnInstrumentoFinanciero(@PathVariable("nombre") String nombre) {
         log.info("Consultando instrumento financiero de nombre {}", nombre);
         return ResponseEntity.ok(this.instrumentoFinancieroService.buscarInstrumentoPorNombre(nombre));
@@ -37,7 +37,7 @@ public class InstrumentoFinancieroControllerImpl implements InstrumentoFinancier
     @Override
     public ResponseEntity<?> crearInstrumento(@RequestBody InstrumentoFinancieroDTO instrumentoFinancieroDTO) throws Exception {
         log.info("Creando instrumento financiero ", instrumentoFinancieroDTO);
-        return ResponseEntity.ok(this.instrumentoFinancieroService.registrarInstrumentoFinanciero(instrumentoFinancieroDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.instrumentoFinancieroService.registrarInstrumentoFinanciero(instrumentoFinancieroDTO));
     }
 
     @DeleteMapping("/{nombre}")
