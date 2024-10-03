@@ -1,9 +1,6 @@
 package com.example.project.model;
 
-import com.example.project.SpringCrudApplication;
-import com.example.project.exceptions.InversorNoEncontradoException;
-import com.example.project.model.instrumentoFinanciero.InstrumentoFinanciero;
-import com.example.project.service.observer.Notificador;
+import com.example.project.model.instrumentofinanciero.InstrumentoFinanciero;
 import com.example.project.service.observer.Observer;
 
 import java.time.LocalDate;

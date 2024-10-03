@@ -1,5 +1,6 @@
 package com.example.project.service;
 
+import com.example.project.utils.Validador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.project.controller.dto.InversorDTO;
@@ -22,8 +23,10 @@ public class InversorService {
     public Inversor registrarInversor(InversorDTO inversorDTO) throws InversorYaRegistradoException {
         Inversor inversor = inversorRepository.buscarInversor(inversorDTO.getNombre());
         if (inversor != null) {
-            throw new InversorYaRegistradoException("El inversor de nombre "+ inversorDTO.getNombre() + " ya fue registrado.");
+            throw new InversorYaRegistradoException("El inversor de nombre " + inversorDTO.getNombre() + " ya fue registrado.");
         }
+        Validador.validarFechaNoSeaNull(inversorDTO.getFechaDeNacimiento());
+        Validador.validarNombreInversor(inversorDTO.getNombre());
         Inversor nuevoInversor = new Inversor(inversorDTO.getNombre(), inversorDTO.getFechaDeNacimiento());
         return inversorRepository.agregarInversor(nuevoInversor);
     }
@@ -48,6 +51,5 @@ public class InversorService {
         } else {
             this.inversorRepository.eliminarInversor(inversor);
         }
-
     }
 }

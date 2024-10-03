@@ -44,4 +44,11 @@ public class GlobalExceptionHandler {
     public ErrorMessage NoExisteEseTipoDeInstrumentoHandler(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(exception, request.getRequestURI());
     }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler({Exception.class})
+    @ResponseBody
+    public ErrorMessage generalExceptionHandler(HttpServletRequest request, Exception e) {
+        return new ErrorMessage(e, request.getRequestURI());
+    }
 }

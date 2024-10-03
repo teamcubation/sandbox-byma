@@ -1,7 +1,6 @@
 package com.example.project.service;
 
-import com.example.project.repository.interfaces.IIntrumentoFinacieroRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import com.example.project.repository.interfaces.InstrumentoFinancieroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.project.controller.dto.EditarInstrumentoDTO;
@@ -9,18 +8,18 @@ import com.example.project.controller.dto.InstrumentoFinancieroDTO;
 import com.example.project.exceptions.InstrumentoDuplicadoException;
 import com.example.project.exceptions.InstrumentoNoEncontradoException;
 import com.example.project.exceptions.NoExisteEseTipoDeInstrumentoException;
-import com.example.project.model.instrumentoFinanciero.InstrumentoFinanciero;
-import com.example.project.model.instrumentoFinanciero.factoryInstrumentos.AccionFactory;
-import com.example.project.model.instrumentoFinanciero.factoryInstrumentos.BonoFactory;
+import com.example.project.model.instrumentofinanciero.InstrumentoFinanciero;
+import com.example.project.model.instrumentofinanciero.factoryInstrumentos.AccionFactory;
+import com.example.project.model.instrumentofinanciero.factoryInstrumentos.BonoFactory;
 
 import java.util.List;
 
 @Service
 public class InstrumentoFinancieroService {
-    private IIntrumentoFinacieroRepository instrumentosFinancierosRepository;
+    private InstrumentoFinancieroRepository instrumentosFinancierosRepository;
 
     @Autowired
-    public InstrumentoFinancieroService(IIntrumentoFinacieroRepository instrumentosFinancierosRepository) {
+    public InstrumentoFinancieroService(InstrumentoFinancieroRepository instrumentosFinancierosRepository) {
         this.instrumentosFinancierosRepository = instrumentosFinancierosRepository;
     }
 
@@ -38,8 +37,6 @@ public class InstrumentoFinancieroService {
                 AccionFactory accionFactory = new AccionFactory();
                 instrumentoFinanciero = accionFactory.createInstrumentoFinanciero(instrumentoFinancieroDTO.getNombre(), instrumentoFinancieroDTO.getPrecio(), instrumentoFinancieroDTO.getFechaDeEmision());
                 break;
-            default:
-                throw new NoExisteEseTipoDeInstrumentoException("El tipo ingresado no corresponde a un tipo de instrumento conocido.");
         }
         return this.instrumentosFinancierosRepository.save(instrumentoFinanciero);
     }

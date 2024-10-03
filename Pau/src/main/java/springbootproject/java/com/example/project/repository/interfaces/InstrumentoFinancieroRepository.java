@@ -1,7 +1,7 @@
 package com.example.project.repository.interfaces;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.project.model.instrumentoFinanciero.InstrumentoFinanciero;
+import com.example.project.model.instrumentofinanciero.InstrumentoFinanciero;
 import org.springframework.stereotype.Repository;
 
 @Repository

@@ -1,4 +1,4 @@
-package com.example.project.model.instrumentoFinanciero;
+package com.example.project.model.instrumentofinanciero;
 
 public enum TipoInstrumentoFinanciero {
     BONO, ACCION
