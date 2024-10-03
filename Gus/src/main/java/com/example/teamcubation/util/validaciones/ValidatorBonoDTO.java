@@ -16,65 +16,71 @@ public class ValidatorBonoDTO {
     private static final String REGEX_LETRAS_NUMEROS = "^[a-zA-Z0-9\\s]+$";
 
     public static void validarBonoDTO(BonoDTO nuevoBono) throws ModeloInvalidoException {
-
         List<String> errores = new ArrayList<>();
-
-        if (nombreEsNull(nuevoBono.getNombre())) {
-            log.error(ERROR_EL_NOMBRE_DEL_INSTRUMENTO_NO_PUEDE_SER_NULO);
-            errores.add(EL_NOMBRE_DEL_INSTRUMENTO_NO_PUEDE_SER_NULO);
-            throw new ModeloInvalidoException(ERROR_MESSAGE_HEADER + String.join(",", errores));
-
+        validarDatosDelBonoDTO(nuevoBono, errores);
+        if (!errores.isEmpty()) {
+            throw new ModeloInvalidoException(ERROR_MESSAGE_HEADER + errores.stream().collect(Collectors.joining(",", "[", "]")));
         }
+    }
 
+    private static void validarDatosDelBonoDTO(BonoDTO nuevoBono, List<String> errores) {
+        validarNombreNullDTO(nuevoBono, errores);
+        validarTasaDeInteresDTO(nuevoBono, errores);
+        validarPrecioDTO(nuevoBono, errores);
+        validarContenidoNombreDTO(nuevoBono, errores);
+        validaFormatoNombreDTO(nuevoBono, errores);
+        validarPrecioDTOPositivo(nuevoBono, errores);
+        validarTasaDTOPositiva(nuevoBono, errores);
+    }
 
-        if (tasaDeInteresEsInvalida(nuevoBono.getTasaInteres())) {
-
-            log.error(ERROR_MESSAGE_HEADER + LA_TASA_DE_INTERES_ES_INVALIDA);
-            errores.add(LA_TASA_DE_INTERES_ES_INVALIDA);
-            throw new ModeloInvalidoException(ERROR_MESSAGE_HEADER + String.join(",", errores));
-
-        }
-
-        if (precioEsInvalido(nuevoBono.getPrecio())) {
-
-            log.error(ERROR_EL_PRECIO_INGRESADO_ES_INVALIDO);
-            errores.add(EL_PRECIO_INGRESADO_ES_INVALIDO);
-            throw new ModeloInvalidoException(ERROR_MESSAGE_HEADER + String.join(",", errores));
-
-        }
-
-
-        //Validacion Nombre
-        if (nombreVacio(nuevoBono.getNombre())) {
-
-            log.error(ERROR_EL_NOMBRE_DEL_INSTRUMENTO_NO_PUEDE_SER_VACIO);
-            errores.add(EL_NOMBRE_DEL_INSTRUMENTO_NO_PUEDE_SER_VACIO);
-        }
-
-        if (nombreContieneCaracteresEspeciales(nuevoBono.getNombre())) {
-
-            log.error(ERROR_EL_NOMBRE_DEL_INSTRUMENTO_NO_PUEDE_CONTENER_CARACTERES_ESPECIALES);
-            errores.add(EL_NOMBRE_DEL_INSTRUMENTO_NO_PUEDE_CONTENER_CARACTERES_ESPECIALES);
-        }
-
-
-        //Validacion Precio
-        if (precioMenorACero(nuevoBono.getPrecio())) {
-
-            log.error(ERROR_EL_PRECIO_DEL_INSTRUMENTO_DEBE_SER_MAYOR_A_0);
-            errores.add(EL_PRECIO_DEL_INSTRUMENTO_DEBE_SER_MAYOR_A_0);
-        }
-
-
+    private static void validarTasaDTOPositiva(BonoDTO nuevoBono, List<String> errores) {
         if (tasaDeInteresMenorACero(nuevoBono.getTasaInteres())) {
-
             log.error(ERROR_MESSAGE_HEADER + LA_TASA_DE_INTERES_DEL_INSTRUMENTO_DEBE_SER_MAYOR_A_0);
             errores.add(LA_TASA_DE_INTERES_DEL_INSTRUMENTO_DEBE_SER_MAYOR_A_0);
         }
+    }
 
+    private static void validarPrecioDTOPositivo(BonoDTO nuevoBono, List<String> errores) {
+        //Validacion Precio
+        if (precioMenorACero(nuevoBono.getPrecio())) {
+            log.error(ERROR_EL_PRECIO_DEL_INSTRUMENTO_DEBE_SER_MAYOR_A_0);
+            errores.add(EL_PRECIO_DEL_INSTRUMENTO_DEBE_SER_MAYOR_A_0);
+        }
+    }
 
-        if (!errores.isEmpty()) {
-            throw new ModeloInvalidoException(ERROR_MESSAGE_HEADER + errores.stream().collect(Collectors.joining(",", "[", "]")));
+    private static void validaFormatoNombreDTO(BonoDTO nuevoBono, List<String> errores) {
+        if (nombreContieneCaracteresEspeciales(nuevoBono.getNombre())) {
+            log.error(ERROR_EL_NOMBRE_DEL_INSTRUMENTO_NO_PUEDE_CONTENER_CARACTERES_ESPECIALES);
+            errores.add(EL_NOMBRE_DEL_INSTRUMENTO_NO_PUEDE_CONTENER_CARACTERES_ESPECIALES);
+        }
+    }
+
+    private static void validarContenidoNombreDTO(BonoDTO nuevoBono, List<String> errores) {
+        //Validacion Nombre
+        if (nombreVacio(nuevoBono.getNombre())) {
+            log.error(ERROR_EL_NOMBRE_DEL_INSTRUMENTO_NO_PUEDE_SER_VACIO);
+            errores.add(EL_NOMBRE_DEL_INSTRUMENTO_NO_PUEDE_SER_VACIO);
+        }
+    }
+
+    private static void validarPrecioDTO(BonoDTO nuevoBono, List<String> errores) {
+        if (precioEsInvalido(nuevoBono.getPrecio())) {
+            log.error(ERROR_EL_PRECIO_INGRESADO_ES_INVALIDO);
+            errores.add(EL_PRECIO_INGRESADO_ES_INVALIDO);
+        }
+    }
+
+    private static void validarTasaDeInteresDTO(BonoDTO nuevoBono, List<String> errores) {
+        if (tasaDeInteresEsInvalida(nuevoBono.getTasaInteres())) {
+            log.error(ERROR_MESSAGE_HEADER + LA_TASA_DE_INTERES_ES_INVALIDA);
+            errores.add(LA_TASA_DE_INTERES_ES_INVALIDA);
+        }
+    }
+
+    private static void validarNombreNullDTO(BonoDTO nuevoBono, List<String> errores) {
+        if (nombreEsNull(nuevoBono.getNombre())) {
+            log.error(ERROR_EL_NOMBRE_DEL_INSTRUMENTO_NO_PUEDE_SER_NULO);
+            errores.add(EL_NOMBRE_DEL_INSTRUMENTO_NO_PUEDE_SER_NULO);
         }
     }
 
