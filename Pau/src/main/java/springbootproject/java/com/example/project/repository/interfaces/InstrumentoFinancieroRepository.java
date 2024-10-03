@@ -5,9 +5,6 @@ import com.example.project.model.instrumentoFinanciero.InstrumentoFinanciero;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IIntrumentoFinacieroRepository extends JpaRepository<InstrumentoFinanciero, Long> {
-    InstrumentoFinanciero save(InstrumentoFinanciero instrumentoFinanciero);
-
-    void delete(InstrumentoFinanciero instrumentoFinanciero);
+public interface InstrumentoFinancieroRepository extends JpaRepository<InstrumentoFinanciero, Long> {
 
 }
