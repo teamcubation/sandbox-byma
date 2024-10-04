@@ -27,14 +27,14 @@ public class ValidationUtils {
     }
 
 
-    public static void validarValorPositivo(double valor, String mensajeError) throws InvalidInstrumentoDataException {
-        if (valor <= 0) {
+    public static void validarValorPositivo(Double valor, String mensajeError) throws InvalidInstrumentoDataException {
+        if (valor == null || valor <= 0) {
             throw new InvalidInstrumentoDataException(mensajeError);
         }
     }
 
     public static void validarAccionDTO(AccionDTO accionDTO) throws InvalidInstrumentoDataException {
-        validarEsNulo(accionDTO.getDividendo(), "El campo 'dividendo' es requerido para una acción.");
+        validarValorPositivo(accionDTO.getDividendo(), "El campo 'dividendo' es requerido para una acción.");
         validarCadenaNoVacia(accionDTO.getNombre(), "El campo 'nombre' es requerido para una acción.");
         validarValorPositivo(accionDTO.getPrecio(), "El campo 'precio' debe ser un valor positivo.");
 
@@ -51,6 +51,12 @@ public class ValidationUtils {
         validarEsNoNulo(bonoDTO.getFinDelParking(), "El campo 'finDelParking' no es válido para la creación.");
         validarEsNoNulo(bonoDTO.getFechaCreacion(), "El campo 'fechaCreacion' no es válido para la creación.");
         validarEsNoNulo(bonoDTO.getId(), "El campo 'id' no es válido para la creación.");
+    }
+
+    public static void validarAccionActualizacion(AccionDTO accionDTO) throws InvalidInstrumentoDataException {
+        validarEsNoNulo(accionDTO.getFinDelParking(), "El campo 'finDelParking' no es válido para la actualización.");
+        validarEsNoNulo(accionDTO.getFechaCreacion(), "El campo 'fechaCreacion' no es válido para la actualización.");
+        validarEsNoNulo(accionDTO.getId(), "El campo 'id' no es válido para la actualización.");
     }
 
 

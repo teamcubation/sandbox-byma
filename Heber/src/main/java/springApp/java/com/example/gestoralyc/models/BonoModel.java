@@ -17,7 +17,7 @@ public class BonoModel extends InstrumentoFinancieroModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bono_seq")
     @SequenceGenerator(name = "bono_seq", sequenceName = "bono_sequence", allocationSize = 1)
-    private long id; // El ID se generará con su propia secuencia
+    private long id;
 
     private double tasaInteres;
 }

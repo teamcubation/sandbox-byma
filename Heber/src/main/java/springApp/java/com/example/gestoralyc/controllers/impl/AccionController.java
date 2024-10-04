@@ -35,7 +35,9 @@ public class AccionController {
     @GetMapping("/")
     public ResponseEntity<List<AccionDTO>> obtenerAcciones() {
         log.info("Obteniendo instrumentos");
-        List<AccionDTO> accionesDTOList = accionService.obtenerAcciones().stream()
+        List<AccionDTO> accionesDTOList = accionService
+                .obtenerAcciones()
+                .stream()
                 .map(AccionMapper::mapToDTO)
                 .toList();
         log.info("Instrumentos obtenidos: {}", accionesDTOList);
@@ -62,7 +64,7 @@ public class AccionController {
     @PutMapping("/{id}")
     public ResponseEntity<AccionDTO> editarInstrumentoSegundId(@PathVariable Long id, @RequestBody AccionDTO accionDTO) {
         log.info("Editando instrumento con id: {}", id);
-        AccionDTO accionEditadaDTO = AccionMapper.mapToDTO(accionService.editarAccion(id, AccionMapper.mapToModel(accionDTO)));
+        AccionDTO accionEditadaDTO = AccionMapper.mapToDTO(accionService.editarAccion(id, AccionMapper.mapToModelActualizacion(accionDTO)));
         log.info("Instrumento editado: {}", accionEditadaDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(accionEditadaDTO);
     }

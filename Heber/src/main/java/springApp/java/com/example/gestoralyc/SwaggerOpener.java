@@ -12,7 +12,7 @@ public class SwaggerOpener implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        String swaggerUrl = "http://localhost:5000/swagger-ui.html"; // La URL de Swagger
+        String swaggerUrl = "http://localhost:5000/swagger-ui.html";
         if (Desktop.isDesktopSupported()) {
             Desktop.getDesktop().browse(new URI(swaggerUrl));
         } else {

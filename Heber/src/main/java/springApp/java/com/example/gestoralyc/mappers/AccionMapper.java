@@ -28,4 +28,13 @@ public class AccionMapper {
         return dto;
     }
 
+    public static AccionModel mapToModelActualizacion(AccionDTO accionDTO) throws InvalidInstrumentoDataException {
+        ValidationUtils.validarAccionActualizacion(accionDTO);
+        return AccionModel.builder()
+                .nombre(accionDTO.getNombre())
+                .precio(accionDTO.getPrecio())
+                .dividendo(accionDTO.getDividendo())
+                .build();
+    }
+
 }

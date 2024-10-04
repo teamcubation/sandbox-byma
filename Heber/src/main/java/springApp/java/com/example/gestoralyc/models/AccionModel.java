@@ -16,7 +16,7 @@ public class AccionModel extends InstrumentoFinancieroModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "accion_seq")
     @SequenceGenerator(name = "accion_seq", sequenceName = "accion_sequence", allocationSize = 1)
-    private long id; // El ID se generará con su propia secuencia
+    private long id;
 
-    private double dividendo;
+    private Double dividendo;
 }

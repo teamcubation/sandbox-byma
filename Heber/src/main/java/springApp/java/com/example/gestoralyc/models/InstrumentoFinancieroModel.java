@@ -14,12 +14,12 @@ import java.time.LocalDate;
 public abstract class InstrumentoFinancieroModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE) // Aquí debes definir una estrategia compatible en las subclases
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id_instrumento")
     private long id;
 
     private String nombre;
-    private double precio;
+    private Double precio;
     private LocalDate fechaCreacion;
 
 }
