@@ -68,21 +68,17 @@ public class AccionServiceImpl implements AccionService {
             bonoService.validarSiExisteBonoPorNombre(accionModel.getNombre());
         }
 
-        if (accionModel.getPrecio() == null || accionModel.getPrecio() <= 0) {
-            accionModel.setPrecio(accionExistente.getPrecio());
+        if (accionModel.getPrecio() != null && accionModel.getPrecio() > 0) {
+            accionExistente.setPrecio(accionModel.getPrecio());
         }
 
-        if (accionModel.getDividendo() == null || accionModel.getDividendo() <= 0) {
-            accionModel.setDividendo(accionExistente.getDividendo());
-        }
-
-        if (accionModel.getNombre() == null || accionModel.getNombre().trim().isEmpty()) {
-            accionModel.setNombre(accionExistente.getNombre());
+        if (accionModel.getDividendo() != null && accionModel.getDividendo() > 0) {
+            accionExistente.setDividendo(accionModel.getDividendo());
         }
         
-        accionExistente.setNombre(accionModel.getNombre());
-        accionExistente.setPrecio(accionModel.getPrecio());
-        accionExistente.setDividendo(accionModel.getDividendo());
+        if (accionModel.getNombre() != null) {
+            accionExistente.setNombre(accionModel.getNombre());
+        }
 
         return accionRepository.save(accionExistente);
     }
