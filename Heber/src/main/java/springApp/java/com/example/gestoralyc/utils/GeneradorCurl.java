@@ -8,23 +8,14 @@ public class GeneradorCurl {
     public static String generarCurlAccion(AccionDTO accionDTO) {
         StringBuilder curl = new StringBuilder();
 
-        // Agregar el comando base de cURL
         curl.append("curl -X POST ");
         curl.append("\"http://localhost:5000/api/acciones/\" ");
         curl.append("-H \"Content-Type: application/json\" ");
         curl.append("-d '{");
 
-        // Añadir los campos del DTO en formato JSON
         curl.append("\"nombre\":\"").append(accionDTO.getNombre()).append("\", ");
         curl.append("\"precio\":").append(accionDTO.getPrecio()).append(", ");
         curl.append("\"dividendo\":").append(accionDTO.getDividendo());
-
-        // Si hay una fecha de creación, añadirla
-        if (accionDTO.getFechaCreacion() != null) {
-            curl.append(", \"fechaCreacion\":\"").append(accionDTO.getFechaCreacion().toString()).append("\"");
-        }
-
-        // Cerrar el objeto JSON
         curl.append("}'");
 
         return curl.toString();

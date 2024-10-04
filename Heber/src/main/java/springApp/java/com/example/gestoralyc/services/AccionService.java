@@ -19,4 +19,6 @@ public interface AccionService {
     AccionModel editarAccion(Long id, AccionModel accionModel) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException;
 
     AccionModel getAccionPorNombre(String nombre);
+
+    void validarSiExisteAccionPorNombre(String nombre);
 }

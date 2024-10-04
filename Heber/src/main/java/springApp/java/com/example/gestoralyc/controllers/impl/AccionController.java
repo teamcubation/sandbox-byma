@@ -33,29 +33,26 @@ public class AccionController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<AccionDTO>> obtenerInstrumentos() {
+    public ResponseEntity<List<AccionDTO>> obtenerAcciones() {
         log.info("Obteniendo instrumentos");
-        List<AccionModel> accionesList = accionService.obtenerAcciones();
-
-        List<AccionDTO> accionesDTOList = accionesList.stream()
+        List<AccionDTO> accionesDTOList = accionService.obtenerAcciones().stream()
                 .map(AccionMapper::mapToDTO)
-                .toList();  // Convertir el Stream a una lista
+                .toList();
         log.info("Instrumentos obtenidos: {}", accionesDTOList);
         return ResponseEntity.ok(accionesDTOList);
     }
 
     @SneakyThrows
     @GetMapping("/{id}")
-    public ResponseEntity<AccionDTO> obtenerInstrumentoPorId(@PathVariable Long id) {
+    public ResponseEntity<AccionDTO> obtenerAccionPorId(@PathVariable Long id) {
         log.info("Obteniendo instrumento con id: {}", id);
-        AccionModel accion = accionService.obtenerAccionPorId(id);
-        AccionDTO accionDTO = AccionMapper.mapToDTO(accion);
+        AccionDTO accionDTO = AccionMapper.mapToDTO(accionService.obtenerAccionPorId(id));
         log.info("Instrumento obtenido: {}", accionDTO);
         return ResponseEntity.ok(accionDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarInstrumentoPorId(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarAccionPorId(@PathVariable Long id) {
         log.info("Eliminando instrumento con id: {}", id);
         accionService.eliminarAccionPorId(id);
         log.info("Instrumento eliminado con id: {}", id);
@@ -63,11 +60,9 @@ public class AccionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AccionDTO> editarInstrumento(@PathVariable Long id, @RequestBody AccionDTO accionDTO) {
+    public ResponseEntity<AccionDTO> editarInstrumentoSegundId(@PathVariable Long id, @RequestBody AccionDTO accionDTO) {
         log.info("Editando instrumento con id: {}", id);
-        AccionModel accionModel = AccionMapper.mapToModel(accionDTO);
-        AccionModel accionEditada = accionService.editarAccion(id, accionModel);
-        AccionDTO accionEditadaDTO = AccionMapper.mapToDTO(accionEditada);
+        AccionDTO accionEditadaDTO = AccionMapper.mapToDTO(accionService.editarAccion(id, AccionMapper.mapToModel(accionDTO)));
         log.info("Instrumento editado: {}", accionEditadaDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(accionEditadaDTO);
     }

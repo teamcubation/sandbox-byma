@@ -32,20 +32,18 @@ public class BonoController {
     @GetMapping("/")
     public ResponseEntity<List<BonoDTO>> obtenerBonos() {
         log.info("Obteniendo instrumentos");
-        List<BonoModel> bonosList = bonoService.obtenerBonos();
-        List<BonoDTO> bonosDTOList = bonosList.stream()
+        List<BonoDTO> bonosDTOList = bonoService.obtenerBonos().stream()
                 .map(BonoMapper::mapToDTO)
                 .toList();
 
-        log.info("Instrumentos obtenidos: {}", bonosList);
+        log.info("Instrumentos obtenidos: {}", bonosDTOList);
         return ResponseEntity.ok(bonosDTOList);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BonoDTO> obtenerBonoPorId(@PathVariable Long id) {
         log.info("Obteniendo instrumento con id: {}", id);
-        BonoModel bono = bonoService.obtenerBonoPorId(id);
-        BonoDTO bonoDTO = BonoMapper.mapToDTO(bono);
+        BonoDTO bonoDTO = BonoMapper.mapToDTO(bonoService.obtenerBonoPorId(id));
         log.info("Instrumento obtenido: {}", bonoDTO);
         return ResponseEntity.ok(bonoDTO);
     }
@@ -59,11 +57,9 @@ public class BonoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BonoDTO> editarBono(@PathVariable Long id, @RequestBody BonoDTO bonoDTO) {
+    public ResponseEntity<BonoDTO> editarBonoSegundId(@PathVariable Long id, @RequestBody BonoDTO bonoDTO) {
         log.info("Editando bono con id: {}", id);
-        BonoModel bonoModel = BonoMapper.mapToModel(bonoDTO);
-        BonoModel bonoEditado = bonoService.editarBono(id, bonoModel);
-        BonoDTO bonoEditadoDTO = BonoMapper.mapToDTO(bonoEditado);
+        BonoDTO bonoEditadoDTO = BonoMapper.mapToDTO(bonoService.editarBono(id, BonoMapper.mapToModel(bonoDTO)));
         log.info("Bono editado: {}", bonoEditadoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(bonoEditadoDTO);
     }

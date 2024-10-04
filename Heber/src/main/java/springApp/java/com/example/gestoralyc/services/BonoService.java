@@ -19,4 +19,6 @@ public interface BonoService {
     BonoModel editarBono(Long id, BonoModel bonoModel) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException;
 
     BonoModel getBonoPorNombre(String nombre);
+
+    void validarSiExisteBonoPorNombre(String nombre);
 }

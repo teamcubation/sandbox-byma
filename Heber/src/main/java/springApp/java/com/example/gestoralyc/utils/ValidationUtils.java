@@ -1,59 +1,57 @@
 package springApp.java.com.example.gestoralyc.utils;
 
+import springApp.java.com.example.gestoralyc.dto.AccionDTO;
+import springApp.java.com.example.gestoralyc.dto.BonoDTO;
 import springApp.java.com.example.gestoralyc.exceptions.InvalidInstrumentoDataException;
-import springApp.java.com.example.gestoralyc.models.InstrumentoFinancieroModel;
 
 public class ValidationUtils {
 
-    private static final String MSJ_ERROR_INSTRUMENTO_NULO = "Instrumento nulo";
-    private static final String MSJ_ERROR_CADENA_VACIA = "Cadena vacía";
-    private static final String MSJ_ERROR_PRECIO_NEGATIVO = "Precio negativo";
+    public static void validarEsNoNulo(Object objeto, String mensajeError) throws InvalidInstrumentoDataException {
+        if (objeto != null) {
+            throw new InvalidInstrumentoDataException(mensajeError);
+        }
+    }
 
-    //TODO: hacer constantes los mensajes de error y no pedir mensajes de error en los metodos
-    // Método para validar que un objeto no sea null
-    public static void validarNoNulo(Object objeto, String mensajeError) throws InvalidInstrumentoDataException {
+
+    public static void validarEsNulo(Object objeto, String mensajeError) throws InvalidInstrumentoDataException {
         if (objeto == null) {
             throw new InvalidInstrumentoDataException(mensajeError);
         }
     }
 
-    public static void validarNoNulo(Object objeto) throws InvalidInstrumentoDataException {
-        if (objeto == null) {
-            throw new InvalidInstrumentoDataException(MSJ_ERROR_INSTRUMENTO_NULO);
-        }
-    }
 
-
-    // Método para validar que una cadena no sea null o vacía
     public static void validarCadenaNoVacia(String cadena, String mensajeError) throws InvalidInstrumentoDataException {
         if (cadena == null || cadena.trim().isEmpty()) {
             throw new InvalidInstrumentoDataException(mensajeError);
         }
     }
 
-    public static void validarCadenaNoVacia(String cadena) throws InvalidInstrumentoDataException {
-        if (cadena == null || cadena.trim().isEmpty()) {
-            throw new InvalidInstrumentoDataException(MSJ_ERROR_CADENA_VACIA);
-        }
-    }
 
-    // Método para validar que un valor numérico sea mayor a cero
-    public static void validarPrecioPositivo(double precio, String mensajeError) throws InvalidInstrumentoDataException {
-        if (precio <= 0) {
+    public static void validarValorPositivo(double valor, String mensajeError) throws InvalidInstrumentoDataException {
+        if (valor <= 0) {
             throw new InvalidInstrumentoDataException(mensajeError);
         }
     }
 
-    public static void validarPrecioPositivo(double precio) throws InvalidInstrumentoDataException {
-        if (precio <= 0) {
-            throw new InvalidInstrumentoDataException(MSJ_ERROR_PRECIO_NEGATIVO);
-        }
+    public static void validarAccionDTO(AccionDTO accionDTO) throws InvalidInstrumentoDataException {
+        validarEsNulo(accionDTO.getDividendo(), "El campo 'dividendo' es requerido para una acción.");
+        validarCadenaNoVacia(accionDTO.getNombre(), "El campo 'nombre' es requerido para una acción.");
+        validarValorPositivo(accionDTO.getPrecio(), "El campo 'precio' debe ser un valor positivo.");
+
+        validarEsNoNulo(accionDTO.getFinDelParking(), "El campo 'finDelParking' no es válido para la creación.");
+        validarEsNoNulo(accionDTO.getFechaCreacion(), "El campo 'fechaCreacion' no es válido para la creación.");
+        validarEsNoNulo(accionDTO.getId(), "El campo 'id' no es válido para la creación.");
     }
 
-    public static boolean isValidInstrumento(InstrumentoFinancieroModel instrumento) {
-        return instrumento != null
-                && instrumento.getNombre() != null
-                && !instrumento.getNombre().trim().isEmpty()
-                && instrumento.getPrecio() > 0;
+    public static void validarBonoDTO(BonoDTO bonoDTO) throws InvalidInstrumentoDataException {
+        validarCadenaNoVacia(bonoDTO.getNombre(), "El campo 'nombre' es requerido para un bono.");
+        validarValorPositivo(bonoDTO.getPrecio(), "El campo 'precio' debe ser un valor positivo.");
+        validarValorPositivo(bonoDTO.getTasaInteres(), "El campo 'tasaInteres' debe ser un valor positivo.");
+
+        validarEsNoNulo(bonoDTO.getFinDelParking(), "El campo 'finDelParking' no es válido para la creación.");
+        validarEsNoNulo(bonoDTO.getFechaCreacion(), "El campo 'fechaCreacion' no es válido para la creación.");
+        validarEsNoNulo(bonoDTO.getId(), "El campo 'id' no es válido para la creación.");
     }
+
+
 }

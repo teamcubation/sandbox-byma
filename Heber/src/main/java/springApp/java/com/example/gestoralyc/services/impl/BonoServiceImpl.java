@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import springApp.java.com.example.gestoralyc.exceptions.InstrumentoDuplicadoException;
 import springApp.java.com.example.gestoralyc.exceptions.InstrumentoNoEncontradoException;
 import springApp.java.com.example.gestoralyc.exceptions.InvalidInstrumentoDataException;
-import springApp.java.com.example.gestoralyc.models.AccionModel;
 import springApp.java.com.example.gestoralyc.models.BonoModel;
 import springApp.java.com.example.gestoralyc.repositories.BonoRepository;
 import springApp.java.com.example.gestoralyc.services.AccionService;
@@ -24,6 +23,18 @@ public class BonoServiceImpl implements BonoService {
     @Lazy
     private AccionService accionService;
 
+    public void validarSiExisteBonoPorNombre(String nombre) throws InstrumentoDuplicadoException {
+        if (bonoRepository.existsByNombreIgnoreCase(nombre)) {
+            throw new InstrumentoDuplicadoException(nombre);
+        }
+    }
+
+    public void validarSiExisteBonoPorId(Long id) throws InstrumentoNoEncontradoException {
+        if (!bonoRepository.existsById(id)) {
+            throw new InstrumentoNoEncontradoException(id);
+        }
+    }
+
     @Override
     public List<BonoModel> obtenerBonos() {
         return bonoRepository.findAll();
@@ -31,16 +42,8 @@ public class BonoServiceImpl implements BonoService {
 
     @Override
     public BonoModel agregarBono(BonoModel bono) throws InstrumentoDuplicadoException, InvalidInstrumentoDataException {
-        //TODO: Validar que los datos de la acción sean correctos
-        if (bonoRepository.existsByNombreIgnoreCase(bono.getNombre())) {
-            throw new InstrumentoDuplicadoException("El bono con nombre " + bono.getNombre() + " ya existe");
-        }
-        if (bono.getNombre().isEmpty() || bono.getNombre().isBlank()) {
-            throw new InvalidInstrumentoDataException("El nombre del bono no puede estar vacío");
-        }
-
-        AccionModel accionObtenida = accionService.getAccionPorNombre(bono.getNombre());
-
+        validarSiExisteBonoPorNombre(bono.getNombre());
+        accionService.validarSiExisteAccionPorNombre(bono.getNombre());
 
         return bonoRepository.save(bono);
     }
@@ -48,41 +51,29 @@ public class BonoServiceImpl implements BonoService {
 
     @Override
     public BonoModel obtenerBonoPorId(Long id) throws InstrumentoNoEncontradoException {
-        return bonoRepository.findById(id).orElseThrow(() -> new InstrumentoNoEncontradoException("El bono con id " + id + " no fue encontrado"));
+        validarSiExisteBonoPorId(id);
+        return bonoRepository.findById(id).get();
     }
 
     @Override
     public void eliminarBonoPorId(Long id) throws InstrumentoNoEncontradoException {
-        if (!bonoRepository.existsById(id)) {
-            throw new InstrumentoNoEncontradoException("El bono con id " + id + " no fue encontrado");
-        }
+        validarSiExisteBonoPorId(id);
         bonoRepository.deleteById(id);
     }
 
     @Override
     public BonoModel editarBono(Long id, BonoModel bonoModel) throws InstrumentoNoEncontradoException, InstrumentoDuplicadoException {
-        // Busca el bono existente por el ID
-        BonoModel bonoExistente = bonoRepository.findById(id)
-                .orElseThrow(() -> new InstrumentoNoEncontradoException("El bono con id " + id + " no fue encontrado"));
+        BonoModel bonoExistente = obtenerBonoPorId(id);
 
-        // Verifica si hay un bono con el mismo nombre, pero que no sea el bono actual
-        if (bonoRepository.existsByNombreIgnoreCase(bonoModel.getNombre()) &&
-                !bonoModel.getNombre().equalsIgnoreCase(bonoExistente.getNombre())) {
-            throw new InstrumentoDuplicadoException("El bono con nombre " + bonoModel.getNombre() + " ya existe");
+        if (!bonoExistente.getNombre().equals(bonoModel.getNombre())) {
+            validarSiExisteBonoPorNombre(bonoModel.getNombre());
+            accionService.validarSiExisteAccionPorNombre(bonoModel.getNombre());
         }
 
-        AccionModel accionObtenida = accionService.getAccionPorNombre(bonoModel.getNombre());
-
-        if (accionObtenida != null) {
-            throw new InstrumentoDuplicadoException("La acción con nombre " + bonoModel.getNombre() + " ya existe");
-        }
-
-        // Actualiza los campos del bono existente con los nuevos valores
         bonoExistente.setNombre(bonoModel.getNombre());
         bonoExistente.setPrecio(bonoModel.getPrecio());
         bonoExistente.setTasaInteres(bonoModel.getTasaInteres());
 
-        // Guarda el bono actualizado
         return bonoRepository.save(bonoExistente);
     }
 
