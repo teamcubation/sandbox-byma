@@ -1,9 +1,10 @@
 package com.example.project.exceptions;
 
+import com.example.project.utils.messages.ErrorMessageException;
+
 public class InstrumentoDuplicadoException extends Exception {
-    private static final String DESCRIPTION = "Instrumento duplicado exception. ";
 
     public InstrumentoDuplicadoException(String message) {
-        super(DESCRIPTION + message);
+        super(ErrorMessageException.INSTRUMENTO_DUPLICADO + message);
     }
 }

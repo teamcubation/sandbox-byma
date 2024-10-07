@@ -1,9 +1,10 @@
 package com.example.project.exceptions;
 
+import com.example.project.utils.messages.ErrorMessageException;
+
 public class InversorYaRegistradoException extends Exception {
-    private static final String DESCRIPTION = "Inversor ya registrado exception. ";
 
     public InversorYaRegistradoException(String message) {
-        super(DESCRIPTION + message);
+        super(ErrorMessageException.INVERSOR_YA_REGISTRADO + message);
     }
 }

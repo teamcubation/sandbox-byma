@@ -1,9 +1,10 @@
 package com.example.project.exceptions;
 
+import com.example.project.utils.messages.ErrorMessageException;
+
 public class InversorNoEncontradoException extends Exception {
-    private static final String DESCRIPTION = "Inversor no encontrado exception. ";
 
     public InversorNoEncontradoException(String message) {
-        super(DESCRIPTION + message);
+        super(ErrorMessageException.INVERSOR_NO_ENCONTRADO + message);
     }
 }

@@ -1,9 +1,10 @@
 package com.example.project.exceptions;
 
+import com.example.project.utils.messages.ErrorMessageException;
+
 public class InstrumentoNoEncontradoException extends Exception {
-    private static final String DESCRIPTION = "Instrumento no encontrado exception. ";
 
     public InstrumentoNoEncontradoException(String message) {
-        super(DESCRIPTION + message);
+        super(ErrorMessageException.INSTRUMENTO_NO_ENCONTRADO + message);
     }
 }
