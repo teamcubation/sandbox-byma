@@ -1,0 +1,23 @@
+Pau
+Lu
+Gus
+Rog
+Heb
+
+
+Damy
+Juli
+Dai
+
+
+gus
+pau
+mas tiempo al po
+
+    <dependencies>
+        <dependency>
+            <groupId>net.objecthunter</groupId>
+            <artifactId>exp4j</artifactId>
+            <version>0.4.8</version>
+        </dependency>
+    </dependencies>
