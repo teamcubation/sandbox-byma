@@ -1,51 +1,58 @@
 package springbootApp.app.utils;
 
-import  springbootApp.app.models.InstrumentoFinanciero;
-import  springbootApp.app.models.Inversor;
-import  springbootApp.app.models.Tipo;
-import  springbootApp.app.repositories.IInstrumentoFinancieroRepository;
-import  springbootApp.app.repositories.IInversorRepository;
+import springbootApp.app.exceptions.DniInvalidoException;
+import springbootApp.app.exceptions.NombreInvalidoException;
+import springbootApp.app.exceptions.PrecioInvalidoException;
+import springbootApp.app.exceptions.TipoInvalidoException;
+import springbootApp.app.models.InstrumentoFinanciero;
+import springbootApp.app.models.Inversor;
+import springbootApp.app.models.Tipo;
+import springbootApp.app.repositories.IInstrumentoFinancieroRepository;
+import springbootApp.app.repositories.IInversorRepository;
 
 public class Validaciones {
 
     public static boolean validarNombre(String nombre) {
         if (nombre == null) {
-            throw new IllegalArgumentException("Error. El nombre no puede ser nulo.");
+            return false;
         }
-        if (nombre.isBlank())
-            throw new IllegalArgumentException("Error. El nombre no puede ser vacío.");
-        return true;
+        return !nombre.isBlank();
     }
 
     public static boolean validarDni(String dni) {
-        if (dni == null || dni.isEmpty()) {
-            throw new IllegalArgumentException("Error. El dni no puede ser nulo o vacío.");
+        if (dni == null) {
+            return false;
         }
-        return true;
+        return !dni.isBlank();
     }
 
     public static boolean validarTipo(Tipo tipo) {
         if (tipo == null) {
-            throw new NullPointerException("Error. El tipo no puede ser nulo.");
+            return false;
         }
-        if (tipo != Tipo.BONO && tipo != Tipo.ACCION)
-            throw new IllegalArgumentException("Error. Tipo invalido");
-        return true;
+        return tipo == Tipo.BONO || tipo == Tipo.ACCION;
     }
 
-    public static boolean validarPrecio(double precio) {
-        if (precio < 0) {
-            throw new IllegalArgumentException("Error. El precio no puede ser negativo.");
-        }
-        return true;
+    public static boolean validarPrecio(Double precio) {
+        return precio != null && precio > 0;
     }
 
     public static boolean validarDatosInstrumento(String nombre, double precio, Tipo tipo) {
-        return validarNombre(nombre) && validarPrecio(precio) && validarTipo(tipo);
+        if (!validarNombre(nombre))
+            throw new NombreInvalidoException("Error. Nombre invalido");
+        if (!validarPrecio(precio))
+            throw new PrecioInvalidoException("Error. Precio invalido");
+        if (!validarTipo(tipo))
+            throw new TipoInvalidoException("Error. Tipo invalido");
+        return true;
     }
 
     public static boolean validarDatosInversor(String nombre, String dni) {
-        return validarDni(dni) && validarNombre(nombre);
+        if (!validarNombre(nombre))
+            throw new NombreInvalidoException("Error. Nombre invalido");
+        if (!validarDni(dni))
+            throw new DniInvalidoException("Error. Dni invalido");
+        return true;
     }
 
     public static boolean validarNombreDuplicado(String nombre, Long id, IInstrumentoFinancieroRepository repository) {
@@ -55,6 +62,7 @@ public class Validaciones {
         InstrumentoFinanciero instrumentoFinanciero = repository.findByNombre(nombre);
         return instrumentoFinanciero != null && !instrumentoFinanciero.getId().equals(id);
     }
+
     public static boolean validarDniDuplicado(String dni, Long id, IInversorRepository repository) {
         if (dni == null) {
             return false;

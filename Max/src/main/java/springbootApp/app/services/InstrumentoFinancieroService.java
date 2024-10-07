@@ -59,17 +59,18 @@ public class InstrumentoFinancieroService implements IInstrumentoFinancieroServi
         if (validarNombreDuplicado(instrumento.getNombre(), id, instrumentoFinancieroRepository)) {
             throw new InstrumentoDuplicadoException(ERROR_INSTRUMENTO_CON_NOMBRE_EXISTENTE);
         }
-        if (instrumento.getNombre() != null) {
+        validarNuevosAtributos(instrumento, instrumentoEncontrado);
+        instrumentoFinancieroRepository.save(instrumentoEncontrado);
+        return instrumentoEncontrado;
+    }
+
+    private static void validarNuevosAtributos(InstrumentoFinanciero instrumento, InstrumentoFinanciero instrumentoEncontrado) {
             if (validarNombre(instrumento.getNombre())) {
                 instrumentoEncontrado.setNombre(instrumento.getNombre());
             }
-        }
-        if (instrumento.getTipo() != null) {
             if (validarTipo(instrumento.getTipo())) {
                 instrumentoEncontrado.setTipo(instrumento.getTipo());
             }
-        }
-        if (instrumento.getPrecio() != null) {
             if (validarPrecio(instrumento.getPrecio())) {
                 if (!instrumento.getPrecio().equals(instrumentoEncontrado.getPrecio())) {
                     instrumentoEncontrado.setPrecio(instrumento.getPrecio());
@@ -77,9 +78,7 @@ public class InstrumentoFinancieroService implements IInstrumentoFinancieroServi
                 }
             }
         }
-        instrumentoFinancieroRepository.save(instrumentoEncontrado);
-        return instrumentoEncontrado;
-    }
+
 
 
     public InstrumentoFinanciero buscarInstrumentoPorID(Long id) throws InstrumentoNoEncontradoException {

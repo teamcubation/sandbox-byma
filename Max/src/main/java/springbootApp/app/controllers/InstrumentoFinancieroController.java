@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import springbootApp.app.apis.InstrumentoFinancieroApi;
 import  springbootApp.app.controllers.mappers.InstrumentoMapper;
 import springbootApp.app.controllers.DTOs.InstrumentoDTO;
+import springbootApp.app.exceptions.TipoInvalidoException;
 import  springbootApp.app.models.InstrumentoFinanciero;
 import  springbootApp.app.services.InstrumentoFinancieroService;
 import springbootApp.app.services.interfaces.IInstrumentoFinancieroService;
@@ -36,7 +37,7 @@ public class InstrumentoFinancieroController implements InstrumentoFinancieroApi
             log.info(REGISTRANDO_INSTRUMENTO);
             InstrumentoFinanciero instrumento = InstrumentoMapper.instrumentoDTOToInstrumento(instrumentoDTO);
             if (instrumento == null)
-                throw new NullPointerException(TIPO_INVALIDO);
+                throw new TipoInvalidoException(TIPO_INVALIDO);
             instrumentoFinancieroService.registrarInstrumentoFinanciero(instrumento);
             log.info(INSTRUMENTO_CREADO + instrumentoDTO);
             return new ResponseEntity<InstrumentoDTO>(instrumentoDTO, HttpStatus.CREATED);
@@ -73,7 +74,7 @@ public class InstrumentoFinancieroController implements InstrumentoFinancieroApi
             log.info(ACTUALIZANDO_INSTRUMENTO);
             InstrumentoFinanciero instrumento = InstrumentoMapper.instrumentoDTOToInstrumento(instrumentoDTO);
             if (instrumento == null)
-                throw new NullPointerException(TIPO_INVALIDO);
+                throw new TipoInvalidoException(TIPO_INVALIDO);
             return ResponseEntity.ok(instrumentoFinancieroService.actualizarInstrumento(id, instrumento));
     }
 }

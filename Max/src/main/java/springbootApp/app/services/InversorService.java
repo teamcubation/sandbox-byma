@@ -61,19 +61,20 @@ public class InversorService implements IInversorService {
         if (Validaciones.validarDniDuplicado(inversor.getDni(), id, inversorRepository)) {
             throw new InversorExistenteException(ERROR_INVERSOR_CON_DNI_EXISTENTE);
         }
-        if (inversor.getNombre() != null) {
+        validarNuevosAtributos(inversor, inversorEncontrado);
+        inversorRepository.save(inversorEncontrado);
+        return inversorEncontrado;
+    }
+
+    private static void validarNuevosAtributos(Inversor inversor, Inversor inversorEncontrado) {
             if (Validaciones.validarNombre(inversor.getNombre())) {
                 inversorEncontrado.setNombre(inversor.getNombre());
             }
-        }
-        if (inversor.getDni() != null) {
             if (Validaciones.validarDni(inversor.getDni())) {
                 inversorEncontrado.setDni(inversor.getDni());
             }
         }
-        inversorRepository.save(inversorEncontrado);
-        return inversorEncontrado;
-    }
+
 
     public Inversor consultarInversor(Long id) throws InversorNoEncontradoException {
         Inversor inversor = inversorRepository.findById(id).orElse(null);

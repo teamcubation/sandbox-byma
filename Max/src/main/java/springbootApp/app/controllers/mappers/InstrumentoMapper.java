@@ -21,7 +21,8 @@ public class InstrumentoMapper {
     }
 
     public static InstrumentoFinanciero instrumentoDTOToInstrumento(InstrumentoDTO instrumentoDTO) {
-        String tipo = instrumentoDTO.getTipo().toUpperCase();
+        String tipo = instrumentoDTO.getTipo();
+        tipo = tipo != null ? tipo.toUpperCase() : null;
         return switch (tipo) {
             case "ACCION" -> Accion.builder()
                     .nombre(instrumentoDTO.getNombre())
